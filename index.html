@@ -3,25 +3,26 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Trolling Race V36</title>
+<title>Trolling Race V37</title>
 <style>
 *{box-sizing:border-box}
-body{margin:0;font-family:Arial,Helvetica,sans-serif;background:linear-gradient(180deg,#075cc7,#003478);color:white;overflow:hidden}
+body{margin:0;font-family:Arial,Helvetica,sans-serif;background:#0075d8;color:white;overflow:hidden}
 button,input{font-family:inherit}
 .screen{display:none;width:100vw;height:100vh}
 .screen.active{display:block}
 #loginScreen{display:flex;align-items:center;justify-content:center;background:linear-gradient(180deg,#0789ed,#0250a8)}
-.loginBox{width:310px;padding:24px;border-radius:20px;background:#dbe9ff;color:#153057;box-shadow:0 10px 0 #244c85;text-align:center;border:4px solid #6da8ff}
-.logo{font-size:42px;line-height:.9;font-weight:1000;text-shadow:0 4px 0 rgba(0,0,0,.25);margin-bottom:18px}
+.loginBox{width:335px;padding:24px;border-radius:22px;background:#dbe9ff;color:#153057;box-shadow:0 10px 0 #244c85;text-align:center;border:4px solid #6da8ff}
+.logo{font-size:46px;line-height:.9;font-weight:1000;text-shadow:0 4px 0 rgba(0,0,0,.25);margin-bottom:18px}
 .logo .orange{color:#ff8a1f}.logo .white{color:white}
-.loginBox input{width:100%;padding:12px;margin:7px 0;border:3px solid #9db9e8;border-radius:10px;font-size:16px;text-align:center;font-weight:700}
-.loginBox button{width:46%;padding:11px;margin:8px 3px;border:0;border-radius:10px;background:#20bf7a;color:white;font-weight:1000;box-shadow:0 5px 0 #0c7a4c;cursor:pointer}
+.loginBox input{width:100%;padding:13px;margin:7px 0;border:3px solid #9db9e8;border-radius:12px;font-size:17px;text-align:center;font-weight:800}
+.loginBox button{width:46%;padding:12px;margin:8px 3px;border:0;border-radius:12px;background:#20bf7a;color:white;font-weight:1000;box-shadow:0 5px 0 #0c7a4c;cursor:pointer}
 .loginBox button:hover{transform:scale(1.06);filter:brightness(1.12)}
-.msg{min-height:22px;font-weight:900;color:#c21d1d;margin-top:8px}
+.msg{min-height:22px;font-weight:1000;color:#c21d1d;margin-top:8px}
+.helpText{font-size:12px;color:#345;margin-top:8px;font-weight:800}
 .app{display:flex;height:100vh;background:linear-gradient(180deg,#0981e8,#02449d)}
 .sidebar{width:250px;padding:22px 14px;background:rgba(0,44,116,.35);border-right:5px solid rgba(71,172,255,.5)}
 .sideLogo{font-size:44px;line-height:.9;font-weight:1000;margin:0 0 20px;text-shadow:0 5px 0 rgba(0,0,0,.3)}
-.navBtn{width:100%;height:105px;margin:9px 0;border:0;border-radius:24px;background:linear-gradient(180deg,#043b87,#022a63);color:white;font-size:27px;font-weight:1000;box-shadow:0 8px 0 #011a3f;cursor:pointer;transition:.16s}
+.navBtn{width:100%;height:99px;margin:8px 0;border:0;border-radius:24px;background:linear-gradient(180deg,#043b87,#022a63);color:white;font-size:26px;font-weight:1000;box-shadow:0 8px 0 #011a3f;cursor:pointer;transition:.16s}
 .navBtn span{display:block;font-size:34px;margin-bottom:5px}
 .navBtn:hover{transform:scale(1.08);filter:brightness(1.18)}
 .navBtn.active{background:linear-gradient(180deg,#35c8ff,#0581e8);box-shadow:0 8px 0 #014b98}
@@ -30,7 +31,7 @@ button,input{font-family:inherit}
 .content{flex:1;padding:28px;overflow:auto}
 .panel{background:rgba(1,25,83,.42);border:4px solid rgba(73,181,255,.65);border-radius:26px;min-height:calc(100vh - 56px);padding:24px;box-shadow:0 8px 0 rgba(0,0,0,.25)}
 .topbar{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
-.stat{background:#063276;border:3px solid #4dc8ff;padding:10px 15px;border-radius:16px;font-weight:1000}
+.stat{background:#063276;border:3px solid #4dc8ff;padding:10px 15px;border-radius:16px;font-weight:1000;display:inline-block;margin:4px}
 .bigBtn{padding:15px 28px;border:0;border-radius:16px;background:linear-gradient(180deg,#30d98b,#11955e);color:white;font-size:19px;font-weight:1000;box-shadow:0 6px 0 #0a663f;cursor:pointer;transition:.16s}
 .bigBtn:hover{transform:scale(1.06);filter:brightness(1.12)}
 .danger{background:linear-gradient(180deg,#ff6565,#c91b1b);box-shadow:0 6px 0 #7d0707}
@@ -53,7 +54,7 @@ button,input{font-family:inherit}
 .toast{position:fixed;right:20px;bottom:20px;background:#091d4d;border:3px solid #6fd4ff;border-radius:18px;padding:14px 20px;font-weight:1000;box-shadow:0 6px 0 rgba(0,0,0,.35);display:none;z-index:50}
 .tradeList{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin-top:16px}
 .tradePlayer{background:rgba(255,255,255,.12);border:3px solid #4dc8ff;border-radius:18px;padding:15px;font-weight:900}
-.small{font-size:13px;opacity:.8}
+.small{font-size:13px;opacity:.85}
 </style>
 </head>
 <body>
@@ -67,6 +68,7 @@ button,input{font-family:inherit}
     <button onclick="login()">LOGIN</button>
     <button onclick="createAccount()">CREATE</button>
     <div id="loginMsg" class="msg"></div>
+    <div class="helpText">CREATE makes a new local account. LOGIN enters the saved account on this device.</div>
   </div>
 </div>
 
@@ -112,7 +114,7 @@ button,input{font-family:inherit}
 
       <div id="trade" class="panel tab" style="display:none">
         <h1>🔁 Trade</h1>
-        <p>The Trade button is now bright and clickable-looking. This stable version shows available saved players. Full two-player live trading can be expanded next.</p>
+        <p>The Trade button is now brighter and grows when you hover over it. Full live trading comes in the next online database update.</p>
         <div class="tradeList" id="tradePlayers"></div>
       </div>
 
@@ -141,8 +143,8 @@ button,input{font-family:inherit}
 </div>
 
 <script>
-const ACCOUNTS_KEY="tr_v36_accounts";
-const CURRENT_KEY="tr_v36_current";
+const ACCOUNTS_KEY="tr_v37_accounts";
+const CURRENT_KEY="tr_v37_current";
 const FIRE_END=new Date("2026-07-25T23:59:59+02:00").getTime();
 
 const skins=[
@@ -171,15 +173,22 @@ function createAccount(){
  const pass=document.getElementById("loginPass").value.trim();
  if(!name||!pass)return msg("Write name and password.");
  const a=getAccounts();
- if(a[name])return msg("Account already exists on this device.");
+ if(a[name]){msg("Account already exists here. Press LOGIN.");return;}
  account={name,pass,coins:500,trophies:0,fireTokens:0,owned:["default"],equipped:"default",lastDaily:""};
  a[name]=account;saveAccounts(a);localStorage.setItem(CURRENT_KEY,name);enterGame();
 }
 function login(){
  const name=document.getElementById("loginName").value.trim();
  const pass=document.getElementById("loginPass").value.trim();
+ if(!name||!pass)return msg("Write name and password.");
  const a=getAccounts();
- if(!a[name])return msg("Account not found on this device. Press CREATE.");
+ if(!a[name]){
+   account={name,pass,coins:500,trophies:0,fireTokens:0,owned:["default"],equipped:"default",lastDaily:""};
+   a[name]=account;saveAccounts(a);localStorage.setItem(CURRENT_KEY,name);
+   enterGame();
+   toast("New local account created.");
+   return;
+ }
  if(a[name].pass!==pass)return msg("Wrong password.");
  account=a[name];localStorage.setItem(CURRENT_KEY,name);enterGame();
 }
@@ -298,7 +307,7 @@ function renderTradePlayers(){
  Object.values(a).filter(p=>p.name!==account.name).forEach(p=>{
   const div=document.createElement("div");div.className="tradePlayer";
   div.innerHTML=`<h3>${p.name}</h3><p>Skins: ${(p.owned||[]).length}</p><button class="bigBtn">Send Trade Request</button>`;
-  div.querySelector("button").onclick=()=>toast("Trade request sent to "+p.name+" (demo)");
+  div.querySelector("button").onclick=()=>toast("Trade request sent to "+p.name+" (local demo)");
   box.appendChild(div);
  });
  if(!box.children.length)box.innerHTML="<p>No other saved players on this device yet.</p>";
