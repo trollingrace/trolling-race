@@ -1,0 +1,2259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Trolling Race</title>
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;width:100%;height:100%;overflow:hidden;font-family:Arial,sans-serif;background:#063b72;color:white;user-select:none}
+.screen{position:fixed;inset:0;display:none;overflow:hidden;background:linear-gradient(#063b72,#0a87bd)}
+.screen.active{display:block}
+button{border:0;border-radius:14px;font-weight:900;cursor:pointer;background:#14a8e8;color:white;box-shadow:0 5px 0 #052844}
+button:active{transform:translateY(4px);box-shadow:0 1px 0 #052844}
+button.disabledBtn{background:#7a8791;opacity:.7;cursor:not-allowed}
+input{font-weight:900;text-align:center;border-radius:14px;border:3px solid #052844;outline:none}
+#mobileBlock{display:none;height:100vh;padding:30px;text-align:center;background:#073b4c;color:white;font-size:22px;align-items:center;justify-content:center;flex-direction:column}
+
+.loginBox,.modalBox,.resultBox{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:460px;background:#e9f7ff;color:#052844;border:5px solid #052844;border-radius:28px;padding:28px;text-align:center;box-shadow:0 14px 30px rgba(0,0,0,.35)}
+.loginBox h1,.resultBox h1,.modalBox h1{font-size:48px;margin:0 0 18px;color:#ff8c00;text-shadow:3px 3px 0 #052844}
+.loginBox input{width:90%;font-size:24px;padding:13px}
+.bigBtn{font-size:28px;padding:15px 35px;margin:10px;background:#20c997}
+.dangerBtn{background:#ef233c}
+
+.topBar{position:absolute;top:18px;left:22px;right:22px;height:78px;display:flex;align-items:center;justify-content:space-between;z-index:5}
+.logo{font-size:42px;font-weight:900;line-height:.9;color:white;text-shadow:4px 4px 0 #052844}
+.logo span{color:#ff8c00}
+.nameBox{position:absolute;left:50%;top:18px;transform:translateX(-50%);text-align:center}
+.nameBox small{font-weight:900;color:#d6f4ff}
+.nameEdit{width:310px;height:52px;background:#061b33;color:white;border:3px solid #0a4c7d;border-radius:15px;font-size:25px}
+.currency{display:flex;align-items:center;gap:12px}
+.coinPill{height:64px;min-width:150px;background:#061b33;border:3px solid #0a4c7d;border-radius:20px;display:flex;align-items:center;gap:12px;padding:8px 18px;font-size:30px;font-weight:900}
+.coinIcon{width:48px;height:48px;border-radius:50%;background:radial-gradient(circle at 30% 25%,#fff6a7,#ffd000 38%,#ff9f00 72%,#b86b00);border:4px solid #ffec70;box-shadow:0 0 12px rgba(255,214,0,.8);display:flex;align-items:center;justify-content:center;color:#9a5a00;font-size:31px;font-weight:900;text-shadow:1px 1px 0 #ffe66d}
+.trophyIcon{font-size:38px}.gear{width:58px;height:58px;border-radius:50%;font-size:34px;background:#dce9f2;color:#052844;box-shadow:none}
+
+.sideMenu{position:absolute;left:14px;top:125px;bottom:18px;width:176px;background:rgba(0,22,46,.55);border:3px solid rgba(95,202,255,.35);border-radius:24px;padding:12px;display:flex;flex-direction:column;gap:10px}
+.navBtn{height:105px;background:#082846;border-radius:16px;box-shadow:none;font-size:23px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px}
+.navBtn.active{background:#0ea5e9}
+.navBtn.disabled{opacity:.55}.navIcon{font-size:39px}
+
+.centerStage{position:absolute;left:210px;right:24px;top:120px;bottom:24px;background:rgba(0,51,91,.65);border:4px solid rgba(95,202,255,.4);border-radius:30px;display:flex;align-items:center;justify-content:center}
+.characterCard{width:460px;height:420px;border-radius:36px;background:linear-gradient(#0a518c,#063860);border:4px solid #5fcaff;display:flex;align-items:center;justify-content:center;position:relative;box-shadow:0 12px 30px rgba(0,0,0,.35)}
+.skinName{position:absolute;bottom:18px;left:50%;transform:translateX(-50%);background:#061b33;border:3px solid #5fcaff;border-radius:999px;padding:9px 20px;font-size:22px;font-weight:900;white-space:nowrap}
+.playBtn{position:absolute;bottom:26px;left:50%;transform:translateX(-50%);width:285px;height:76px;background:#20c997;font-size:38px}
+.hint{position:absolute;right:30px;bottom:28px;background:#061b33;border:3px solid #5fcaff;border-radius:18px;padding:14px;width:260px;text-align:center;font-weight:900}
+
+.numberBox{position:absolute;right:30px;top:126px;width:260px;background:#061b33;border:3px solid #5fcaff;border-radius:18px;padding:14px;text-align:center;font-weight:900;display:none;z-index:4}
+.numberBox input{width:88px;font-size:22px;padding:8px}
+.numberBox button{font-size:16px;padding:9px 12px;margin-left:6px}
+.tinyError{min-height:18px;color:#ffb3b3;font-size:13px;margin-top:6px}
+
+.swimmerShape{position:relative;width:190px;height:92px;border-radius:50%;background:#ffbe0b;border:7px solid #fb8500;filter:drop-shadow(0 12px 0 rgba(0,0,0,.18));animation:floaty 2s ease-in-out infinite}
+.swimmerShape:before{content:"";position:absolute;right:-42px;top:12px;width:70px;height:70px;border-radius:50%;background:inherit;border:6px solid rgba(0,0,0,.25)}
+.swimmerShape:after{content:"";position:absolute;right:-18px;top:30px;width:12px;height:12px;background:#052844;border-radius:50%;box-shadow:22px 0 0 #052844}
+@keyframes floaty{0%,100%{transform:translateY(0) rotate(-2deg)}50%{transform:translateY(-18px) rotate(2deg)}}
+.jerseyNumber{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);background:white;color:#052844;border:3px solid #052844;border-radius:12px;min-width:44px;height:36px;display:none;align-items:center;justify-content:center;font-size:24px;font-weight:900;z-index:8}
+
+.skin-shark{background:linear-gradient(135deg,#1298e8,#064b94)!important;border-color:#031f4d!important;border-radius:58% 42% 42% 58%!important}
+.skin-shark .fin{position:absolute;left:45%;top:-55px;width:0;height:0;border-left:35px solid transparent;border-right:35px solid transparent;border-bottom:62px solid #063a78;z-index:4}
+.skin-shark .tail{position:absolute;left:-48px;top:20px;width:0;height:0;border-top:28px solid transparent;border-bottom:28px solid transparent;border-right:55px solid #063a78}
+.skin-shark .gill{position:absolute;right:12px;top:20px;width:5px;height:26px;background:#052844;border-radius:5px;box-shadow:-11px 2px 0 #052844,-22px 4px 0 #052844;z-index:5}
+
+.skin-duck{background:#ffd400!important;border-color:#6b5500!important;border-radius:46% 54% 54% 46%!important;animation:duckBob 1.35s ease-in-out infinite!important}
+.skin-duck:before{right:-50px!important;top:0!important;width:80px!important;height:80px!important;background:#ffd400!important;border-color:#6b5500!important}
+.skin-duck .beak{position:absolute;right:-92px;top:31px;width:52px;height:25px;background:#ff8c00;border:4px solid #854d00;border-radius:50%;z-index:5}
+.skin-duck .wing{position:absolute;left:48px;top:37px;width:58px;height:24px;border:6px solid #8c7a00;border-radius:50%;z-index:4}
+@keyframes duckBob{0%,100%{transform:translateY(0) rotate(4deg)}50%{transform:translateY(-12px) rotate(-4deg)}}
+
+.skin-robot{background:linear-gradient(135deg,#e9ecef,#8d99ae)!important;border-color:#343a40!important;border-radius:18px!important}
+.skin-robot:before{border-radius:14px!important;background:#cfd4da!important}
+.skin-robot .robotArm{position:absolute;top:23px;width:36px;height:18px;background:#6c757d;border:4px solid #343a40;border-radius:10px;z-index:1}
+.skin-robot .robotArm.left{left:-42px}.skin-robot .robotArm.right{right:-60px}
+.skin-robot .propeller{position:absolute;left:-70px;top:33px;width:52px;height:12px;background:#343a40;border-radius:10px;animation:spin .35s linear infinite;z-index:5}
+.skin-robot .propeller:after{content:"";position:absolute;left:20px;top:-20px;width:12px;height:52px;background:#343a40;border-radius:10px}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+.skin-gold{background:linear-gradient(135deg,#fff7ad,#ffd700,#b8860b,#fff2a8)!important;border-color:#ffe66d!important;box-shadow:0 0 30px rgba(255,215,0,.9),0 12px 0 rgba(0,0,0,.16)!important}
+.skin-gold .sparkle{position:absolute;width:16px;height:16px;background:white;transform:rotate(45deg);top:-18px;left:30px;box-shadow:88px 42px 0 rgba(255,255,255,.9);z-index:5}
+.skin-rainbow{background:linear-gradient(90deg,red,orange,yellow,lime,cyan,blue,violet)!important;border-color:white!important}
+
+/* SHOP */
+.shopPanel{position:absolute;left:210px;right:24px;top:120px;bottom:24px;background:rgba(0,51,91,.65);border:4px solid rgba(95,202,255,.4);border-radius:30px;padding:18px;display:grid;grid-template-columns:1.12fr .88fr;gap:18px;overflow:hidden}
+.skinGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;overflow-y:auto;max-height:100%;padding-right:8px}
+.skinCard{background:#061b33;border:3px solid #5fcaff;border-radius:18px;padding:10px;text-align:center;font-weight:900;cursor:pointer;min-height:140px}
+.skinCard.selected{outline:5px solid #20c997}
+.miniSwimmer{margin:8px auto;position:relative;width:76px;height:38px;border-radius:50%;background:#ffbe0b;border:4px solid #fb8500}
+.miniSwimmer:before{content:"";position:absolute;right:-19px;top:3px;width:28px;height:28px;border-radius:50%;background:inherit;border:3px solid rgba(0,0,0,.25)}
+.miniSwimmer:after{content:"";position:absolute;right:-8px;top:13px;width:5px;height:5px;background:#052844;border-radius:50%;box-shadow:10px 0 0 #052844}
+.miniPrice{font-size:15px}
+.shopPreview{background:#061b33;border:3px solid #5fcaff;border-radius:24px;padding:16px;text-align:center}
+.shopPreview .characterCard{width:100%;height:285px;box-shadow:none;border-radius:28px;margin-bottom:14px}
+.shopAction{width:220px;height:58px;font-size:24px;background:#20c997}
+.backBtn{position:absolute;left:34px;bottom:34px;width:145px;height:58px;font-size:20px;background:#6c757d}
+
+/* GAME */
+#gameScreen{background:linear-gradient(#caf0f8,#48cae4)}
+.gameHud{position:absolute;top:12px;left:14px;right:14px;height:60px;display:flex;justify-content:space-between;align-items:center;z-index:5}
+.smallBtn{padding:10px 16px;font-size:16px;border-radius:12px}
+.surrenderBtn{background:#ef233c}
+#pool{position:absolute;left:40px;right:40px;top:90px;bottom:150px;border:6px solid #023e8a;border-radius:30px;background:repeating-linear-gradient(0deg,rgba(255,255,255,.22) 0 10px,rgba(0,180,216,.20) 10px 26px),linear-gradient(90deg,#48cae4,#00b4d8);overflow:hidden}
+.laneLine{position:absolute;left:0;right:0;top:50%;height:5px;background:rgba(255,255,255,.8)}
+.finishLine{position:absolute;right:70px;top:0;bottom:0;width:10px;background:repeating-linear-gradient(0deg,white 0 20px,#073b4c 20px 40px)}
+.swimmer{position:absolute;width:82px;height:46px;border-radius:50%;transform:translateX(-50%);background:#ffbe0b;border:4px solid #fb8500}
+.swimmer:before{content:"";position:absolute;right:-18px;top:4px;width:34px;height:34px;border-radius:50%;background:inherit;border:3px solid rgba(0,0,0,.28)}
+.swimmer:after{content:"";position:absolute;right:-7px;top:16px;width:5px;height:5px;background:#052844;border-radius:50%;box-shadow:10px 0 0 #052844}
+.swimmer .jerseyNumber{min-width:28px;height:23px;font-size:15px;border-width:2px;border-radius:8px}
+.swimmer .fin{top:-24px;border-left-width:13px;border-right-width:13px;border-bottom-width:27px}
+.swimmer .tail{left:-24px;top:10px;border-top-width:13px;border-bottom-width:13px;border-right-width:26px}
+.swimmer .gill{right:5px;top:11px;width:2px;height:13px;box-shadow:-5px 1px 0 #052844,-10px 2px 0 #052844}
+.swimmer .beak{right:-40px;top:14px;width:25px;height:13px;border-width:2px}
+.swimmer .wing{left:20px;top:17px;width:25px;height:12px;border-width:3px}
+.swimmer .robotArm{top:12px;width:18px;height:10px;border-width:2px}
+.swimmer .robotArm.left{left:-22px}.swimmer .robotArm.right{right:-30px}
+.swimmer .propeller{left:-34px;top:17px;width:25px;height:6px}
+.swimmer .propeller:after{left:10px;top:-10px;width:6px;height:25px}
+.swimmer .sparkle{width:8px;height:8px;top:-10px;left:16px;box-shadow:42px 22px 0 rgba(255,255,255,.9)}
+#player{top:28%}#bot{top:70%;background:#90be6d;border-color:#2d6a4f}
+.nameTag{position:absolute;top:-29px;left:50%;transform:translateX(-50%);background:white;color:#052844;border:2px solid #073b4c;border-radius:10px;padding:3px 8px;font-size:14px;font-weight:bold;white-space:nowrap}
+#countdown{position:absolute;inset:0;background:rgba(255,255,255,.72);display:none;align-items:center;justify-content:center;font-size:110px;font-weight:900;color:#073b4c;z-index:6;text-shadow:4px 4px 0 white}
+.abilityBar{position:absolute;left:40px;right:40px;bottom:20px;height:112px;display:grid;grid-template-columns:repeat(6,1fr);gap:10px}
+.ability{background:white;color:#052844;border:3px solid #073b4c;border-radius:18px;padding:9px;text-align:center;font-weight:bold;font-size:14px}
+.ability.clickable{cursor:pointer;box-shadow:0 5px 0 rgba(7,59,76,.5)}
+.key{display:inline-block;background:#073b4c;color:white;border-radius:9px;padding:5px 10px;margin-bottom:5px;font-size:16px}
+.ready{color:green}.cooldown{color:#d00000}
+#message{position:absolute;left:50%;top:72px;transform:translateX(-50%);background:white;color:#052844;border:3px solid #073b4c;border-radius:18px;padding:8px 18px;font-size:18px;font-weight:900;z-index:8;min-width:320px;text-align:center}
+#wave{position:absolute;width:80px;height:110px;top:64%;transform:translate(-50%,-50%);background:radial-gradient(circle,rgba(255,255,255,.9),rgba(72,202,228,.7));border:4px solid rgba(255,255,255,.95);border-radius:50%;display:none;z-index:3;box-shadow:0 0 25px rgba(255,255,255,.9)}
+.modalOverlay{position:fixed;inset:0;background:rgba(0,0,0,.55);display:none;z-index:100}
+.modalOverlay.active{display:block}
+
+
+/* V9 FIXED SPECIAL SKINS */
+.skin-shark {
+  background: linear-gradient(135deg,#1fb6ff,#0570b8 55%,#024c86)!important;
+  border-color:#022b4e!important;
+  border-radius: 62% 38% 42% 58% / 58% 48% 52% 42%!important;
+}
+.skin-shark .fin {
+  position:absolute;
+  left:43%;
+  top:-38px;
+  width:54px;
+  height:54px;
+  background:#0570b8;
+  border:5px solid #022b4e;
+  border-bottom:0;
+  transform:rotate(45deg) skew(-8deg,-8deg);
+  border-radius:8px 8px 4px 4px;
+  z-index:4;
+}
+.skin-shark .tail {
+  position:absolute;
+  left:-52px;
+  top:18px;
+  width:52px;
+  height:56px;
+  background:#0570b8;
+  clip-path: polygon(100% 50%, 0 0, 28% 50%, 0 100%);
+  border:0;
+  z-index:2;
+}
+.skin-shark .gill {
+  position:absolute;
+  right:36px;
+  top:23px;
+  width:5px;
+  height:25px;
+  background:#022b4e;
+  border-radius:6px;
+  box-shadow:-11px 2px 0 #022b4e,-22px 4px 0 #022b4e;
+  z-index:6;
+}
+.miniSwimmer.skin-shark .fin{top:-19px;left:42%;width:25px;height:25px;border-width:3px}
+.miniSwimmer.skin-shark .tail{left:-24px;top:8px;width:26px;height:28px}
+.miniSwimmer.skin-shark .gill{right:15px;top:10px;width:2px;height:11px;box-shadow:-5px 1px 0 #022b4e,-10px 2px 0 #022b4e}
+.swimmer.skin-shark .fin{top:-20px;left:43%;width:27px;height:27px;border-width:3px}
+.swimmer.skin-shark .tail{left:-26px;top:9px;width:27px;height:29px}
+.swimmer.skin-shark .gill{right:16px;top:11px;width:2px;height:12px;box-shadow:-5px 1px 0 #022b4e,-10px 2px 0 #022b4e}
+
+.skin-duck{
+  background:#ffd400!important;
+  border-color:#6b5500!important;
+  border-radius:48% 52% 58% 42% / 50% 55% 45% 50%!important;
+  animation:duckBob 1.35s ease-in-out infinite!important;
+}
+.skin-duck:before{
+  right:-48px!important;
+  top:4px!important;
+  width:72px!important;
+  height:72px!important;
+  background:#ffd400!important;
+  border-color:#6b5500!important;
+}
+.skin-duck .beak{
+  position:absolute;
+  right:-92px;
+  top:32px;
+  width:50px;
+  height:23px;
+  background:#ff8c00;
+  border:4px solid #854d00;
+  border-radius:50% 60% 60% 50%;
+  z-index:6;
+}
+.skin-duck .wing{
+  position:absolute;
+  left:47px;
+  top:38px;
+  width:56px;
+  height:23px;
+  border:6px solid #8c7a00;
+  border-radius:50%;
+  z-index:5;
+}
+.miniSwimmer.skin-duck:before{right:-22px!important;top:2px!important;width:32px!important;height:32px!important}
+.miniSwimmer.skin-duck .beak{right:-40px;top:14px;width:22px;height:10px;border-width:2px}
+.miniSwimmer.skin-duck .wing{left:20px;top:16px;width:24px;height:11px;border-width:3px}
+.swimmer.skin-duck:before{right:-20px!important;top:4px!important;width:36px!important;height:36px!important}
+.swimmer.skin-duck .beak{right:-42px;top:15px;width:24px;height:12px;border-width:2px}
+.swimmer.skin-duck .wing{left:20px;top:17px;width:26px;height:12px;border-width:3px}
+
+.skin-robot{
+  background:linear-gradient(135deg,#f1f3f5,#adb5bd,#6c757d)!important;
+  border-color:#212529!important;
+  border-radius:16px!important;
+}
+.skin-robot:before{
+  border-radius:50%!important;
+  background:#228be6!important;
+  border-color:#212529!important;
+}
+.skin-robot .robotArm{
+  position:absolute;
+  top:24px;
+  width:36px;
+  height:18px;
+  background:#adb5bd;
+  border:4px solid #212529;
+  border-radius:10px;
+  z-index:1;
+}
+.skin-robot .robotArm.left{left:-42px}
+.skin-robot .robotArm.right{right:-60px}
+.skin-robot .propeller{
+  position:absolute;
+  left:-72px;
+  top:35px;
+  width:52px;
+  height:10px;
+  background:#212529;
+  border-radius:10px;
+  animation:spin .35s linear infinite;
+  z-index:6;
+}
+.skin-robot .propeller:after{
+  content:"";
+  position:absolute;
+  left:21px;
+  top:-21px;
+  width:10px;
+  height:52px;
+  background:#212529;
+  border-radius:10px;
+}
+.skin-robot .robotStar{
+  position:absolute;
+  left:48%;
+  top:43%;
+  width:28px;
+  height:28px;
+  background:#ffd60a;
+  clip-path: polygon(50% 0%,61% 35%,98% 35%,68% 57%,79% 91%,50% 70%,21% 91%,32% 57%,2% 35%,39% 35%);
+  z-index:7;
+}
+.miniSwimmer.skin-robot .robotArm{top:9px;width:15px;height:9px;border-width:2px}
+.miniSwimmer.skin-robot .robotArm.left{left:-18px}
+.miniSwimmer.skin-robot .robotArm.right{right:-25px}
+.miniSwimmer.skin-robot .propeller{left:-30px;top:15px;width:22px;height:5px}
+.miniSwimmer.skin-robot .propeller:after{left:9px;top:-9px;width:5px;height:22px}
+.miniSwimmer.skin-robot .robotStar{width:11px;height:11px}
+.swimmer.skin-robot .robotArm{top:12px;width:18px;height:10px;border-width:2px}
+.swimmer.skin-robot .robotArm.left{left:-22px}
+.swimmer.skin-robot .robotArm.right{right:-30px}
+.swimmer.skin-robot .propeller{left:-34px;top:18px;width:25px;height:6px}
+.swimmer.skin-robot .propeller:after{left:10px;top:-10px;width:6px;height:25px}
+.swimmer.skin-robot .robotStar{width:12px;height:12px}
+
+
+.accountRow{display:flex;align-items:center;justify-content:space-between;gap:8px;color:#052844;font-weight:900;border-bottom:1px solid #aac;padding:6px}
+.accountRow button{font-size:13px;padding:6px 9px;border-radius:9px}
+
+
+.offerTitle{grid-column:1/-1;font-size:24px;font-weight:900;color:white;text-shadow:2px 2px 0 #052844;margin:0 0 -4px 4px}
+.shopSubTitle{grid-column:1/-1;font-size:18px;font-weight:900;color:#d6f4ff;margin:4px}
+.skinCard.offer{border-color:#ffd60a;box-shadow:0 0 18px rgba(255,214,0,.35)}
+.smallCoinIcon{display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:50%;background:radial-gradient(circle at 30% 25%,#fff6a7,#ffd000 40%,#ff9f00 75%);border:2px solid #ffec70;color:#9a5a00;font-size:12px;font-weight:900;margin-right:3px}
+.creatorRow{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #aac;padding:6px;font-weight:900}
+.creatorBadge{background:#ffd60a;color:#052844;border-radius:999px;padding:2px 7px;margin-left:6px}
+
+
+.skinGrid::-webkit-scrollbar{width:10px}
+.skinGrid::-webkit-scrollbar-track{background:#061b33;border-radius:999px}
+.skinGrid::-webkit-scrollbar-thumb{background:#5fcaff;border-radius:999px;border:2px solid #061b33}
+
+
+.tradePanel{position:absolute;left:155px;right:18px;top:105px;bottom:18px;background:rgba(0,51,91,.88);border:4px solid rgba(95,202,255,.45);border-radius:30px;padding:18px;display:flex;flex-direction:column;gap:12px;overflow:hidden}
+.tradeTop{display:flex;justify-content:space-between;align-items:center;gap:12px}
+.tradeTitle{font-size:34px;font-weight:900;color:#ffb000;text-shadow:2px 2px #052844}
+.tradeSearch{display:flex;gap:10px;align-items:center}
+.tradeSearch input{width:260px;font-size:18px;padding:12px;border-radius:14px}
+.tradeList{flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:9px;padding-right:8px}
+.tradeRow{display:flex;justify-content:space-between;align-items:center;background:#0b4b84;border:2px solid #4cc9ff;border-radius:16px;padding:10px 12px;font-weight:900}
+.tradeRow small{color:#bdefff}
+.tradeRow button{background:#21d6a3!important;color:white!important;border:0!important;box-shadow:0 5px 0 #0b7f63!important}
+.tradeRow button:disabled{background:#53677d!important;color:#c9d2dc!important;box-shadow:0 5px 0 #2f3c4a!important;cursor:not-allowed!important}
+.onlineDot{display:inline-block;width:12px;height:12px;border-radius:50%;background:#00e676;margin-right:6px}
+.offlineDot{display:inline-block;width:12px;height:12px;border-radius:50%;background:#ff3355;margin-right:6px}
+.tradeToastBox{position:fixed;right:22px;bottom:95px;z-index:9999;display:flex;flex-direction:column;gap:10px;max-width:420px}
+.tradeToast{background:#092b55;border:3px solid #5fcaff;border-radius:18px;padding:14px;box-shadow:0 6px 0 #052844;font-weight:900;color:white;font-size:18px}
+.tradeToastBtns{display:flex;gap:8px;margin-top:8px}
+.tradeWindow{position:absolute;left:155px;right:18px;top:105px;bottom:18px;background:rgba(0,34,70,.94);border:4px solid #5fcaff;border-radius:30px;padding:18px;display:flex;flex-direction:column;gap:12px;overflow:hidden}
+.tradeColumns{flex:1;display:grid;grid-template-columns:1fr 1fr;gap:16px;overflow:hidden}
+.tradeSide{background:#073d72;border:3px solid rgba(95,202,255,.45);border-radius:22px;padding:12px;display:flex;flex-direction:column;overflow:hidden}
+.tradeSide h3{margin:0 0 8px;font-size:24px;color:#ffb000;text-shadow:2px 2px #052844}
+.tradeOfferList{min-height:92px;background:#052b55;border-radius:16px;padding:8px;margin-bottom:10px;display:flex;flex-wrap:wrap;gap:8px;align-content:flex-start}
+.tradeSkinList{flex:1;overflow-y:auto;display:grid;grid-template-columns:repeat(3,1fr);gap:10px;padding-right:6px}
+.tradeSkinCard{background:#0b4b84;border:2px solid #5fcaff;border-radius:16px;padding:8px;text-align:center;font-weight:900;cursor:pointer;min-height:78px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px}
+.tradeMiniSkin{width:46px;height:30px;border-radius:50%;border:3px solid white;box-shadow:0 3px 0 #052844}
+.tradeMiniWrap{display:flex;align-items:center;gap:6px;justify-content:center}
+.tradeSkinCard.disabled{opacity:.45;cursor:not-allowed;filter:grayscale(.35)}
+.tradeSkinCard.selected{border-color:#00ff99;background:#0b7a74}
+.tradeStatus{font-size:20px;font-weight:900}
+.tradeControls{display:flex;gap:10px;justify-content:center}
+.tradeCountdown{font-size:28px;color:#00ff99;font-weight:900;text-align:center}
+
+@media(max-width:900px),(pointer:coarse){.screen{display:none!important}#mobileBlock{display:flex}}
+
+/* V34 Fire Season UI polish */
+.menuBtn, .sideBtn, .navBtn, .tabBtn, button {
+  transition: transform .16s ease, filter .16s ease, box-shadow .16s ease, background .16s ease;
+}
+.menuBtn:hover, .sideBtn:hover, .navBtn:hover, .tabBtn:hover {
+  transform: scale(1.08);
+  filter: brightness(1.15);
+}
+button:hover {
+  transform: scale(1.04);
+  filter: brightness(1.12);
+}
+button[onclick*="Trade"], button[onclick*="trade"], #tradeBtn, .tradeBtn, .menuBtn.trade, .sideBtn.trade {
+  background: linear-gradient(180deg,#24d8ff,#0077ff)!important;
+  color:white!important;
+  box-shadow: 0 7px 0 #004d9c!important;
+  opacity:1!important;
+  filter:none!important;
+}
+button[onclick*="Trade"]:hover, button[onclick*="trade"]:hover, #tradeBtn:hover, .tradeBtn:hover, .menuBtn.trade:hover, .sideBtn.trade:hover {
+  background: linear-gradient(180deg,#62e9ff,#1894ff)!important;
+  transform: scale(1.1);
+}
+.fireSeasonPanel{
+  padding:22px;
+  background:linear-gradient(180deg,#1b0600,#4d1200,#0d2b70);
+  border:4px solid #ff8c00;
+  border-radius:24px;
+  color:white;
+  box-shadow:0 8px 0 #6b1d00;
+  max-width:760px;
+  margin:20px auto;
+  text-align:center;
+}
+.fireSeasonPanel h2{
+  font-size:42px;
+  color:#ffcf33;
+  text-shadow:0 4px 0 #8a2200;
+  margin:8px 0 14px;
+}
+.fireTokenBadge{
+  display:inline-block;
+  padding:10px 18px;
+  border-radius:18px;
+  background:#ff6a00;
+  border:3px solid #ffd166;
+  font-weight:900;
+  box-shadow:0 5px 0 #8a2200;
+  margin:8px;
+}
+.fireCountdown{
+  font-size:22px;
+  font-weight:900;
+  margin:10px 0 18px;
+}
+.fireCrate{
+  width:170px;
+  height:140px;
+  margin:14px auto;
+  border-radius:22px;
+  border:4px solid #ffd166;
+  background:radial-gradient(circle at 50% 25%,#ffe45e,#ff6a00 45%,#7b001c 75%);
+  box-shadow:0 8px 0 #5a1200;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:58px;
+}
+.fireOdds{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
+  gap:10px;
+  margin:16px 0;
+}
+.fireOddCard{
+  background:rgba(255,255,255,.12);
+  border:2px solid rgba(255,209,102,.75);
+  border-radius:16px;
+  padding:10px;
+  font-weight:900;
+}
+.fireOpenBtn{
+  background:linear-gradient(180deg,#ffcf33,#ff6a00)!important;
+  color:#3a0900!important;
+  border:0!important;
+  border-radius:18px!important;
+  padding:14px 26px!important;
+  font-weight:1000!important;
+  box-shadow:0 6px 0 #8a2200!important;
+}
+.fireResult{
+  margin-top:12px;
+  font-size:24px;
+  font-weight:1000;
+  color:#ffe45e;
+}
+
+</style>
+</head>
+<body oncontextmenu="return false;">
+<div id="mobileBlock"><h1>Trolling Race</h1><p>This game is only playable on a computer.</p></div>
+
+<div id="loginScreen" class="screen active">
+  <div class="loginBox">
+    <h1>Trolling Race</h1>
+    <input id="playerNameInput" maxlength="14" placeholder="Player name" />
+    <br><br>
+    <input id="playerPasswordInput" maxlength="18" type="password" placeholder="Password" />
+    <br>
+    <button class="bigBtn" onclick="login()">LOGIN</button>
+    <button class="bigBtn" onclick="createFirstAccount()">CREATE</button>
+    <p id="nameError" style="color:#d00000;font-weight:900;"></p>
+  </div>
+</div>
+
+<div id="mainMenu" class="screen">
+  <div class="topBar">
+    <div class="logo"><span>Trolling</span><br>Race</div>
+    <div class="nameBox">
+      <small>PLAYER NAME</small><br>
+      <input id="menuNameInput" class="nameEdit" maxlength="14" onchange="renamePlayer()" onkeydown="if(event.key==='Enter') renamePlayer()" />
+      <br><small>ID: <span id="accountIdText">TR-000000</span></small>
+    </div>
+    <div class="currency">
+      <div class="coinPill"><div class="coinIcon">$</div><span id="menuCoins">0</span></div>
+      <div class="coinPill"><span class="trophyIcon">🏆</span><span id="menuTrophies">0</span></div>
+      <button class="gear" onclick="openSettings()">⚙</button>
+    </div>
+  </div>
+
+  <div class="sideMenu">
+    <button class="navBtn active" onclick="showMainMenu()"><span class="navIcon">🏠</span>HOME</button>
+    <button class="navBtn" onclick="openSkins()"><span class="navIcon">🛒</span>SHOP</button>
+    <button class="navBtn disabled" onclick="openTradeScreen()"><span class="navIcon">🔁</span>TRADE</button>
+    <button class="navBtn" onclick="dailyReward()"><span class="navIcon">🎁</span>DAILY</button>
+    <button class="navBtn" id="creatorBtn" style="display:none" onclick="openCreatorPanel()"><span class="navIcon">⭐</span>CREATOR</button>
+  </div>
+
+  <div class="centerStage">
+    <div class="characterCard">
+      <div class="swimmerShape" id="menuSwimmer"><div class="jerseyNumber" id="menuJerseyNumber">0</div></div>
+      <div class="skinName" id="equippedSkinName">Default Swimmer</div>
+    </div>
+  </div>
+
+  <div class="numberBox" id="numberBox">
+    <div>Jersey Number</div>
+    <input id="jerseyInput" type="number" min="0" max="99" value="0" />
+    <button onclick="saveJerseyNumber()">SAVE</button>
+    <div class="tinyError" id="jerseyError"></div>
+  </div>
+
+  <button class="playBtn" onclick="startRaceCountdown()">PLAY</button>
+  <div class="hint" id="menuHint">Choose PLAY to start a race.</div>
+</div>
+
+<div id="skinScreen" class="screen">
+  <div class="topBar">
+    <div class="logo"><span>Item</span><br>Shop</div>
+    <div class="currency">
+      <div class="coinPill"><div class="coinIcon">$</div><span id="shopCoins">0</span></div>
+      <button class="gear" onclick="showMainMenu()">←</button>
+    </div>
+  </div>
+  <button class="backBtn" onclick="showMainMenu()">BACK</button>
+  <div class="shopPanel">
+    <div class="skinGrid" id="skinGrid"></div>
+    <div class="shopPreview">
+      <h1 id="previewName" style="font-size:34px;margin:0 0 10px;">Default Swimmer</h1>
+      <div class="characterCard">
+        <div class="swimmerShape" id="previewSwimmer"><div class="jerseyNumber" id="previewJerseyNumber">0</div></div>
+        <div class="skinName" id="previewInfo">Owned</div>
+      </div>
+      <p id="previewText">Simple free swimmer.</p>
+      <button class="shopAction" id="shopActionBtn" onclick="buyOrEquipSelected()">EQUIP</button>
+    </div>
+  </div>
+</div>
+
+<div id="gameScreen" class="screen">
+  <div class="gameHud">
+    <div class="coinPill"><div class="coinIcon">$</div><span id="coins">0</span></div>
+    <div class="coinPill"><span class="trophyIcon">🏆</span><span id="trophies">0</span></div>
+    <div class="coinPill">Distance: <span id="distance">0</span>%</div>
+    <button class="smallBtn surrenderBtn" onclick="askSurrender()">SURRENDER</button>
+  </div>
+  <div id="message">Get ready...</div>
+  <div id="pool">
+    <div id="countdown">3</div>
+    <div class="laneLine"></div>
+    <div class="finishLine"></div>
+    <div id="wave"></div>
+    <div id="player" class="swimmer">
+      <div class="nameTag" id="playerTag">Player</div>
+      <div class="jerseyNumber" id="gameJerseyNumber">0</div>
+    </div>
+    <div id="bot" class="swimmer"><div class="nameTag" id="botTag">Opponent</div><div class="jerseyNumber" id="botJerseyNumber">0</div></div>
+  </div>
+  <div class="abilityBar">
+    <div class="ability"><div class="key">SPACE</div><div>Swim</div><div class="ready">Keyboard</div></div>
+    <div class="ability clickable" onclick="useBoost()"><div class="key">T</div><div>Boost</div><div id="boostStatus" class="ready">Ready</div></div>
+    <div class="ability clickable" onclick="useClimb()"><div class="key">Y</div><div>Climb</div><div id="climbStatus" class="ready">Ready</div></div>
+    <div class="ability clickable" onclick="useSlow()"><div class="key">Left</div><div>Slow</div><div id="slowStatus" class="ready">Ready</div></div>
+    <div class="ability clickable" onclick="useShield()"><div class="key">Right</div><div>Shield</div><div id="shieldStatus" class="ready">Ready</div></div>
+    <div class="ability clickable" onclick="useWave()"><div class="key">Z</div><div>Wave</div><div id="waveStatus" class="ready">Ready</div></div>
+  </div>
+</div>
+
+<div id="resultScreen" class="screen">
+  <div class="resultBox">
+    <h1 id="resultTitle">YOU WIN!</h1>
+    <p id="resultText"></p>
+    <button class="bigBtn" onclick="startRaceCountdown()">PLAY AGAIN</button>
+    <button class="bigBtn" onclick="showMainMenu()">MENU</button>
+  </div>
+</div>
+
+
+
+<div id="creatorModal" class="modalOverlay">
+  <div class="modalBox" style="width:760px;">
+    <h1>CREATOR PANEL</h1>
+    <p style="font-size:14px;">Local prototype panel. Owner can add/remove coins and trophies, give random Creator Panel access, and remove panel access by name/TR-ID. Gifted Creator Panels can only add coins/trophies.</p>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
+      <div style="background:white;border:3px solid #052844;border-radius:14px;padding:12px;">
+        <h3>Add / Remove Rewards</h3>
+        <input id="grantTarget" placeholder="Player name or TR-ID" style="font-size:18px;padding:8px;width:90%;"><br><br>
+        <input id="grantCoins" type="number" placeholder="Coins (+/-)" style="font-size:18px;padding:8px;width:42%;">
+        <input id="grantTrophies" type="number" placeholder="Trophies (+/-)" style="font-size:18px;padding:8px;width:42%;">
+        <br><button onclick="creatorGrantRewards()" style="padding:10px 16px;margin-top:10px;">APPLY</button>
+      </div>
+      <div style="background:white;border:3px solid #052844;border-radius:14px;padding:12px;">
+        <h3>Creator Access</h3>
+        <input id="adminTarget" placeholder="Player name or TR-ID" style="font-size:18px;padding:8px;width:90%;"><br><br>
+        <button onclick="creatorGiveAdmin()" style="padding:10px 16px;">GIVE PANEL</button>
+        <button onclick="creatorGiveRandomAdmin()" style="padding:10px 16px;background:#20c997;">RANDOM GIVE</button>
+        <button onclick="creatorRemoveAdmin()" style="padding:10px 16px;background:#ef233c;">REMOVE PANEL ACCESS</button>
+      </div>
+    </div>
+    <p id="creatorMsg" style="min-height:22px;color:#d00000;font-weight:900;"></p>
+    <p style="font-size:14px;margin-bottom:5px;"><b>Creator Accounts</b> — only owner/creator accounts are shown here.</p>
+    <div id="creatorAccountList" style="max-height:220px;overflow-y:auto;text-align:left;background:white;border:3px solid #052844;border-radius:14px;padding:10px;color:#052844;"></div>
+    <button class="bigBtn" onclick="closeCreatorPanel()">CLOSE</button>
+  </div>
+</div>
+
+<div id="settingsModal" class="modalOverlay">
+  <div class="modalBox" style="width:620px;">
+    <h1>SETTINGS</h1>
+    <p><b>Volume</b></p>
+    <input id="volumeSlider" type="range" min="0" max="100" value="45" oninput="setVolume(this.value)" style="width:80%;">
+    <p><b>Accounts</b></p><p style="font-size:14px;">Name and password must both be unique. Every account gets a TR-ID. REMOVE only removes it from this device, not from the online database.</p>
+    <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;">
+      <input id="newAccountName" maxlength="14" placeholder="Name" style="font-size:18px;padding:8px;width:160px;">
+      <input id="newAccountPass" maxlength="18" placeholder="Password" style="font-size:18px;padding:8px;width:160px;">
+      <button onclick="createAccountFromSettings()" style="padding:10px 14px;">CREATE</button>
+    </div>
+    <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:10px;">
+      <input id="loginAccountName" maxlength="14" placeholder="Existing name" style="font-size:18px;padding:8px;width:160px;">
+      <input id="loginAccountPass" maxlength="18" placeholder="Password" style="font-size:18px;padding:8px;width:160px;">
+      <button onclick="loginAccountFromSettings()" style="padding:10px 14px;">ADD/LOGIN</button>
+    </div>
+    <p id="settingsMsg" style="min-height:20px;color:#d00000;font-weight:900;"></p>
+    <div id="accountList" style="max-height:220px;overflow-y:auto;text-align:left;background:white;border:3px solid #052844;border-radius:14px;padding:10px;"></div>
+    <button class="bigBtn" onclick="closeSettings()">CLOSE</button>
+  </div>
+</div>
+
+<div id="surrenderModal" class="modalOverlay">
+  <div class="modalBox">
+    <h1>SURRENDER?</h1>
+    <p>If you leave now, you will lose 3 trophies and get 0 coins.</p>
+    <button class="bigBtn dangerBtn" onclick="confirmSurrender()">YES</button>
+    <button class="bigBtn" onclick="closeSurrender()">NO</button>
+  </div>
+</div>
+
+<script>
+const skins=[
+{id:"default",name:"Default Swimmer",price:0,color:"#ffbe0b",border:"#fb8500",number:false,desc:"Simple free swimmer."},
+{id:"red",name:"Red Swimmer",price:100,color:"#ef233c",border:"#9d0208",number:true,desc:"Red sporty swimmer. Jersey number enabled."},
+{id:"green",name:"Green Swimmer",price:100,color:"#70e000",border:"#2d6a4f",number:true,desc:"Green sporty swimmer. Jersey number enabled."},
+{id:"blue",name:"Blue Swimmer",price:100,color:"#4895ef",border:"#023e8a",number:true,desc:"Blue sporty swimmer. Jersey number enabled."},
+{id:"shark",name:"Shark",price:300,color:"#1298e8",border:"#031f4d",number:false,desc:"A shark with fin, tail and gills."},
+{id:"duck",name:"Duck",price:300,color:"#ffd400",border:"#6b5500",number:false,desc:"A funny duck swimmer."},
+{id:"robot",name:"Robot Swimmer",price:500,color:"#cfd4da",border:"#343a40",number:false,desc:"Robot swimmer with spinning propeller."},
+{id:"gold",name:"Gold Swimmer",price:1000,color:"#ffd700",border:"#ffe66d",number:false,desc:"Shiny golden swimmer."},
+{id:"rainbow",name:"Rainbow Swimmer",price:1500,color:"linear-gradient(90deg,red,orange,yellow,lime,cyan,blue,violet)",border:"white",number:false,desc:"Legendary rainbow swimmer."}
+,
+
+{id:"fire",name:"Fire Swimmer",price:0,color:"#ff6a00",border:"#ffdd55",number:false,season:"fire"},
+{id:"magma",name:"Magma Swimmer",price:0,color:"linear-gradient(90deg,#1b0b0b,#ff3b00,#ffd166)",border:"#ff7b00",number:false,season:"fire"},
+{id:"lava",name:"Lava Swimmer",price:0,color:"linear-gradient(90deg,#2b0000,#ff0000,#ff8c00,#ffe45e)",border:"#ff2d00",number:false,season:"fire"},
+{id:"devil",name:"Devil Swimmer",price:0,color:"#7b001c",border:"#ff003c",number:false,season:"fire"},
+];
+
+let playerName="Player",accountId="",accountPassword="",jerseyNumber=0,coins=0,fireTokens=0,trophies=0,ownedSkins=["default"],equippedSkin="default",selectedSkin="default";
+let volume=Number(localStorage.getItem("trVolume")||45)/100;
+const OWNER_NAME="akos";
+const OWNER_PASSWORD="alma";
+let playerX=6,botX=6,lastSwimKey="",raceStarted=false,raceOver=true,countdownActive=false,playerSpeedMultiplier=1,botSpeedMultiplier=1;
+let boostUsed=false,boostActive=false,climbReady=true,slowReady=true,shieldReady=true,waveReady=true;
+const startX=6,finishX=92;
+
+function skinById(id){return skins.find(s=>s.id===id)||skins[0]}
+function showScreen(id){document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));document.getElementById(id).classList.add("active")}
+function showMainMenu(){raceStarted=false;raceOver=true;updateAllStats();updateSkinDisplay();showScreen("mainMenu")}
+function showHint(t){document.getElementById("menuHint").textContent=t}
+
+
+
+const SUPABASE_URL = "https://hwpmiwthtfjjjctdhmpk.supabase.co";
+const SUPABASE_KEY = "sb_publishable_YelMCbtMWB6PtjWsCfsYPA_76P9eGqI";
+const PLAYERS_ENDPOINT = SUPABASE_URL + "/rest/v1/players";
+const MATCHES_ENDPOINT = SUPABASE_URL + "/rest/v1/matches";
+const TRADES_ENDPOINT = SUPABASE_URL + "/rest/v1/trades";
+let accountsCache = [];
+let currentMatchId = null;
+let myMatchSlot = 1;
+let onlineRace = false;
+let onlineOpponentName = "Opponent";
+let matchPollTimer = null;
+let positionPushTimer = null;
+let tradePollTimer = null;
+let activeTradeId = null;
+let tradePartnerId = null;
+let tradePartnerName = "Player";
+let myTradeItems = [];
+let otherTradeItems = [];
+let tradeCountdownTimer = null;
+let tradeCountdownLeft = 0;
+let tradeListRefreshTimer = null;
+let lastTradeRequestSentAt = 0;
+
+function normalizeAccount(row){
+ let cloudOwnedSkins=[];
+ try{cloudOwnedSkins=JSON.parse(row.owned_skins||"[]")}catch(e){cloudOwnedSkins=[]}
+ return {
+  id: String(row.id),
+  dbId: row.id,
+  code: "TR-" + String(row.id).padStart(6,"0").slice(-6),
+  name: row.username,
+  username: row.username,
+  password: row.password,
+  role: (row.username && row.username.toLowerCase()===OWNER_NAME && row.password===OWNER_PASSWORD) ? "owner" : (row.creator ? "admin" : "player"),
+  coins: Number(row.coins||0),
+  trophies: Number(row.trophies||0),
+  jerseyNumber: Number(localStorage.getItem("trJersey_"+row.username)||0),
+  ownedSkins: cloudOwnedSkins.length ? cloudOwnedSkins : JSON.parse(localStorage.getItem("trOwnedSkins_"+row.username)||'["default"]'),
+  equippedSkin: row.equipped_skin || localStorage.getItem("trEquippedSkin_"+row.username)||"default",
+  last_seen: row.last_seen || null,
+  owned_skins: row.owned_skins || null,
+  equipped_skin: row.equipped_skin || null,
+  banned: !!row.banned,
+  daily: localStorage.getItem("trDailyAccount_"+row.id)||""
+ };
+}
+
+async function supabaseRequest(path="", options={}){
+ const headers = {
+  "apikey": SUPABASE_KEY,
+  "Authorization": "Bearer " + SUPABASE_KEY,
+  "Content-Type": "application/json",
+  "Prefer": "return=representation",
+  ...(options.headers||{})
+ };
+ const res = await fetch(PLAYERS_ENDPOINT + path, {...options, headers});
+ if(!res.ok){
+  const txt = await res.text();
+  throw new Error(txt || ("Supabase error: " + res.status));
+ }
+ if(res.status===204) return null;
+ return await res.json();
+}
+
+
+async function supabaseTableRequest(endpoint,path="",options={}){
+ const headers={
+  "apikey":SUPABASE_KEY,
+  "Authorization":"Bearer "+SUPABASE_KEY,
+  "Content-Type":"application/json",
+  "Prefer":"return=representation",
+  ...(options.headers||{})
+ };
+ const res=await fetch(endpoint+path,{...options,headers});
+ if(!res.ok){
+  const txt=await res.text();
+  throw new Error(txt||("Supabase error "+res.status));
+ }
+ if(res.status===204)return null;
+ return await res.json();
+}
+
+async function refreshAccountsFromSupabase(){
+ const rows = await supabaseRequest("?select=*");
+ accountsCache = rows.map(normalizeAccount);
+ return accountsCache;
+}
+
+function allAccounts(){
+ return accountsCache;
+}
+
+function saveAllAccounts(accounts){
+ accountsCache = accounts;
+}
+
+function makeId(){
+ return String(Date.now()+Math.floor(Math.random()*9999));
+}
+
+function makePublicCode(){
+ return "TR-" + Math.floor(100000+Math.random()*900000);
+}
+
+function currentAccount(){
+ return accountsCache.find(a=>a.id===accountId);
+}
+
+function isCreator(){
+ const acc=currentAccount();
+ return acc && (acc.role==="owner" || acc.role==="admin");
+}
+
+function isOwner(){
+ const acc=currentAccount();
+ return acc && acc.role==="owner";
+}
+
+function findAccountByNameOrCode(value){
+ const v=String(value||"").trim().toLowerCase();
+ return accountsCache.find(a=>a.name.toLowerCase()===v || String(a.code||"").toLowerCase()===v);
+}
+
+async function persistCurrentAccount(){
+ const acc=currentAccount();
+ if(!acc || !acc.dbId) return;
+
+ const isMainOwner = playerName.toLowerCase()===OWNER_NAME && accountPassword===OWNER_PASSWORD;
+
+ localStorage.setItem("trJersey_"+playerName, String(jerseyNumber));
+ localStorage.setItem("trOwnedSkins_"+playerName, JSON.stringify(ownedSkins));
+ localStorage.setItem("trEquippedSkin_"+playerName, equippedSkin);
+
+ const payload = {
+  username: playerName,
+  password: accountPassword,
+  coins: Number(coins||0),
+  trophies: Number(trophies||0),
+  creator: isMainOwner ? true : (acc.role==="owner" || acc.role==="admin"),
+  banned: !!acc.banned
+ };
+
+ const rows = await supabaseRequest("?id=eq."+encodeURIComponent(acc.dbId), {
+  method:"PATCH",
+  body: JSON.stringify(payload)
+ });
+
+ if(rows && rows[0]){
+  const updated = normalizeAccount(rows[0]);
+  const idx = accountsCache.findIndex(a=>a.id===accountId);
+  if(idx!==-1) accountsCache[idx] = {...updated, ownedSkins, equippedSkin, jerseyNumber};
+ }
+}
+
+function nameTaken(name,exceptId=""){
+ return accountsCache.some(a=>a.name.toLowerCase()===name.toLowerCase() && a.id!==exceptId);
+}
+
+function passwordTaken(password,exceptId=""){
+ return accountsCache.some(a=>String(a.password)===String(password) && a.id!==exceptId);
+}
+
+async function createLocalAccount(name,password){
+ if(name.length<3)return {ok:false,msg:"Name must be at least 3 characters."};
+ if(password.length<3)return {ok:false,msg:"Password must be at least 3 characters."};
+
+ await refreshAccountsFromSupabase();
+
+ if(nameTaken(name))return {ok:false,msg:"This name already exists."};
+ if(passwordTaken(password))return {ok:false,msg:"This password is already used by another account."};
+
+ const isMainOwner=name.toLowerCase()===OWNER_NAME && password===OWNER_PASSWORD;
+ const newId = Date.now() + Math.floor(Math.random()*99999);
+
+ const payload = {
+  id: newId,
+  username: name,
+  password: password,
+  coins: 0,
+  trophies: 0,
+  creator: isMainOwner,
+  banned: false
+ };
+
+ const rows = await supabaseRequest("", {
+  method:"POST",
+  body: JSON.stringify(payload)
+ });
+
+ const acc = normalizeAccount(rows[0]);
+ accountsCache.push(acc);
+ return {ok:true,account:acc};
+}
+
+async function useAccount(acc){
+ if(acc.banned){
+  alert("This account is banned.");
+  return;
+ }
+ accountId=acc.id;
+ playerName=acc.name;
+ accountPassword=acc.password||"";
+ coins=Number(acc.coins||0);
+ trophies=Number(acc.trophies||0);
+ jerseyNumber=Number(acc.jerseyNumber||0);
+ ownedSkins=acc.ownedSkins||["default"];
+ equippedSkin=acc.equippedSkin||"default";
+
+ if(!ownedSkins.includes("default"))ownedSkins.push("default");
+ if(!ownedSkins.includes(equippedSkin))equippedSkin="default";
+
+ localStorage.setItem("trCurrentAccountId",accountId);
+ rememberLinkedAccount(accountId);
+ document.getElementById("menuNameInput").value=playerName;
+ document.getElementById("playerTag").textContent=playerName;
+
+ const idText=document.getElementById("accountIdText");
+ if(idText) idText.textContent=acc.code||"TR-000000";
+
+ updateAllStats();
+ updateSkinDisplay();
+ renderSkinGrid();
+ updateCreatorButton();
+}
+
+window.addEventListener("load",async()=>{
+ volume=Number(localStorage.getItem("trVolume")||45)/100;
+ try{
+  await refreshAccountsFromSupabase();
+  const currentId=localStorage.getItem("trCurrentAccountId");
+  const linked=getLinkedAccountIds();
+  const acc=accountsCache.find(a=>a.id===currentId && linked.includes(String(a.id)));
+  if(acc){
+   document.getElementById("playerNameInput").value=acc.name;
+  }
+ }catch(e){
+  console.error(e);
+  document.getElementById("nameError").textContent="Supabase connection failed. Check RLS/API settings.";
+ }
+});
+
+async function login(){
+ const name=document.getElementById("playerNameInput").value.trim();
+ const password=document.getElementById("playerPasswordInput").value.trim();
+ const error=document.getElementById("nameError");
+
+ if(name.length<3){error.textContent="Name must be at least 3 characters.";return}
+ if(password.length<3){error.textContent="Password must be at least 3 characters.";return}
+
+ try{
+  await refreshAccountsFromSupabase();
+  const acc=accountsCache.find(a=>a.name.toLowerCase()===name.toLowerCase());
+
+  if(!acc){
+   error.textContent="No account with this name. Use CREATE first.";
+   return;
+  }
+
+  if(acc.password!==password){
+   error.textContent="Wrong password.";
+   return;
+  }
+
+  await useAccount(acc);
+  error.textContent="";
+  showMainMenu();
+ }catch(e){
+  console.error(e);
+  error.textContent="Login failed. Check Supabase RLS/API settings.";
+ }
+}
+
+async function createFirstAccount(){
+ const name=document.getElementById("playerNameInput").value.trim();
+ const password=document.getElementById("playerPasswordInput").value.trim();
+ const error=document.getElementById("nameError");
+
+ try{
+  const res=await createLocalAccount(name,password);
+  if(!res.ok){error.textContent=res.msg;return}
+  await useAccount(res.account);
+  error.textContent="";
+  showMainMenu();
+ }catch(e){
+  console.error(e);
+  error.textContent="Create failed. Check Supabase RLS/API settings.";
+ }
+}
+
+async function renamePlayer(){
+ const newName=document.getElementById("menuNameInput").value.trim();
+ if(newName.length<3){
+  showHint("Name must be at least 3 characters.");
+  document.getElementById("menuNameInput").value=playerName;
+  return;
+ }
+
+ await refreshAccountsFromSupabase();
+
+ if(nameTaken(newName,accountId)){
+  showHint("This name is already taken.");
+  document.getElementById("menuNameInput").value=playerName;
+  return;
+ }
+
+ playerName=newName;
+ document.getElementById("playerTag").textContent=playerName;
+ await persistCurrentAccount();
+ showHint("Player name changed globally!");
+}
+
+async function savePlayerData(){
+ try{ await persistCurrentAccount(); }
+ catch(e){ console.error(e); showHint("Save failed. Check Supabase."); }
+}
+
+async function openSettings(){
+ try{ await refreshAccountsFromSupabase(); }catch(e){ console.error(e); }
+ renderAccounts();
+ document.getElementById("volumeSlider").value=Math.round(volume*100);
+ document.getElementById("settingsModal").classList.add("active");
+}
+
+function closeSettings(){
+ document.getElementById("settingsModal").classList.remove("active");
+}
+
+function setVolume(v){
+ volume=Number(v)/100;
+ localStorage.setItem("trVolume",String(v));
+ playSound("click");
+}
+
+async function createAccountFromSettings(){
+ const name=document.getElementById("newAccountName").value.trim();
+ const pass=document.getElementById("newAccountPass").value.trim();
+ const msg=document.getElementById("settingsMsg");
+
+ try{
+  const res=await createLocalAccount(name,pass);
+  if(!res.ok){msg.style.color="#d00000";msg.textContent=res.msg;return}
+  rememberLinkedAccount(res.account.id);
+  await useAccount(res.account);
+  msg.style.color="green";
+  msg.textContent="Account created globally and selected.";
+  renderAccounts();
+  playSound("buy");
+ }catch(e){
+  console.error(e);
+  msg.style.color="#d00000";
+  msg.textContent="Create failed. Check Supabase.";
+ }
+}
+
+async function loginAccountFromSettings(){
+ const name=document.getElementById("loginAccountName").value.trim();
+ const pass=document.getElementById("loginAccountPass").value.trim();
+ const msg=document.getElementById("settingsMsg");
+
+ try{
+  await refreshAccountsFromSupabase();
+  const acc=accountsCache.find(a=>a.name.toLowerCase()===name.toLowerCase() && a.password===pass);
+  if(!acc){msg.style.color="#d00000";msg.textContent="Wrong name or password.";return}
+  rememberLinkedAccount(acc.id);
+  await useAccount(acc);
+  msg.style.color="green";
+  msg.textContent="Account loaded globally.";
+  renderAccounts();
+  playSound("equip");
+ }catch(e){
+  console.error(e);
+  msg.style.color="#d00000";
+  msg.textContent="Login failed. Check Supabase.";
+ }
+}
+
+async function switchAccount(id){
+ const linkedIds=getLinkedAccountIds();
+ if(!linkedIds.includes(String(id))){
+  const msg=document.getElementById("settingsMsg");
+  if(msg){msg.style.color="#d00000";msg.textContent="This account is not linked on this device. Login with name and password first.";}
+  return;
+ }
+ const acc=accountsCache.find(a=>a.id===String(id));
+ if(acc){
+  await useAccount(acc);
+  renderAccounts();
+  playSound("equip");
+ }
+}
+
+function removeLocalAccount(id){
+ const target=accountsCache.find(a=>a.id===String(id));
+ const msg=document.getElementById("settingsMsg");
+
+ if(accountId===String(id)){
+  msg.style.color="#d00000";
+  msg.textContent="You are using this account now. Switch to another account first.";
+  return;
+ }
+
+ // This removes the account only from this device's linked list.
+ // It does NOT delete the online account, even if it is the owner account.
+ forgetLinkedAccount(id);
+ renderAccounts();
+ playSound("click");
+ msg.style.color="green";
+ msg.textContent="Account removed from this device. It still exists online.";
+}
+
+
+function getLinkedAccountIds(){
+ try{
+  return JSON.parse(localStorage.getItem("trLinkedAccountIds")||"[]").map(String);
+ }catch(e){return []}
+}
+
+function saveLinkedAccountIds(ids){
+ localStorage.setItem("trLinkedAccountIds",JSON.stringify([...new Set(ids.map(String))]));
+}
+
+function rememberLinkedAccount(id){
+ const ids=getLinkedAccountIds();
+ ids.push(String(id));
+ saveLinkedAccountIds(ids);
+}
+
+function forgetLinkedAccount(id){
+ const ids=getLinkedAccountIds().filter(x=>x!==String(id));
+ saveLinkedAccountIds(ids);
+}
+
+function renderAccounts(){
+ const box=document.getElementById("accountList");
+ const linkedIds=getLinkedAccountIds();
+ const accounts=accountsCache.filter(a=>linkedIds.includes(String(a.id)));
+ box.innerHTML="";
+ if(accounts.length===0){
+  box.innerHTML="No accounts linked on this device yet. Add one with name + password.";
+  return;
+ }
+ accounts.forEach(a=>{
+  const row=document.createElement("div");
+  row.className="accountRow";
+  row.innerHTML=`<span>${a.id===accountId?"✅ ":""}${a.name} | ${a.code} | ${a.role==="owner"?"OWNER":a.role==="admin"?"CREATOR":"PLAYER"} | <span class="smallCoinIcon">$</span>${a.coins||0} | 🏆 ${a.trophies||0}</span>
+  <span><button onclick="switchAccount('${a.id}')">USE</button><button onclick="removeLocalAccount('${a.id}')">REMOVE</button></span>`;
+  box.appendChild(row);
+ });
+}
+
+function playSound(type){
+ if(volume<=0)return;
+ try{
+  const ctx=new (window.AudioContext||window.webkitAudioContext)();
+  const osc=ctx.createOscillator();
+  const gain=ctx.createGain();
+  const freq={click:520,buy:760,equip:620,win:880,lose:180,select:440}[type]||420;
+  osc.frequency.value=freq;
+  osc.type="sine";
+  gain.gain.value=0.08*volume;
+  osc.connect(gain);gain.connect(ctx.destination);
+  osc.start();
+  setTimeout(()=>{osc.stop();ctx.close();}, type==="buy"?180:100);
+ }catch(e){}
+}
+
+function updateCreatorButton(){
+ const btn=document.getElementById("creatorBtn");
+ if(btn) btn.style.display=isCreator()?"flex":"none";
+}
+
+async function openCreatorPanel(){
+ if(!isCreator()){showHint("Creator Panel is locked.");return}
+ try{ await refreshAccountsFromSupabase(); }catch(e){ console.error(e); }
+ renderCreatorAccounts();
+ document.getElementById("creatorModal").classList.add("active");
+}
+
+function closeCreatorPanel(){
+ document.getElementById("creatorModal").classList.remove("active");
+}
+
+async function creatorGrantRewards(){
+ if(!isCreator())return;
+ const target=findAccountByNameOrCode(document.getElementById("grantTarget").value);
+ const msg=document.getElementById("creatorMsg");
+
+ if(!target){msg.style.color="#d00000";msg.textContent="Player not found.";return}
+
+ const changeCoins=Number(document.getElementById("grantCoins").value||0);
+ const changeTrophies=Number(document.getElementById("grantTrophies").value||0);
+
+ if(!Number.isFinite(changeCoins)||!Number.isFinite(changeTrophies)){
+  msg.style.color="#d00000";
+  msg.textContent="Invalid number.";
+  return;
+ }
+
+ if(!isOwner() && (changeCoins < 0 || changeTrophies < 0)){
+  msg.style.color="#d00000";
+  msg.textContent="Only the owner can remove coins or trophies.";
+  return;
+ }
+
+ const newCoins=Math.max(0,Number(target.coins||0)+changeCoins);
+ const newTrophies=Math.max(0,Number(target.trophies||0)+changeTrophies);
+
+ try{
+  const rows = await supabaseRequest("?id=eq."+encodeURIComponent(target.dbId), {
+   method:"PATCH",
+   body: JSON.stringify({coins:newCoins,trophies:newTrophies})
+  });
+
+  await refreshAccountsFromSupabase();
+
+  if(target.id===accountId){
+   coins=newCoins;
+   trophies=newTrophies;
+   updateAllStats();
+  }
+
+  msg.style.color="green";
+  msg.textContent=`Applied to ${target.name}: ${changeCoins>=0?"+":""}${changeCoins} coins, ${changeTrophies>=0?"+":""}${changeTrophies} trophies.`;
+  renderCreatorAccounts();
+  playSound(changeCoins>=0 || changeTrophies>=0 ? "buy" : "click");
+ }catch(e){
+  console.error(e);
+  msg.style.color="#d00000";
+  msg.textContent="Update failed. Check Supabase.";
+ }
+}
+
+async function creatorGiveAdmin(){
+ if(!isOwner()){
+  const msg=document.getElementById("creatorMsg");
+  msg.style.color="#d00000";
+  msg.textContent="Only the owner can give Creator Panel access.";
+  return;
+ }
+ const target=findAccountByNameOrCode(document.getElementById("adminTarget").value);
+ const msg=document.getElementById("creatorMsg");
+ if(!target){msg.style.color="#d00000";msg.textContent="Player not found.";return}
+
+ try{
+  await supabaseRequest("?id=eq."+encodeURIComponent(target.dbId), {
+   method:"PATCH",
+   body: JSON.stringify({creator:true})
+  });
+  await refreshAccountsFromSupabase();
+  msg.style.color="green";
+  msg.textContent=`Creator Panel access given to ${target.name}.`;
+  renderCreatorAccounts();
+  playSound("equip");
+ }catch(e){
+  console.error(e);
+  msg.style.color="#d00000";
+  msg.textContent="Creator update failed.";
+ }
+}
+
+async function creatorGiveRandomAdmin(){
+ if(!isOwner()){
+  const msg=document.getElementById("creatorMsg");
+  msg.style.color="#d00000";
+  msg.textContent="Only the owner can randomly give Creator Panel access.";
+  return;
+ }
+
+ const candidates=accountsCache.filter(a=>a.role!=="owner" && a.role!=="admin");
+ const msg=document.getElementById("creatorMsg");
+
+ if(candidates.length===0){
+  msg.style.color="#d00000";
+  msg.textContent="No normal players available.";
+  return;
+ }
+
+ const chosen=candidates[Math.floor(Math.random()*candidates.length)];
+
+ try{
+  await supabaseRequest("?id=eq."+encodeURIComponent(chosen.dbId), {
+   method:"PATCH",
+   body: JSON.stringify({creator:true})
+  });
+  await refreshAccountsFromSupabase();
+  msg.style.color="green";
+  msg.textContent=`Random Creator Panel access given to ${chosen.name} (${chosen.code}).`;
+  renderCreatorAccounts();
+  playSound("equip");
+ }catch(e){
+  console.error(e);
+  msg.style.color="#d00000";
+  msg.textContent="Random creator failed.";
+ }
+}
+
+async function creatorRemoveAdmin(){
+ if(!isOwner()){
+  const msg=document.getElementById("creatorMsg");
+  msg.style.color="#d00000";
+  msg.textContent="Only the owner can remove Creator Panel access.";
+  return;
+ }
+
+ const target=findAccountByNameOrCode(document.getElementById("adminTarget").value);
+ const msg=document.getElementById("creatorMsg");
+
+ if(!target){msg.style.color="#d00000";msg.textContent="Player not found.";return}
+ if(target.role==="owner" || (target.name && target.name.toLowerCase()===OWNER_NAME && target.password===OWNER_PASSWORD)){
+  msg.style.color="#d00000";
+  msg.textContent="You cannot remove the owner's Creator Panel.";
+  return;
+ }
+
+ try{
+  await supabaseRequest("?id=eq."+encodeURIComponent(target.dbId), {
+   method:"PATCH",
+   body: JSON.stringify({creator:false})
+  });
+  await refreshAccountsFromSupabase();
+  msg.style.color="green";
+  msg.textContent=`Creator Panel access removed from ${target.name}.`;
+  renderCreatorAccounts();
+  playSound("click");
+ }catch(e){
+  console.error(e);
+  msg.style.color="#d00000";
+  msg.textContent="Remove creator failed.";
+ }
+}
+
+function renderCreatorAccounts(){
+ const box=document.getElementById("creatorAccountList");
+ const accounts=accountsCache.filter(a=>a.role==="owner" || a.role==="admin");
+ box.innerHTML="";
+ if(accounts.length===0){
+  box.textContent="No creator accounts yet.";
+  return;
+ }
+ accounts.forEach(a=>{
+  const row=document.createElement("div");
+  row.className="creatorRow";
+  const role=a.role==="owner"?"OWNER":"CREATOR - GIVE ONLY";
+  row.innerHTML=`<span>${a.name} | ${a.code||"TR-??????"} | <span class="smallCoinIcon">$</span>${a.coins||0} | 🏆 ${a.trophies||0} <span class="creatorBadge">${role}</span></span><span>${a.id===accountId?"YOU":""}</span>`;
+  box.appendChild(row);
+ });
+}
+
+
+function clearParts(el){el.className=el.className.replace(/\bskin-\S+/g,"").trim();el.querySelectorAll(".fin,.tail,.gill,.beak,.wing,.robotArm,.propeller,.robotStar,.sparkle").forEach(p=>p.remove())}
+function addParts(el,id){
+ clearParts(el);el.classList.add("skin-"+id);
+ if(id==="shark"){["fin","tail","gill"].forEach(c=>{let d=document.createElement("div");d.className=c;el.appendChild(d)})}
+ if(id==="duck"){["beak","wing"].forEach(c=>{let d=document.createElement("div");d.className=c;el.appendChild(d)})}
+ if(id==="robot"){["robotArm left","robotArm right","propeller","robotStar"].forEach(c=>{let d=document.createElement("div");d.className=c;el.appendChild(d)})}
+ if(id==="gold"){let d=document.createElement("div");d.className="sparkle";el.appendChild(d)}
+}
+function updateSwimmerStyle(el,id){const s=skinById(id);el.style.background=s.color;el.style.borderColor=s.border;addParts(el,id)}
+
+function updateSkinDisplay(){
+ const s=skinById(equippedSkin);
+ document.getElementById("equippedSkinName").textContent=s.name;
+ updateSwimmerStyle(document.getElementById("menuSwimmer"),equippedSkin);
+ updateSwimmerStyle(document.getElementById("player"),equippedSkin);
+ const show=s.number;
+ document.getElementById("numberBox").style.display=show?"block":"none";
+ ["menuJerseyNumber","gameJerseyNumber"].forEach(id=>{const el=document.getElementById(id);el.style.display=show?"flex":"none";el.textContent=jerseyNumber});
+ document.getElementById("jerseyInput").value=jerseyNumber;
+}
+
+async function saveJerseyNumber(){
+ const v=Number(document.getElementById("jerseyInput").value),err=document.getElementById("jerseyError");
+ if(!Number.isInteger(v)||v<0||v>99){err.textContent="Choose a number from 0 to 99.";return}
+ jerseyNumber=v;await savePlayerData();updateSkinDisplay();err.textContent="";showHint("Jersey number saved!");playSound("equip");
+}
+
+async function dailyReward(){
+ const today=new Date().toDateString(),key="trDailyAccount_"+accountId;
+ if(localStorage.getItem(key)===today){showHint("Daily reward already claimed today.");return}
+ coins+=50;localStorage.setItem(key,today);await savePlayerData();updateAllStats();showHint("Daily reward claimed: +50 coins!");playSound("buy");
+}
+
+function openSkins(){playSound("click");selectedSkin=equippedSkin;renderSkinGrid();updateShopPreview();showScreen("skinScreen")}
+
+function weightedShopPool(){
+ return [
+  {id:"red",w:20},{id:"green",w:20},{id:"blue",w:20},
+  {id:"shark",w:10},{id:"duck",w:10},{id:"robot",w:10},
+  {id:"gold",w:5},{id:"rainbow",w:5}
+ ,
+
+{id:"fire",name:"Fire Swimmer",price:0,color:"#ff6a00",border:"#ffdd55",number:false,season:"fire"},
+{id:"magma",name:"Magma Swimmer",price:0,color:"linear-gradient(90deg,#1b0b0b,#ff3b00,#ffd166)",border:"#ff7b00",number:false,season:"fire"},
+{id:"lava",name:"Lava Swimmer",price:0,color:"linear-gradient(90deg,#2b0000,#ff0000,#ff8c00,#ffe45e)",border:"#ff2d00",number:false,season:"fire"},
+{id:"devil",name:"Devil Swimmer",price:0,color:"#7b001c",border:"#ff003c",number:false,season:"fire"},
+];
+}
+function seededRandom(seed){
+ let x=Math.sin(seed)*10000;
+ return x-Math.floor(x);
+}
+function currentShopOffers(){
+ const bucket=Math.floor(Date.now()/(10*60*1000));
+ const pool=weightedShopPool();
+ const chosen=[];
+ let attempt=0;
+ while(chosen.length<3 && attempt<50){
+  attempt++;
+  const available=pool.filter(p=>!chosen.includes(p.id));
+  const total=available.reduce((a,p)=>a+p.w,0);
+  let r=seededRandom(bucket*31+attempt*97)*total;
+  for(const p of available){
+   r-=p.w;
+   if(r<=0){chosen.push(p.id);break}
+  }
+ }
+ return chosen;
+}
+function renderSkinGrid(){
+ const grid=document.getElementById("skinGrid");grid.innerHTML="";
+ const offers=currentShopOffers();
+ const title=document.createElement("div");
+ title.className="offerTitle";
+ title.textContent="10-minute Skin Offers";
+ grid.appendChild(title);
+ offers.forEach(id=>{
+  const s=skinById(id);
+  const owned=ownedSkins.includes(s.id),equipped=equippedSkin===s.id;
+  const card=document.createElement("div");
+  card.className="skinCard offer"+(selectedSkin===s.id?" selected":"");
+  card.onclick=()=>{playSound("select");selectedSkin=s.id;renderSkinGrid();updateShopPreview()};
+  const mini=document.createElement("div");mini.className="miniSwimmer";mini.style.background=s.color;mini.style.borderColor=s.border;addParts(mini,s.id);
+  card.innerHTML=`<div>${s.name}</div><div class="miniPrice"><span class="smallCoinIcon">$</span>${s.price}</div><div class="miniPrice">${equipped?"Equipped":owned?"Owned":"Offer"}</div>`;
+  card.insertBefore(mini,card.children[1]);grid.appendChild(card);
+ });
+ const ownedTitle=document.createElement("div");
+ ownedTitle.className="shopSubTitle";
+ ownedTitle.textContent="Owned Skins";
+ grid.appendChild(ownedTitle);
+ ownedSkins.forEach(id=>{
+  const s=skinById(id);
+  const equipped=equippedSkin===s.id;
+  const card=document.createElement("div");
+  card.className="skinCard"+(selectedSkin===s.id?" selected":"");
+  card.onclick=()=>{playSound("select");selectedSkin=s.id;renderSkinGrid();updateShopPreview()};
+  const mini=document.createElement("div");mini.className="miniSwimmer";mini.style.background=s.color;mini.style.borderColor=s.border;addParts(mini,s.id);
+  card.innerHTML=`<div>${s.name}</div><div class="miniPrice">Owned</div><div class="miniPrice">${equipped?"Equipped":"Can equip"}</div>`;
+  card.insertBefore(mini,card.children[1]);grid.appendChild(card);
+ });
+}
+
+function updateShopPreview(){
+ const s=skinById(selectedSkin),owned=ownedSkins.includes(s.id),equipped=equippedSkin===s.id,offered=currentShopOffers().includes(s.id);
+ document.getElementById("previewName").textContent=s.name;
+ document.getElementById("previewText").textContent=s.desc;
+ document.getElementById("previewInfo").textContent=owned?(equipped?"Equipped":"Owned"):(offered?"Price: "+s.price+" coins":"Not in current shop");
+ document.getElementById("shopCoins").textContent=coins;
+ updateSwimmerStyle(document.getElementById("previewSwimmer"),selectedSkin);
+ document.getElementById("previewJerseyNumber").style.display=s.number?"flex":"none";
+ document.getElementById("previewJerseyNumber").textContent=jerseyNumber;
+ const btn=document.getElementById("shopActionBtn");btn.classList.remove("disabledBtn");
+ if(equipped){btn.textContent="EQUIPPED";btn.classList.add("disabledBtn")}
+ else if(owned){btn.textContent="EQUIP"}
+ else if(!offered){btn.textContent="NOT IN SHOP";btn.classList.add("disabledBtn")}
+ else if(coins>=s.price){btn.textContent="BUY"}
+ else{btn.textContent="NOT ENOUGH";btn.classList.add("disabledBtn")}
+}
+async function buyOrEquipSelected(){
+ const s=skinById(selectedSkin),owned=ownedSkins.includes(s.id),equipped=equippedSkin===s.id,offered=currentShopOffers().includes(s.id);
+ if(equipped)return;
+ if(owned){equippedSkin=s.id}
+ else{if(!offered)return;if(coins<s.price)return;coins-=s.price;ownedSkins.push(s.id);equippedSkin=s.id}
+ await savePlayerData();updateAllStats();renderSkinGrid();updateShopPreview();updateSkinDisplay();playSound(owned?"equip":"buy");
+}
+
+function updateAllStats(){
+ document.getElementById("menuCoins").textContent=coins;document.getElementById("menuTrophies").textContent=trophies;
+ document.getElementById("coins").textContent=coins;document.getElementById("trophies").textContent=trophies;
+ document.getElementById("shopCoins").textContent=coins;
+ const pct=Math.max(0,Math.min(100,Math.floor(((playerX-startX)/(finishX-startX))*100)));document.getElementById("distance").textContent=pct;
+}
+function updatePositions(){document.getElementById("player").style.left=playerX+"%";document.getElementById("bot").style.left=botX+"%"}
+function setMessage(t){document.getElementById("message").textContent=t}
+function updateAbilityStatuses(){["boost","climb","slow","shield","wave"].forEach(id=>{const el=document.getElementById(id+"Status");el.className="ready";el.textContent="Ready"})}
+function startCooldown(name,sec){const el=document.getElementById(name+"Status");let left=sec;el.className="cooldown";el.textContent=left+"s";const int=setInterval(()=>{if(raceOver||!raceStarted){clearInterval(int);return}left--;if(left<=0){clearInterval(int);el.className="ready";el.textContent="Ready";if(name==="climb")climbReady=true;if(name==="slow")slowReady=true;if(name==="shield")shieldReady=true;if(name==="wave")waveReady=true}else el.textContent=left+"s"},1000)}
+
+function resetRace(){
+ playerX=startX;botX=startX;lastSwimKey="";raceStarted=false;raceOver=false;countdownActive=true;playerSpeedMultiplier=1;botSpeedMultiplier=1;boostUsed=false;boostActive=false;climbReady=true;slowReady=true;shieldReady=true;waveReady=true;
+ document.getElementById("bot").className="swimmer";updateAbilityStatuses();updateSkinDisplay();updatePositions();updateAllStats();setOpponentName("Opponent");setOpponentSkin("default",0);setMessage("Get ready...");
+}
+async function startRaceCountdown(){
+ if(!accountId){showHint("Please login first.");return}
+ resetRace();
+ showScreen("gameScreen");
+ setMessage("Searching for opponent...");
+ try{
+  await findOrCreateOnlineMatch();
+ }catch(e){
+  console.error(e);
+  setMessage("Online matchmaking error. Check matches table columns, then press PLAY again.");
+  onlineRace=false;
+  raceStarted=false;
+  raceOver=true;
+ }
+}
+
+function startCountdownOnly(){
+ const c=document.getElementById("countdown");
+ c.style.display="flex";
+ c.textContent="3";
+ let n=3;
+ const timer=setInterval(()=>{
+  n--;
+  if(n>0)c.textContent=n;
+  else if(n===0)c.textContent="GO!";
+  else{
+   clearInterval(timer);
+   c.style.display="none";
+   countdownActive=false;
+   raceStarted=true;
+   setMessage("GO! Press SPACE to swim.");
+   requestAnimationFrame(gameLoop);
+  }
+ },300);
+}
+
+
+function setOpponentName(name){
+ onlineOpponentName=name || "Opponent";
+ const botTag=document.getElementById("botTag");
+ if(botTag) botTag.textContent=onlineOpponentName;
+}
+
+function setOpponentSkin(skinId, jersey){
+ const bot=document.getElementById("bot");
+ if(!bot)return;
+
+ const safeSkin=skinId || "default";
+ updateSwimmerStyle(bot, safeSkin);
+
+ const skin=skinById(safeSkin);
+ const jerseyEl=document.getElementById("botJerseyNumber");
+ if(jerseyEl){
+  jerseyEl.textContent=Number(jersey||0);
+  jerseyEl.style.display=skin.number ? "flex" : "none";
+ }
+}
+
+
+
+async function cleanupMyOldMatches(){
+ if(!accountId)return;
+ try{
+  const rows=await supabaseTableRequest(
+   MATCHES_ENDPOINT,
+   "?or=(player1_id.eq."+encodeURIComponent(accountId)+",player2_id.eq."+encodeURIComponent(accountId)+")&select=*"
+  );
+  for(const m of (rows||[])){
+   if(m.status==="waiting" || m.status==="active"){
+    await supabaseTableRequest(
+     MATCHES_ENDPOINT,
+     "?id=eq."+encodeURIComponent(m.id),
+     {method:"PATCH",body:JSON.stringify({status:"cancelled"})}
+    );
+   }
+  }
+ }catch(e){console.error("cleanup failed",e);}
+}
+
+async function safeCreateWaitingMatch(){
+ const payloadWithSkin={
+  status:"waiting",
+  player1_id:Number(accountId),
+  player1_pos:0,
+  player2_pos:0,
+  player1_skin:equippedSkin,
+  player1_jersey:jerseyNumber,
+  winner_id:null
+ };
+ try{
+  return await supabaseTableRequest(MATCHES_ENDPOINT,"",{method:"POST",body:JSON.stringify(payloadWithSkin)});
+ }catch(e){
+  console.warn("Skin columns may be missing. Retrying match create without skin fields.", e);
+  const basicPayload={
+   status:"waiting",
+   player1_id:Number(accountId),
+   player1_pos:0,
+   player2_pos:0,
+   winner_id:null
+  };
+  return await supabaseTableRequest(MATCHES_ENDPOINT,"",{method:"POST",body:JSON.stringify(basicPayload)});
+ }
+}
+
+async function safeJoinMatch(matchId){
+ const payloadWithSkin={
+  player2_id:Number(accountId),
+  player2_pos:0,
+  player2_skin:equippedSkin,
+  player2_jersey:jerseyNumber,
+  status:"active"
+ };
+ try{
+  return await supabaseTableRequest(MATCHES_ENDPOINT,"?id=eq."+encodeURIComponent(matchId),{method:"PATCH",body:JSON.stringify(payloadWithSkin)});
+ }catch(e){
+  console.warn("Skin columns may be missing. Retrying match join without skin fields.", e);
+  const basicPayload={
+   player2_id:Number(accountId),
+   player2_pos:0,
+   status:"active"
+  };
+  return await supabaseTableRequest(MATCHES_ENDPOINT,"?id=eq."+encodeURIComponent(matchId),{method:"PATCH",body:JSON.stringify(basicPayload)});
+ }
+}
+
+async function findOrCreateOnlineMatch(){
+ onlineRace=true;
+ currentMatchId=null;
+ myMatchSlot=1;
+
+ await cleanupMyOldMatches();
+
+ const waits=await supabaseTableRequest(MATCHES_ENDPOINT,"?status=eq.waiting&select=*");
+ const usable=(waits||[]).find(m=>Number(m.player1_id)!==Number(accountId));
+
+ if(usable){
+  currentMatchId=usable.id;
+  myMatchSlot=2;
+  await safeJoinMatch(currentMatchId);
+ }else{
+  const rows=await supabaseTableRequest(MATCHES_ENDPOINT,"",{
+   method:"POST",
+   body:JSON.stringify({status:"waiting",player1_id:Number(accountId),player1_pos:0,player2_pos:0})
+  });
+  currentMatchId=rows[0].id;
+  myMatchSlot=1;
+ }
+ waitForOpponent();
+}
+
+function waitForOpponent(){
+ if(matchPollTimer)clearInterval(matchPollTimer);
+ matchPollTimer=setInterval(async()=>{
+  try{
+   const rows=await supabaseTableRequest(MATCHES_ENDPOINT,"?id=eq."+encodeURIComponent(currentMatchId)+"&select=*");
+   if(!rows||!rows[0])return;
+   const m=rows[0];
+
+   if(m.status==="active"&&m.player1_id&&m.player2_id){
+    clearInterval(matchPollTimer);
+    matchPollTimer=null;
+
+    const oppId=myMatchSlot===1?m.player2_id:m.player1_id;
+    const oppRows=await supabaseRequest("?id=eq."+encodeURIComponent(oppId)+"&select=*");
+    if(oppRows&&oppRows[0]) setOpponentName(oppRows[0].username||"Opponent");
+    else setOpponentName("Opponent");
+
+    const oppSkin = myMatchSlot===1 ? m.player2_skin : m.player1_skin;
+    const oppJersey = myMatchSlot===1 ? m.player2_jersey : m.player1_jersey;
+    setOpponentSkin(oppSkin || "default", oppJersey || 0);
+
+    setMessage("Opponent found: "+onlineOpponentName);
+    startOnlineRaceSync();
+   }else{
+    setMessage("Waiting for opponent...");
+   }
+  }catch(e){
+   console.error(e);
+   setMessage("Waiting...");
+  }
+ },1000);
+}
+
+function startOnlineRaceSync(){
+ if(positionPushTimer)clearInterval(positionPushTimer);
+ positionPushTimer=setInterval(async()=>{
+  if(!currentMatchId||raceOver)return;
+  const payload=myMatchSlot===1?{player1_pos:Math.round(playerX*1000)}:{player2_pos:Math.round(playerX*1000)};
+  try{
+   await supabaseTableRequest(MATCHES_ENDPOINT,"?id=eq."+encodeURIComponent(currentMatchId),{
+    method:"PATCH",
+    body:JSON.stringify(payload)
+   });
+  }catch(e){console.error(e)}
+ },120);
+
+ startCountdownOnly();
+}
+
+async function pullOpponentPosition(){
+ if(!onlineRace||!currentMatchId||raceOver)return;
+ try{
+  const rows=await supabaseTableRequest(MATCHES_ENDPOINT,"?id=eq."+encodeURIComponent(currentMatchId)+"&select=*");
+  if(!rows||!rows[0])return;
+  const m=rows[0];
+  const oppRaw=myMatchSlot===1?m.player2_pos:m.player1_pos;
+  if(typeof oppRaw==="number")botX=oppRaw/1000;
+
+  const oppSkin = myMatchSlot===1 ? m.player2_skin : m.player1_skin;
+  const oppJersey = myMatchSlot===1 ? m.player2_jersey : m.player1_jersey;
+  if(oppSkin) setOpponentSkin(oppSkin, oppJersey || 0);
+
+  if(m.winner_id){
+   if(Number(m.winner_id)===Number(accountId))await endRace(true,false,true);
+   else await endRace(false,false,true);
+  }
+ }catch(e){console.error(e)}
+}
+
+function askSurrender(){if(!raceStarted||raceOver){showMainMenu();return}document.getElementById("surrenderModal").classList.add("active")}
+function closeSurrender(){document.getElementById("surrenderModal").classList.remove("active")}
+async function confirmSurrender(){
+ closeSurrender();
+ if(onlineRace&&currentMatchId){
+  try{
+   const rows=await supabaseTableRequest(MATCHES_ENDPOINT,"?id=eq."+encodeURIComponent(currentMatchId)+"&select=*");
+   if(rows&&rows[0]){
+    const oppId=myMatchSlot===1?rows[0].player2_id:rows[0].player1_id;
+    await supabaseTableRequest(MATCHES_ENDPOINT,"?id=eq."+encodeURIComponent(currentMatchId),{
+     method:"PATCH",
+     body:JSON.stringify({winner_id:oppId,status:"finished"})
+    });
+   }
+  }catch(e){console.error(e)}
+ }
+ await endRace(false,true);
+}
+
+function useBoost(){if(!raceStarted||raceOver||boostUsed)return;boostUsed=true;boostActive=true;playerSpeedMultiplier=3;document.getElementById("boostStatus").className="cooldown";document.getElementById("boostStatus").textContent="Used";setMessage("BOOST! 3x speed for 5 seconds.");setTimeout(()=>{if(raceOver)return;boostActive=false;playerSpeedMultiplier=1},5000)}
+function useClimb(){if(!raceStarted||raceOver||!climbReady)return;const d=botX-playerX;if(d<=0){setMessage("CLIMB FAILED! Enemy must be in front of you.");return}if(d>13){setMessage("CLIMB FAILED! Enemy is too far away.");return}climbReady=false;startCooldown("climb",15);setMessage("CLIMB! You are climbing over the enemy.");const target=Math.min(finishX-1,botX+3.5),start=playerX;let steps=0;const int=setInterval(()=>{if(raceOver||!raceStarted){clearInterval(int);return}steps++;playerX=start+(target-start)*(steps/30);if(steps>=30){playerX=Math.max(playerX,botX+2.2);clearInterval(int);setMessage("CLIMB SUCCESS! You passed the enemy.")}},100)}
+function useSlow(){if(!raceStarted||raceOver||!slowReady)return;slowReady=false;startCooldown("slow",20);botSpeedMultiplier=.5;document.getElementById("bot").classList.add("slowed");setMessage("SLOW! Enemy slowed for 5 seconds.");setTimeout(()=>{if(raceOver)return;botSpeedMultiplier=1;document.getElementById("bot").classList.remove("slowed")},5000)}
+function useShield(){if(!raceStarted||raceOver||!shieldReady)return;shieldReady=false;startCooldown("shield",18);playerSpeedMultiplier=boostActive?3:1;setMessage("SHIELD! Troll effect cancelled.")}
+function useWave(){if(!raceStarted||raceOver||!waveReady)return;waveReady=false;startCooldown("wave",22);const wave=document.getElementById("wave");wave.style.left=botX+"%";wave.style.display="block";botX=Math.max(startX,botX-4.5);botSpeedMultiplier=.25;setMessage("WAVE! Enemy pushed back.");setTimeout(()=>wave.style.display="none",900);setTimeout(()=>{if(raceOver)return;botSpeedMultiplier=1},2200)}
+
+document.addEventListener("keydown",e=>{if(!raceStarted||raceOver||countdownActive)return;const key=e.key.toLowerCase();if(key===" "||e.code==="Space"){playerX+=.16*playerSpeedMultiplier}if(key==="t")useBoost();if(key==="y")useClimb();if(key==="z")useWave()})
+document.addEventListener("mousedown",e=>{if(!raceStarted||raceOver||countdownActive)return;if(e.button===0)useSlow();if(e.button===2)useShield()})
+
+function botAI(){
+ if(onlineRace)return;
+ if(!raceStarted||raceOver)return;
+ botX+=(.032+Math.random()*.028)*botSpeedMultiplier;
+ if(Math.random()<.0009){
+  playerSpeedMultiplier=.55;
+  setMessage("Bot used Slow! Right click to shield.");
+  setTimeout(()=>{if(raceOver)return;playerSpeedMultiplier=boostActive?3:1},3500);
+ }
+}
+
+async function checkWinner(){
+ if(playerX>=finishX){
+  if(onlineRace&&currentMatchId){
+   try{
+    await supabaseTableRequest(MATCHES_ENDPOINT,"?id=eq."+encodeURIComponent(currentMatchId),{
+     method:"PATCH",
+     body:JSON.stringify({winner_id:Number(accountId),status:"finished"})
+    });
+   }catch(e){console.error(e)}
+  }
+  await endRace(true,false);
+ }else if(botX>=finishX){
+  await endRace(false,false);
+ }
+}
+
+async function endRace(win,surrendered,remoteFinish=false){
+ if(raceOver&&remoteFinish)return;
+ raceOver=true;raceStarted=false;
+ if(matchPollTimer){clearInterval(matchPollTimer);matchPollTimer=null}
+ if(positionPushTimer){clearInterval(positionPushTimer);positionPushTimer=null}
+ if(tradeListRefreshTimer){clearInterval(tradeListRefreshTimer);tradeListRefreshTimer=null}
+ if(win){coins+=10;trophies+=5;awardFireTokenForWin();document.getElementById("resultTitle").textContent="YOU WIN!";document.getElementById("resultText").textContent="+10 coins and +5 trophies";playSound("win")}
+ else{trophies=Math.max(0,trophies-3);document.getElementById("resultTitle").textContent=surrendered?"YOU SURRENDERED!":"YOU LOST!";document.getElementById("resultText").textContent="0 coins and -3 trophies";playSound("lose")}
+ await savePlayerData();updateAllStats();showScreen("resultScreen");
+}
+
+async function gameLoop(){
+ if(raceStarted&&!raceOver){
+  if(onlineRace){await pullOpponentPosition();}else{botAI();}
+  updatePositions();
+  updateAllStats();
+  await checkWinner();
+  requestAnimationFrame(gameLoop);
+ }
+}
+setInterval(()=>{if(document.getElementById("skinScreen").classList.contains("active")){renderSkinGrid();updateShopPreview();}},30000);
+
+async function touchOnline(){
+ if(!accountId)return;
+ const now=new Date().toISOString();
+ try{
+  const idx=accountsCache.findIndex(a=>String(a.id)===String(accountId));
+  if(idx>=0){
+   accountsCache[idx].last_seen=now;
+   accountsCache[idx].owned_skins=JSON.stringify(ownedSkins);
+   accountsCache[idx].equipped_skin=equippedSkin;
+  }
+  await supabaseRequest("?id=eq."+encodeURIComponent(accountId),{
+   method:"PATCH",
+   body:JSON.stringify({last_seen:now,owned_skins:JSON.stringify(cleanSkinList(ownedSkins)),equipped_skin:equippedSkin})
+  });
+ }catch(e){console.warn("last_seen/update skin fields may be missing",e)}
+}
+
+function parseSkinText(txt){
+ try{
+  const arr=JSON.parse(txt||"[]");
+  return Array.isArray(arr)?arr:[];
+ }catch(e){return []}
+}
+
+function isPlayerOnline(p){
+ if(!p.last_seen)return false;
+ return (Date.now()-new Date(p.last_seen).getTime())<20000;
+}
+
+async function openTradeScreen(){
+ if(!accountId){showHint("Login first.");return}
+ await touchOnline();
+ showScreen("tradeScreen");
+ refreshTradePlayers();
+ startTradePolling();
+ if(tradeListRefreshTimer)clearInterval(tradeListRefreshTimer);
+ tradeListRefreshTimer=setInterval(async()=>{
+  if(document.getElementById("tradeScreen")?.classList.contains("active")){
+   await touchOnline();
+   await refreshAccountsFromSupabase();
+   renderTradePlayers();
+  }
+ },2000);
+}
+
+async function refreshTradePlayers(){
+ try{
+  await touchOnline();
+  await refreshAccountsFromSupabase();
+  renderTradePlayers();
+  setTimeout(async()=>{
+   try{
+    await refreshAccountsFromSupabase();
+    renderTradePlayers();
+   }catch(e){}
+  },600);
+ }catch(e){console.error(e);showHint("Could not load players.")}
+}
+
+function renderTradePlayers(){
+ const list=document.getElementById("tradePlayerList");
+ if(!list)return;
+ const q=(document.getElementById("tradeSearchInput")?.value||"").toLowerCase().trim();
+ let players=(accountsCache||[]).filter(p=>String(p.id)!==String(accountId));
+ if(q){
+  players=players.filter(p=>(p.name||"").toLowerCase().includes(q));
+ }else{
+  players=players.filter(p=>isPlayerOnline(p));
+ }
+ list.innerHTML="";
+ if(players.length===0){
+  list.innerHTML=q ? "<div class='tradeRow'>No player found.</div>" : "<div class='tradeRow'>No online players right now. Login and open Trade on the other device, then wait 2-5 seconds.</div>";
+  return;
+ }
+ players.sort((a,b)=>(isPlayerOnline(b)-isPlayerOnline(a)) || (a.name||"").localeCompare(b.name||""));
+ players.forEach(p=>{
+  const online=isPlayerOnline(p);
+  const row=document.createElement("div");
+  row.className="tradeRow";
+  row.innerHTML=`<span><span class="${online?"onlineDot":"offlineDot"}"></span>${p.name}<br><small>${online?"Online":"Offline"} | ${p.code||""}</small></span>
+  <button ${online?"":"disabled"} onclick="sendTradeRequest('${p.id}')">${online?"SEND TRADE":"OFFLINE"}</button>
+<button class="menuBtn fireSeasonBtn" onclick="openFireSeason()">🔥<br>FIRE</button>`;
+  list.appendChild(row);
+ });
+}
+
+async function sendTradeRequest(toId){
+ if(!accountId)return;
+ const now=Date.now();
+ if(now-lastTradeRequestSentAt<3000){
+  showHint("Wait 3 seconds before sending another trade request.");
+  return;
+ }
+ lastTradeRequestSentAt=now;
+ try{
+  await touchOnline();
+
+  const existing=await supabaseTableRequest(TRADES_ENDPOINT,"?from_id=eq."+encodeURIComponent(accountId)+"&to_id=eq."+encodeURIComponent(toId)+"&status=eq.pending&select=*");
+  if(existing&&existing.length){
+   showHint("Trade request already sent.");
+   return;
+  }
+
+  const rows=await supabaseTableRequest(TRADES_ENDPOINT,"",{
+   method:"POST",
+   body:JSON.stringify({from_id:Number(accountId),to_id:Number(toId),status:"pending",from_items:"[]",to_items:"[]",from_ready:false,to_ready:false,completed:false})
+  });
+  activeTradeId=rows[0].id;
+  tradePartnerId=Number(toId);
+  const p=accountsCache.find(a=>String(a.id)===String(toId));
+  tradePartnerName=p?p.name:"Player";
+  myTradeItems=[];otherTradeItems=[];
+  showHint("Trade request sent.");
+  openTradeWindow();
+ }catch(e){console.error(e);showHint("Trade request failed.")}
+}
+
+function startTradePolling(){
+ if(tradePollTimer)return;
+ tradePollTimer=setInterval(checkTradeRequests,900);
+}
+
+async function checkTradeRequests(){
+ if(!accountId)return;
+ try{
+  await touchOnline();
+  const incoming=await supabaseTableRequest(TRADES_ENDPOINT,"?to_id=eq."+encodeURIComponent(accountId)+"&status=eq.pending&select=*");
+  renderTradeToasts(incoming||[]);
+  if(activeTradeId) await syncActiveTrade();
+ }catch(e){console.warn(e)}
+}
+
+function renderTradeToasts(trades){
+ const box=document.getElementById("tradeToastBox");
+ if(!box)return;
+ const shown=trades.slice(0,3);
+ box.innerHTML="";
+ shown.forEach(t=>{
+  const from=accountsCache.find(a=>Number(a.id)===Number(t.from_id));
+  const div=document.createElement("div");
+  div.className="tradeToast";
+  div.innerHTML=`<div>📩 Trade request from <b>${from?from.name:"Player"}</b></div><div class="tradeToastBtns"><button onclick="acceptTrade(${t.id},${t.from_id})">ACCEPT</button><button class="dangerBtn" onclick="declineTrade(${t.id})">DECLINE</button></div>`;
+  box.appendChild(div);
+ });
+}
+
+async function acceptTrade(id,fromId){
+ try{
+  activeTradeId=id;
+  tradePartnerId=fromId;
+  const p=accountsCache.find(a=>Number(a.id)===Number(fromId));
+  tradePartnerName=p?p.name:"Player";
+  myTradeItems=[];otherTradeItems=[];
+  await supabaseTableRequest(TRADES_ENDPOINT,"?id=eq."+encodeURIComponent(id),{method:"PATCH",body:JSON.stringify({status:"active"})});
+  renderTradeToasts([]);
+  openTradeWindow();
+ }catch(e){console.error(e);showHint("Accept failed.")}
+}
+
+async function declineTrade(id){
+ try{
+  await supabaseTableRequest(TRADES_ENDPOINT,"?id=eq."+encodeURIComponent(id),{method:"PATCH",body:JSON.stringify({status:"declined"})});
+  await checkTradeRequests();
+ }catch(e){console.error(e)}
+}
+
+function openTradeWindow(){
+ document.getElementById("tradePartnerName").textContent=tradePartnerName.toUpperCase();
+ showScreen("tradeWindowScreen");
+ renderTradeWindow();
+ startTradePolling();
+}
+
+function myTradeColumnNames(trade){
+ return Number(trade.from_id)===Number(accountId) ? ["from_items","from_ready","to_items","to_ready"] : ["to_items","to_ready","from_items","from_ready"];
+}
+
+async function syncActiveTrade(){
+ if(!activeTradeId)return;
+ const rows=await supabaseTableRequest(TRADES_ENDPOINT,"?id=eq."+encodeURIComponent(activeTradeId)+"&select=*");
+ if(!rows||!rows[0])return;
+ const t=rows[0];
+ if(["cancelled","declined"].includes(t.status)){
+  showHint("Trade cancelled.");
+  activeTradeId=null;
+  showMainMenu();
+  return;
+ }
+ if(t.status==="completed"){
+  activeTradeId=null;
+  showHint("Trade complete!");
+  await refreshAccountsFromSupabase();
+  await loadCurrentAccountFromCloud();
+  showMainMenu();
+  return;
+ }
+ const [myItemsCol,myReadyCol,otherItemsCol,otherReadyCol]=myTradeColumnNames(t);
+ myTradeItems=parseSkinText(t[myItemsCol]);
+ otherTradeItems=parseSkinText(t[otherItemsCol]);
+ renderTradeWindow(t);
+ if(t[myReadyCol]&&t[otherReadyCol]) startTradeCountdown();
+ else stopTradeCountdown();
+}
+
+
+function skinPreviewHtml(id){
+ const s=skinById(id);
+ const color=s.color||"#4895ef";
+ const border=s.border||"#023e8a";
+ return `<div class="tradeMiniWrap"><div class="tradeMiniSkin" style="background:${color};border-color:${border}"></div><span>${s.name}</span></div>`;
+}
+
+function cleanSkinList(list){
+ const cleaned=[];
+ (list||[]).forEach(id=>{
+  if(id && !cleaned.includes(id))cleaned.push(id);
+ });
+ if(!cleaned.includes("default"))cleaned.unshift("default");
+ return cleaned;
+}
+
+function tradeableSkins(){
+ return cleanSkinList(ownedSkins).filter(id=>id!=="default");
+}
+
+function setTradeOfferTitles(){
+ const myTitle=document.getElementById("myOfferTitle");
+ const otherTitle=document.getElementById("otherOfferTitle");
+ if(myTitle)myTitle.textContent=(playerName||"Your")+" offer";
+ if(otherTitle)otherTitle.textContent=(tradePartnerName||"Their")+" offer";
+}
+
+function renderTradeWindow(t=null){
+ setTradeOfferTitles();
+ const myOffer=document.getElementById("myTradeOffer");
+ const otherOffer=document.getElementById("otherTradeOffer");
+ const mySkinsBox=document.getElementById("myTradeSkins");
+ const otherSkinsBox=document.getElementById("otherTradeSkins");
+ if(!myOffer||!otherOffer)return;
+
+ myTradeItems=myTradeItems.filter(id=>id!=="default");
+ otherTradeItems=otherTradeItems.filter(id=>id!=="default");
+
+ myOffer.innerHTML=myTradeItems.map(id=>`<div class="tradeSkinCard">${skinPreviewHtml(id)}</div>`).join("") || "<span>Nothing</span>";
+ otherOffer.innerHTML=otherTradeItems.map(id=>`<div class="tradeSkinCard">${skinPreviewHtml(id)}</div>`).join("") || "<span>Nothing</span>";
+
+ mySkinsBox.innerHTML="";
+ const available=tradeableSkins();
+ if(available.length===0){
+  mySkinsBox.innerHTML="<div class='tradeSkinCard disabled'>No tradeable skins<br><small>Default cannot be traded</small></div>";
+ }else{
+  available.forEach(id=>{
+   const card=document.createElement("div");
+   card.className="tradeSkinCard"+(myTradeItems.includes(id)?" selected":"");
+   card.innerHTML=skinPreviewHtml(id);
+   card.onclick=()=>toggleTradeItem(id);
+   mySkinsBox.appendChild(card);
+  });
+ }
+
+ otherSkinsBox.innerHTML=otherTradeItems.map(id=>`<div class="tradeSkinCard">${skinPreviewHtml(id)}</div>`).join("") || "<div class='tradeSkinCard disabled'>Waiting...</div>";
+
+ if(t){
+  const [myItemsCol,myReadyCol,otherItemsCol,otherReadyCol]=myTradeColumnNames(t);
+  document.getElementById("myReadyStatus").textContent=t[myReadyCol]?"READY":"Not ready";
+  document.getElementById("otherReadyStatus").textContent=t[otherReadyCol]?"READY":"Not ready";
+ }
+}
+
+async function toggleTradeItem(id){
+ if(!activeTradeId)return;
+ if(id==='default'){showHint('Default skin cannot be traded.');return;}
+ if(!ownedSkins.includes(id))return;
+ if(myTradeItems.includes(id))myTradeItems=myTradeItems.filter(x=>x!==id);
+ else myTradeItems.push(id);
+ const rows=await supabaseTableRequest(TRADES_ENDPOINT,"?id=eq."+encodeURIComponent(activeTradeId)+"&select=*");
+ if(!rows||!rows[0])return;
+ const [myItemsCol,myReadyCol,otherItemsCol,otherReadyCol]=myTradeColumnNames(rows[0]);
+ const payload={};
+ payload[myItemsCol]=JSON.stringify(myTradeItems);
+ payload[myReadyCol]=false;
+ payload[otherReadyCol]=false;
+ await supabaseTableRequest(TRADES_ENDPOINT,"?id=eq."+encodeURIComponent(activeTradeId),{method:"PATCH",body:JSON.stringify(payload)});
+ stopTradeCountdown();
+ renderTradeWindow(rows[0]);
+}
+
+async function toggleTradeReady(){
+ if(!activeTradeId)return;
+ const rows=await supabaseTableRequest(TRADES_ENDPOINT,"?id=eq."+encodeURIComponent(activeTradeId)+"&select=*");
+ if(!rows||!rows[0])return;
+ const [myItemsCol,myReadyCol]=myTradeColumnNames(rows[0]);
+ const payload={};
+ payload[myReadyCol]=!rows[0][myReadyCol];
+ await supabaseTableRequest(TRADES_ENDPOINT,"?id=eq."+encodeURIComponent(activeTradeId),{method:"PATCH",body:JSON.stringify(payload)});
+}
+
+function startTradeCountdown(){
+ if(tradeCountdownTimer)return;
+ tradeCountdownLeft=3;
+ const el=document.getElementById("tradeCountdown");
+ el.textContent="Trade completes in 3...";
+ tradeCountdownTimer=setInterval(async()=>{
+  tradeCountdownLeft--;
+  if(tradeCountdownLeft>0){el.textContent="Trade completes in "+tradeCountdownLeft+"...";return}
+  clearInterval(tradeCountdownTimer);tradeCountdownTimer=null;
+  await completeTrade();
+ },1000);
+}
+
+function stopTradeCountdown(){
+ if(tradeCountdownTimer){clearInterval(tradeCountdownTimer);tradeCountdownTimer=null}
+ const el=document.getElementById("tradeCountdown");
+ if(el)el.textContent="";
+}
+
+async function cancelTrade(){
+ if(activeTradeId){
+  try{await supabaseTableRequest(TRADES_ENDPOINT,"?id=eq."+encodeURIComponent(activeTradeId),{method:"PATCH",body:JSON.stringify({status:"cancelled"})});}catch(e){console.error(e)}
+ }
+ activeTradeId=null;
+ stopTradeCountdown();
+ showMainMenu();
+}
+
+async function completeTrade(){
+ if(!activeTradeId)return;
+ const rows=await supabaseTableRequest(TRADES_ENDPOINT,"?id=eq."+encodeURIComponent(activeTradeId)+"&select=*");
+ if(!rows||!rows[0])return;
+ const t=rows[0];
+ if(t.status==="completed" || t.completed){return}
+ const [myItemsCol,myReadyCol,otherItemsCol,otherReadyCol]=myTradeColumnNames(t);
+ if(!t[myReadyCol]||!t[otherReadyCol]){stopTradeCountdown();return}
+
+ const fromItems=parseSkinText(t.from_items).filter(id=>id!=='default');
+ const toItems=parseSkinText(t.to_items).filter(id=>id!=='default');
+ const fromRows=await supabaseRequest("?id=eq."+encodeURIComponent(t.from_id)+"&select=*");
+ const toRows=await supabaseRequest("?id=eq."+encodeURIComponent(t.to_id)+"&select=*");
+ if(!fromRows[0]||!toRows[0])return;
+
+ let fromSkins=cleanSkinList(parseSkinText(fromRows[0].owned_skins));
+ let toSkins=cleanSkinList(parseSkinText(toRows[0].owned_skins));
+ if(fromSkins.length===1 && Number(t.from_id)===Number(accountId))fromSkins=cleanSkinList([...ownedSkins]);
+ if(toSkins.length===1 && Number(t.to_id)===Number(accountId))toSkins=cleanSkinList([...ownedSkins]);
+
+ if(!fromItems.every(x=>fromSkins.includes(x)) || !toItems.every(x=>toSkins.includes(x))){
+  await supabaseTableRequest(TRADES_ENDPOINT,"?id=eq."+encodeURIComponent(activeTradeId),{method:"PATCH",body:JSON.stringify({status:"cancelled",from_ready:false,to_ready:false})});
+  showHint("Trade failed: item missing.");
+  return;
+ }
+
+ // Remove offered skins from the original owner first.
+ fromSkins=fromSkins.filter(x=>x==="default" || !fromItems.includes(x));
+ toSkins=toSkins.filter(x=>x==="default" || !toItems.includes(x));
+
+ // Then add received skins to the other player, without duplicates.
+ fromItems.forEach(x=>{
+  if(x!=="default" && !toSkins.includes(x))toSkins.push(x);
+ });
+ toItems.forEach(x=>{
+  if(x!=="default" && !fromSkins.includes(x))fromSkins.push(x);
+ });
+
+ fromSkins=cleanSkinList(fromSkins);
+ toSkins=cleanSkinList(toSkins);
+
+ const fromEquipped = fromSkins.includes(fromRows[0].equipped_skin) ? fromRows[0].equipped_skin : "default";
+ const toEquipped = toSkins.includes(toRows[0].equipped_skin) ? toRows[0].equipped_skin : "default";
+ await supabaseRequest("?id=eq."+encodeURIComponent(t.from_id),{method:"PATCH",body:JSON.stringify({owned_skins:JSON.stringify(fromSkins),equipped_skin:fromEquipped})});
+ await supabaseRequest("?id=eq."+encodeURIComponent(t.to_id),{method:"PATCH",body:JSON.stringify({owned_skins:JSON.stringify(toSkins),equipped_skin:toEquipped})});
+ await supabaseTableRequest(TRADES_ENDPOINT,"?id=eq."+encodeURIComponent(activeTradeId),{method:"PATCH",body:JSON.stringify({status:"completed",completed:true})});
+
+ if(Number(accountId)===Number(t.from_id)){
+  ownedSkins=cleanSkinList(fromSkins);
+  equippedSkin=fromEquipped;
+ }
+ if(Number(accountId)===Number(t.to_id)){
+  ownedSkins=cleanSkinList(toSkins);
+  equippedSkin=toEquipped;
+ }
+ localStorage.setItem("trOwnedSkins_"+playerName,JSON.stringify(ownedSkins));
+ localStorage.setItem("trEquippedSkin_"+playerName,equippedSkin);
+ updateSkinDisplay();
+ await refreshAccountsFromSupabase();
+ activeTradeId=null;
+ showHint("Trade complete!");
+ showMainMenu();
+}
+
+setInterval(touchOnline,2000);
+setInterval(()=>{if(accountId)checkTradeRequests().catch(console.warn)},1200);
+setInterval(()=>{if(activeTradeId)syncActiveTrade().catch(console.error)},700);
+
+
+/* V34 Fire Season Logic */
+const FIRE_SEASON_END = new Date("2026-07-25T23:59:59+02:00").getTime();
+
+function loadFireTokens(){
+  if(!accountId)return;
+  fireTokens = Number(localStorage.getItem("trFireTokens_"+accountId)||0);
+}
+function saveFireTokens(){
+  if(!accountId)return;
+  localStorage.setItem("trFireTokens_"+accountId, String(fireTokens));
+}
+function updateFireUI(){
+  const el=document.getElementById("fireTokenCount");
+  if(el)el.textContent=fireTokens;
+  const cd=document.getElementById("fireCountdown");
+  if(cd){
+    const left=FIRE_SEASON_END-Date.now();
+    if(left<=0){cd.textContent="Season ended";return;}
+    const d=Math.floor(left/86400000);
+    const h=Math.floor((left%86400000)/3600000);
+    const m=Math.floor((left%3600000)/60000);
+    cd.textContent=`⏳ ${d} days ${h} hours ${m} minutes left`;
+  }
+}
+function openFireSeason(){
+  loadFireTokens();
+  showScreen("fireSeasonScreen");
+  updateFireUI();
+}
+function fireRewardSkin(){
+  const r=Math.random()*100;
+  if(r<50)return "fire";
+  if(r<80)return "magma";
+  if(r<95)return "lava";
+  return "devil";
+}
+async function openFireCrate(){
+  loadFireTokens();
+  const result=document.getElementById("fireResult");
+  if(Date.now()>FIRE_SEASON_END){
+    if(result)result.textContent="The Fire Season has ended.";
+    return;
+  }
+  if(fireTokens<5){
+    if(result)result.textContent="You need 5 Fire Tokens.";
+    return;
+  }
+  fireTokens-=5;
+  const won=fireRewardSkin();
+  if(!ownedSkins.includes(won))ownedSkins.push(won);
+  saveFireTokens();
+  if(typeof savePlayerData==="function")await savePlayerData();
+  updateFireUI();
+  if(result)result.textContent="You opened: "+skinById(won).name+"!";
+  if(typeof renderSkinGrid==="function")renderSkinGrid();
+}
+function awardFireTokenForWin(){
+  if(Date.now()>FIRE_SEASON_END)return;
+  loadFireTokens();
+  fireTokens+=1;
+  saveFireTokens();
+  if(typeof showHint==="function")showHint("+1 Fire Token 🔥");
+}
+setInterval(updateFireUI,30000);
+
+</script>
+
+<div id="tradeScreen" class="screen">
+ <div class="tradePanel">
+  <div class="tradeTop">
+   <div class="tradeTitle">TRADE</div>
+   <div class="tradeSearch">
+    <input id="tradeSearchInput" placeholder="Search player name..." oninput="renderTradePlayers()" onkeydown="if(event.key==='Enter')refreshTradePlayers()">
+    <button onclick="refreshTradePlayers()">REFRESH</button>
+    <button onclick="showMainMenu()">BACK</button>
+   </div>
+  </div>
+  <div id="tradePlayerList" class="tradeList"></div>
+ </div>
+</div>
+
+<div id="tradeWindowScreen" class="screen">
+ <div class="tradeWindow">
+  <div class="tradeTop">
+   <div class="tradeTitle">TRADE WITH <span id="tradePartnerName">PLAYER</span></div>
+   <button class="dangerBtn" onclick="cancelTrade()">CANCEL</button>
+  </div>
+  <div class="tradeColumns">
+   <div class="tradeSide">
+    <h3 id="myOfferTitle">Your offer</h3>
+    <div id="myTradeOffer" class="tradeOfferList"></div>
+    <div id="myTradeSkins" class="tradeSkinList"></div>
+    <div id="myReadyStatus" class="tradeStatus">Not ready</div>
+   </div>
+   <div class="tradeSide">
+    <h3 id="otherOfferTitle">Their offer</h3>
+    <div id="otherTradeOffer" class="tradeOfferList"></div>
+    <div id="otherTradeSkins" class="tradeSkinList"></div>
+    <div id="otherReadyStatus" class="tradeStatus">Not ready</div>
+   </div>
+  </div>
+  <div id="tradeCountdown" class="tradeCountdown"></div>
+  <div class="tradeControls">
+   <button onclick="toggleTradeReady()">READY / UNREADY</button>
+  </div>
+ </div>
+</div>
+
+<div id="tradeToastBox" class="tradeToastBox"></div>
+
+
+<div id="fireSeasonScreen" class="screen">
+  <div class="fireSeasonPanel">
+    <h2>🔥 FIRE SEASON</h2>
+    <div class="fireCountdown" id="fireCountdown">Loading season timer...</div>
+    <div class="fireTokenBadge">🔥 Fire Tokens: <span id="fireTokenCount">0</span></div>
+    <div class="fireCrate">📦🔥</div>
+    <h3>Fire Crate costs 5 Fire Tokens</h3>
+    <div class="fireOdds">
+      <div class="fireOddCard">🔥 Fire Swimmer<br>50%</div>
+      <div class="fireOddCard">🌋 Magma Swimmer<br>30%</div>
+      <div class="fireOddCard">🌋 Lava Swimmer<br>15%</div>
+      <div class="fireOddCard">😈 Devil Swimmer<br>5%</div>
+    </div>
+    <button class="fireOpenBtn" onclick="openFireCrate()">OPEN FIRE CRATE</button>
+    <div class="fireResult" id="fireResult"></div>
+    <p style="font-weight:900;margin-top:16px">Win races to earn Fire Tokens. These skins are limited and stay forever if you get them.</p>
+    <button onclick="showMainMenu()">BACK</button>
+  </div>
+</div>
+
+</body>
+</html>
