@@ -532,6 +532,181 @@ button[onclick*="Trade"]:hover, button[onclick*="trade"]:hover, #tradeBtn:hover,
   color:#ffe45e;
 }
 
+
+/* V38 Shop + Skins Update */
+.navBtn.skinsBtn{
+  background:linear-gradient(180deg,#a855f7,#6d28d9)!important;
+  box-shadow:0 8px 0 #3b0764!important;
+}
+.navBtn.skinsBtn:hover{background:linear-gradient(180deg,#c084fc,#7c3aed)!important;transform:scale(1.1)}
+.fireTokenPill{background:linear-gradient(180deg,#ff7b00,#9a2200)!important;border-color:#ffd166!important}
+
+.shopPanel.v38Shop{
+  display:block!important;
+  padding:22px;
+  overflow:hidden;
+}
+.shopCarousel{
+  display:flex;
+  gap:18px;
+  overflow-x:auto;
+  overflow-y:hidden;
+  scroll-snap-type:x mandatory;
+  padding:18px 8px 26px;
+  max-width:100%;
+}
+.shopCarousel::-webkit-scrollbar{height:14px}
+.shopCarousel::-webkit-scrollbar-thumb{background:#5fcaff;border-radius:99px}
+.shopCarousel::-webkit-scrollbar-track{background:#072a52;border-radius:99px}
+.shopItemCard{
+  min-width:245px;
+  max-width:245px;
+  scroll-snap-align:start;
+  background:linear-gradient(180deg,#0b4f8d,#062f57);
+  border:4px solid #5fcaff;
+  border-radius:24px;
+  padding:14px;
+  text-align:center;
+  box-shadow:0 8px 0 rgba(0,0,0,.35);
+  position:relative;
+}
+.shopItemCard.fireCrateCard{
+  min-width:310px;
+  background:linear-gradient(180deg,#3a0800,#8a1c00,#0a2f73);
+  border-color:#ff9f1c;
+}
+.shopItemCard.soldOut{
+  filter:grayscale(.35) brightness(.75);
+}
+.soldStamp{
+  position:absolute;
+  top:12px;
+  right:8px;
+  transform:rotate(12deg);
+  background:#ff003c;
+  color:white;
+  border:3px solid white;
+  border-radius:12px;
+  padding:5px 9px;
+  font-size:18px;
+  font-weight:1000;
+  box-shadow:0 4px 0 rgba(0,0,0,.35);
+}
+.shopSkinPreview{
+  height:105px;
+  border-radius:22px;
+  border:5px solid white;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  margin:8px auto 12px;
+  position:relative;
+  overflow:hidden;
+}
+.shopItemCard .miniSwimmer{
+  width:74px;
+  height:74px;
+  margin:auto;
+  transform:scale(1.15);
+}
+.shopItemCard h2{font-size:22px;margin:8px 0;color:white;text-shadow:0 3px 0 rgba(0,0,0,.25)}
+.shopItemCard p{min-height:42px;font-weight:800;color:#dff7ff}
+.shopItemCard .priceLine{font-size:22px;font-weight:1000;margin:10px 0}
+.shopItemCard button{
+  width:100%;
+  padding:12px;
+  border-radius:14px;
+  background:linear-gradient(180deg,#22c55e,#15803d);
+  color:white;
+  font-weight:1000;
+  box-shadow:0 5px 0 #064e3b;
+}
+.shopItemCard button:disabled{background:#475569!important;box-shadow:0 5px 0 #1e293b!important;cursor:not-allowed}
+.fireChestIcon{
+  width:150px;height:118px;margin:8px auto 10px;border-radius:22px;border:5px solid #ffd166;
+  background:radial-gradient(circle at 50% 20%,#fff176,#ff8c00 45%,#7b001c 80%);
+  box-shadow:0 8px 0 #4a0d00;
+  display:flex;align-items:center;justify-content:center;font-size:56px;
+}
+.inventoryPanel{
+  position:absolute;left:210px;right:24px;top:120px;bottom:24px;
+  background:rgba(0,51,91,.65);border:4px solid rgba(95,202,255,.4);
+  border-radius:30px;padding:24px;overflow:auto;
+}
+.inventoryPanel h1{margin:0 0 8px;font-size:44px}
+.inventoryHint{font-weight:900;color:#dff7ff}
+.ownedSkinGrid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(210px,1fr));
+  gap:18px;
+  margin-top:18px;
+}
+.ownedSkinCard{
+  background:linear-gradient(180deg,#0b4f8d,#062f57);
+  border:4px solid #5fcaff;
+  border-radius:24px;
+  padding:14px;
+  text-align:center;
+  font-weight:1000;
+  cursor:pointer;
+  box-shadow:0 8px 0 rgba(0,0,0,.35);
+}
+.ownedSkinCard:hover{transform:scale(1.05);filter:brightness(1.15)}
+.ownedSkinCard.equipped{border-color:#ffcf33;background:linear-gradient(180deg,#0ea5e9,#0369a1)}
+.ownedSkinCard .miniSwimmer{width:84px;height:84px;margin:10px auto;transform:scale(1.15)}
+
+.crateModal{
+  position:fixed;inset:0;background:rgba(0,0,0,.72);
+  display:none;align-items:center;justify-content:center;z-index:9999;
+}
+.crateModal.active{display:flex}
+.crateBox{
+  width:min(820px,92vw);min-height:430px;border-radius:30px;
+  background:linear-gradient(180deg,#210400,#7d1600,#062b75);
+  border:5px solid #ffcf33;text-align:center;padding:22px;position:relative;overflow:hidden;
+  box-shadow:0 12px 0 #4a0d00;
+}
+.crateBox h1{font-size:44px;color:#ffcf33;text-shadow:0 5px 0 #7b1b00;margin:4px 0 18px}
+.crateWindow{
+  height:135px;background:#061b33;border:5px solid #5fcaff;border-radius:22px;overflow:hidden;position:relative;
+}
+.crateRoller{
+  display:flex;gap:12px;align-items:center;height:100%;position:absolute;left:0;top:0;
+  transition:transform 2.8s cubic-bezier(.13,.86,.18,1);
+}
+.rollItem{
+  min-width:135px;height:108px;border-radius:18px;border:4px solid white;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;font-size:34px;font-weight:1000;background:#0ea5e9;
+}
+.rollItem small{font-size:13px;margin-top:5px}
+.crateNeedle{
+  position:absolute;left:50%;top:0;bottom:0;width:6px;background:#ff003c;box-shadow:0 0 16px #ff003c;z-index:5;
+}
+.crateResultText{font-size:28px;font-weight:1000;color:#ffe45e;min-height:38px;margin:18px 0}
+.confettiLayer{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+.confetti{position:absolute;width:10px;height:16px;top:-20px;animation:fall 1.8s linear forwards}
+@keyframes fall{to{transform:translateY(520px) rotate(720deg);opacity:.1}}
+
+/* Better seasonal skin visuals */
+.skin-fire,.skin-magma,.skin-lava,.skin-devil{position:relative;overflow:hidden}
+.skin-fire{box-shadow:0 0 20px #ff7b00, inset 0 0 22px #ffe45e}
+.skin-magma{background:radial-gradient(circle at 35% 35%,#ff6a00 0 12%,#2b130f 13% 32%,#ff3b00 33% 42%,#120707 43% 100%)!important}
+.skin-lava{background:linear-gradient(135deg,#130000,#ff2400 24%,#ffd166 28%,#3a0000 45%,#ff6a00 60%,#ffe45e 64%,#1b0000)!important}
+.skin-devil{background:linear-gradient(135deg,#26000b,#7b001c,#ff003c)!important;box-shadow:0 0 22px #ff003c}
+.flamePart{position:absolute;width:18px;height:28px;background:#ffe45e;border-radius:50% 50% 45% 45%;top:-14px;animation:flicker .5s infinite alternate}
+.flamePart:after{content:"";position:absolute;inset:7px 5px 3px;background:#ff6a00;border-radius:50%}
+.flamePart.f1{left:13px}.flamePart.f2{left:36px;animation-delay:.15s}.flamePart.f3{left:58px;animation-delay:.3s}
+.magmaCrack{position:absolute;background:#ffcf33;box-shadow:0 0 8px #ff6a00;border-radius:99px}
+.magmaCrack.c1{width:44px;height:6px;left:10px;top:25px;transform:rotate(25deg)}
+.magmaCrack.c2{width:36px;height:5px;right:10px;top:48px;transform:rotate(-30deg)}
+.magmaCrack.c3{width:28px;height:5px;left:28px;bottom:18px;transform:rotate(-15deg)}
+.lavaStream{position:absolute;width:12px;height:80px;background:linear-gradient(#ffe45e,#ff6a00,#ff0000);top:-8px;border-radius:99px;box-shadow:0 0 12px #ff6a00}
+.lavaStream.l1{left:18px;transform:rotate(20deg)}.lavaStream.l2{right:22px;transform:rotate(-18deg)}.lavaStream.l3{left:48px;top:10px;transform:rotate(8deg)}
+.devilHorn{position:absolute;width:0;height:0;border-left:11px solid transparent;border-right:11px solid transparent;border-bottom:26px solid #ff003c;top:-20px;filter:drop-shadow(0 2px 0 #2b000b)}
+.devilHorn.left{left:12px;transform:rotate(-20deg)}.devilHorn.right{right:12px;transform:rotate(20deg)}
+.devilTail{position:absolute;width:40px;height:24px;border-bottom:6px solid #ff003c;border-right:6px solid #ff003c;border-radius:0 0 22px 0;right:-18px;bottom:14px}
+@keyframes flicker{from{transform:translateY(0) scale(.9)}to{transform:translateY(-4px) scale(1.12)}}
+
 </style>
 </head>
 <body oncontextmenu="return false;">
@@ -561,15 +736,16 @@ button[onclick*="Trade"]:hover, button[onclick*="trade"]:hover, #tradeBtn:hover,
     <div class="currency">
       <div class="coinPill"><div class="coinIcon">$</div><span id="menuCoins">0</span></div>
       <div class="coinPill"><span class="trophyIcon">🏆</span><span id="menuTrophies">0</span></div>
+      <div class="coinPill fireTokenPill"><span class="trophyIcon">🔥</span><span id="menuFireTokens">0</span></div>
       <button class="gear" onclick="openSettings()">⚙</button>
     </div>
   </div>
 
   <div class="sideMenu">
     <button class="navBtn active" onclick="showMainMenu()"><span class="navIcon">🏠</span>HOME</button>
-    <button class="navBtn" onclick="openSkins()"><span class="navIcon">🛒</span>SHOP</button>
+    <button class="navBtn" onclick="openShopStore()"><span class="navIcon">🛒</span>SHOP</button>
     <button class="navBtn tradeBtn" onclick="openTradeScreen()"><span class="navIcon">🔁</span>TRADE</button>
-    <button class="navBtn fireSeasonBtn" onclick="openFireSeason()"><span class="navIcon">🔥</span>FIRE</button>
+    <button class="navBtn skinsBtn" onclick="openOwnedSkins()"><span class="navIcon">🎨</span>SKINS</button>
     <button class="navBtn" onclick="dailyReward()"><span class="navIcon">🎁</span>DAILY</button>
     <button class="navBtn" id="creatorBtn" style="display:none" onclick="openCreatorPanel()"><span class="navIcon">⭐</span>CREATOR</button>
   </div>
@@ -594,9 +770,10 @@ button[onclick*="Trade"]:hover, button[onclick*="trade"]:hover, #tradeBtn:hover,
 
 <div id="skinScreen" class="screen">
   <div class="topBar">
-    <div class="logo"><span>Item</span><br>Shop</div>
+    <div class="logo"><span>Fire</span><br>Shop</div>
     <div class="currency">
       <div class="coinPill"><div class="coinIcon">$</div><span id="shopCoins">0</span></div>
+      <div class="coinPill fireTokenPill"><span class="trophyIcon">🔥</span><span id="shopFireTokens">0</span></div>
       <button class="gear" onclick="showMainMenu()">←</button>
     </div>
   </div>
@@ -612,6 +789,37 @@ button[onclick*="Trade"]:hover, button[onclick*="trade"]:hover, #tradeBtn:hover,
       <p id="previewText">Simple free swimmer.</p>
       <button class="shopAction" id="shopActionBtn" onclick="buyOrEquipSelected()">EQUIP</button>
     </div>
+  </div>
+</div>
+
+
+<div id="ownedSkinsScreen" class="screen">
+  <div class="topBar">
+    <div class="logo"><span>Your</span><br>Skins</div>
+    <div class="currency">
+      <div class="coinPill"><div class="coinIcon">$</div><span id="inventoryCoins">0</span></div>
+      <div class="coinPill fireTokenPill"><span class="trophyIcon">🔥</span><span id="inventoryFireTokens">0</span></div>
+      <button class="gear" onclick="showMainMenu()">←</button>
+    </div>
+  </div>
+  <button class="backBtn" onclick="showMainMenu()">BACK</button>
+  <div class="inventoryPanel">
+    <h1>🎨 Your Skins</h1>
+    <p class="inventoryHint">Tap a skin to equip it. Event skins stay here after you open them.</p>
+    <div class="ownedSkinGrid" id="ownedSkinGrid"></div>
+  </div>
+</div>
+
+<div id="crateModal" class="crateModal">
+  <div class="crateBox">
+    <h1>🔥 FIRE CHEST</h1>
+    <div class="crateWindow">
+      <div id="crateRoller" class="crateRoller"></div>
+      <div class="crateNeedle"></div>
+    </div>
+    <div id="crateResultText" class="crateResultText">Rolling...</div>
+    <button id="crateCloseBtn" class="bigBtn" onclick="closeCrateModal()" style="display:none">OK</button>
+    <div id="confettiLayer" class="confettiLayer"></div>
   </div>
 </div>
 
@@ -726,10 +934,10 @@ const skins=[
 {id:"rainbow",name:"Rainbow Swimmer",price:1500,color:"linear-gradient(90deg,red,orange,yellow,lime,cyan,blue,violet)",border:"white",number:false,desc:"Legendary rainbow swimmer."}
 ,
 
-{id:"fire",name:"Fire Swimmer",price:0,color:"#ff6a00",border:"#ffdd55",number:false,season:"fire",desc:"Limited Fire Season skin."},
-{id:"magma",name:"Magma Swimmer",price:0,color:"linear-gradient(90deg,#1b0b0b,#ff3b00,#ffd166)",border:"#ff7b00",number:false,season:"fire",desc:"Limited Fire Season magma skin."},
-{id:"lava",name:"Lava Swimmer",price:0,color:"linear-gradient(90deg,#2b0000,#ff0000,#ff8c00,#ffe45e)",border:"#ff2d00",number:false,season:"fire",desc:"Limited Fire Season lava skin."},
-{id:"devil",name:"Devil Swimmer",price:0,color:"#7b001c",border:"#ff003c",number:false,season:"fire",desc:"Ultra rare Devil skin."},
+{id:"fire",name:"Fire Swimmer",price:0,color:"linear-gradient(135deg,#ffcf33,#ff6a00,#ff2400)",border:"#ffe45e",number:false,season:"fire",desc:"A bright flaming Fire Season skin."},
+{id:"magma",name:"Magma Swimmer",price:0,color:"radial-gradient(circle at 35% 35%,#ff6a00 0 12%,#2b130f 13% 32%,#ff3b00 33% 42%,#120707 43% 100%)",border:"#2b130f",number:false,season:"fire",desc:"Dark cracked magma rock with glowing hot cracks."},
+{id:"lava",name:"Lava Swimmer",price:0,color:"linear-gradient(135deg,#130000,#ff2400 24%,#ffd166 28%,#3a0000 45%,#ff6a00 60%,#ffe45e 64%,#1b0000)",border:"#ff2d00",number:false,season:"fire",desc:"Flowing lava streams and hot molten lines."},
+{id:"devil",name:"Devil Swimmer",price:0,color:"linear-gradient(135deg,#26000b,#7b001c,#ff003c)",border:"#ff003c",number:false,season:"fire",desc:"Devil skin with horns and tail."},
 ];
 
 let playerName="Player",accountId="",accountPassword="",jerseyNumber=0,coins=0,fireTokens=0,trophies=0,ownedSkins=["default"],equippedSkin="default",selectedSkin="default";
@@ -1403,6 +1611,10 @@ function addParts(el,id){
  if(id==="duck"){["beak","wing"].forEach(c=>{let d=document.createElement("div");d.className=c;el.appendChild(d)})}
  if(id==="robot"){["robotArm left","robotArm right","propeller","robotStar"].forEach(c=>{let d=document.createElement("div");d.className=c;el.appendChild(d)})}
  if(id==="gold"){let d=document.createElement("div");d.className="sparkle";el.appendChild(d)}
+ if(id==="fire"){["flamePart f1","flamePart f2","flamePart f3"].forEach(c=>{let d=document.createElement("div");d.className=c;el.appendChild(d)})}
+ if(id==="magma"){["magmaCrack c1","magmaCrack c2","magmaCrack c3"].forEach(c=>{let d=document.createElement("div");d.className=c;el.appendChild(d)})}
+ if(id==="lava"){["lavaStream l1","lavaStream l2","lavaStream l3"].forEach(c=>{let d=document.createElement("div");d.className=c;el.appendChild(d)})}
+ if(id==="devil"){["devilHorn left","devilHorn right","devilTail"].forEach(c=>{let d=document.createElement("div");d.className=c;el.appendChild(d)})}
 }
 function updateSwimmerStyle(el,id){const s=skinById(id);el.style.background=s.color;el.style.borderColor=s.border;addParts(el,id)}
 
@@ -2284,6 +2496,224 @@ function awardFireTokenForWin(){
   if(typeof showHint==="function")showHint("+1 Fire Token 🔥");
 }
 setInterval(updateFireUI,30000);
+
+
+/* V38 store/inventory overrides. Login and registration are untouched. */
+function syncFireTokenCounters(){
+  try{loadFireTokens()}catch(e){}
+  ["menuFireTokens","shopFireTokens","inventoryFireTokens","fireTokenCount"].forEach(id=>{
+    const el=document.getElementById(id);
+    if(el)el.textContent=fireTokens||0;
+  });
+  const invCoins=document.getElementById("inventoryCoins");
+  if(invCoins)invCoins.textContent=coins;
+}
+const __oldUpdateAllStatsV38 = updateAllStats;
+updateAllStats = function(){
+  __oldUpdateAllStatsV38();
+  syncFireTokenCounters();
+};
+
+function openShopStore(){
+  playSound("click");
+  renderShopStore();
+  showScreen("skinScreen");
+  syncFireTokenCounters();
+}
+function openOwnedSkins(){
+  playSound("click");
+  renderOwnedSkins();
+  showScreen("ownedSkinsScreen");
+  syncFireTokenCounters();
+}
+
+function shopCardForSkin(id){
+  const s=skinById(id);
+  const owned=ownedSkins.includes(id);
+  const card=document.createElement("div");
+  card.className="shopItemCard"+(owned?" soldOut":"");
+  const preview=document.createElement("div");
+  preview.className="shopSkinPreview";
+  const mini=document.createElement("div");
+  mini.className="miniSwimmer";
+  mini.style.background=s.color;
+  mini.style.borderColor=s.border;
+  addParts(mini,id);
+  preview.appendChild(mini);
+  card.innerHTML=`<h2>${s.name}</h2><p>${s.desc||""}</p><div class="priceLine"><span class="smallCoinIcon">$</span> ${s.price}</div>`;
+  card.insertBefore(preview,card.children[1]);
+  if(owned){
+    const stamp=document.createElement("div");
+    stamp.className="soldStamp";
+    stamp.textContent="SOLD OUT";
+    card.appendChild(stamp);
+  }
+  const btn=document.createElement("button");
+  btn.textContent=owned?"SOLD OUT":(coins>=s.price?"BUY":"NOT ENOUGH");
+  btn.disabled=owned||coins<s.price;
+  btn.onclick=async ()=>{
+    if(owned||coins<s.price)return;
+    coins-=s.price;
+    if(!ownedSkins.includes(id))ownedSkins.push(id);
+    equippedSkin=id;
+    await savePlayerData();
+    updateAllStats();
+    updateSkinDisplay();
+    renderShopStore();
+    showHint("Bought "+s.name+"!");
+  };
+  card.appendChild(btn);
+  return card;
+}
+
+function renderShopStore(){
+  const panel=document.querySelector("#skinScreen .shopPanel");
+  if(panel)panel.classList.add("v38Shop");
+  const grid=document.getElementById("skinGrid");
+  if(!grid)return;
+  grid.innerHTML="";
+  grid.className="shopCarousel";
+
+  const fireCard=document.createElement("div");
+  fireCard.className="shopItemCard fireCrateCard";
+  fireCard.innerHTML=`
+    <h2>🔥 Fire Chest</h2>
+    <div class="fireChestIcon">📦🔥</div>
+    <p>Open for a chance at Fire, Magma, Lava or Devil Swimmer.</p>
+    <div class="priceLine">🔥 5 Fire Tokens</div>
+  `;
+  const fireBtn=document.createElement("button");
+  fireBtn.textContent=(fireTokens>=5)?"OPEN CHEST":"NEED 5 TOKENS";
+  fireBtn.disabled=fireTokens<5;
+  fireBtn.onclick=openFireCrateAnimated;
+  fireCard.appendChild(fireBtn);
+  grid.appendChild(fireCard);
+
+  const offers=currentShopOffers();
+  offers.forEach(id=>grid.appendChild(shopCardForSkin(id)));
+
+  const preview=document.querySelector("#skinScreen .shopPreview");
+  if(preview){
+    preview.innerHTML=`
+      <h1 style="font-size:34px;margin:0 0 10px;">Shop</h1>
+      <div class="characterCard">
+        <div class="fireChestIcon">🛒</div>
+        <div class="skinName">Swipe right →</div>
+      </div>
+      <p>First card is the Fire Chest. Swipe right for the 10-minute skin offers. Owned skins show SOLD OUT.</p>
+      <button class="shopAction" onclick="openOwnedSkins()">OPEN YOUR SKINS</button>
+    `;
+  }
+  syncFireTokenCounters();
+}
+
+function renderOwnedSkins(){
+  const grid=document.getElementById("ownedSkinGrid");
+  if(!grid)return;
+  grid.innerHTML="";
+  ownedSkins.forEach(id=>{
+    const s=skinById(id);
+    const card=document.createElement("div");
+    card.className="ownedSkinCard"+(equippedSkin===id?" equipped":"");
+    const mini=document.createElement("div");
+    mini.className="miniSwimmer";
+    mini.style.background=s.color;
+    mini.style.borderColor=s.border;
+    addParts(mini,id);
+    card.innerHTML=`<h2>${s.name}</h2><p>${equippedSkin===id?"Equipped":"Tap to equip"}</p>`;
+    card.insertBefore(mini,card.children[1]);
+    card.onclick=async ()=>{
+      equippedSkin=id;
+      await savePlayerData();
+      updateSkinDisplay();
+      renderOwnedSkins();
+      updateAllStats();
+    };
+    grid.appendChild(card);
+  });
+  syncFireTokenCounters();
+}
+
+function fireRollSequence(winnerId){
+  const ids=["fire","magma","lava","devil"];
+  const seq=[];
+  for(let i=0;i<22;i++)seq.push(ids[i%ids.length]);
+  seq.push(winnerId);
+  return seq;
+}
+function makeRollItem(id){
+  const s=skinById(id);
+  const item=document.createElement("div");
+  item.className="rollItem";
+  item.style.background=s.color;
+  item.style.borderColor=s.border;
+  item.innerHTML=`<div>${id==="fire"?"🔥":id==="magma"?"🌋":id==="lava"?"❤️‍🔥":"😈"}</div><small>${s.name}</small>`;
+  return item;
+}
+function spawnConfetti(){
+  const layer=document.getElementById("confettiLayer");
+  if(!layer)return;
+  layer.innerHTML="";
+  const colors=["#ffcf33","#ff6a00","#ff003c","#5fcaff","#70e000","#ffffff"];
+  for(let i=0;i<70;i++){
+    const c=document.createElement("div");
+    c.className="confetti";
+    c.style.left=Math.random()*100+"%";
+    c.style.background=colors[Math.floor(Math.random()*colors.length)];
+    c.style.animationDelay=(Math.random()*0.35)+"s";
+    c.style.transform=`rotate(${Math.random()*360}deg)`;
+    layer.appendChild(c);
+  }
+}
+function closeCrateModal(){
+  document.getElementById("crateModal").classList.remove("active");
+  renderShopStore();
+}
+async function openFireCrateAnimated(){
+  loadFireTokens();
+  if(Date.now()>FIRE_SEASON_END){showHint("The Fire Season has ended.");return;}
+  if(fireTokens<5){showHint("You need 5 Fire Tokens.");return;}
+  fireTokens-=5;
+  saveFireTokens();
+  const won=fireRewardSkin();
+
+  const modal=document.getElementById("crateModal");
+  const roller=document.getElementById("crateRoller");
+  const result=document.getElementById("crateResultText");
+  const close=document.getElementById("crateCloseBtn");
+  modal.classList.add("active");
+  close.style.display="none";
+  result.textContent="Rolling...";
+  roller.style.transition="none";
+  roller.style.transform="translateX(0px)";
+  roller.innerHTML="";
+  fireRollSequence(won).forEach(id=>roller.appendChild(makeRollItem(id)));
+
+  requestAnimationFrame(()=>{
+    requestAnimationFrame(()=>{
+      roller.style.transition="transform 2.8s cubic-bezier(.13,.86,.18,1)";
+      roller.style.transform="translateX(-2440px)";
+    });
+  });
+
+  setTimeout(async ()=>{
+    if(!ownedSkins.includes(won))ownedSkins.push(won);
+    equippedSkin=won;
+    await savePlayerData();
+    updateAllStats();
+    updateSkinDisplay();
+    renderOwnedSkins();
+    const s=skinById(won);
+    result.textContent="You got: "+s.name+"!";
+    spawnConfetti();
+    close.style.display="inline-block";
+  },3000);
+}
+
+/* Keep old Fire screen usable if anything still calls it, but main shop now owns the Fire Chest. */
+function openFireSeason(){
+  openShopStore();
+}
 
 </script>
 
