@@ -707,6 +707,205 @@ button[onclick*="Trade"]:hover, button[onclick*="trade"]:hover, #tradeBtn:hover,
 .devilTail{position:absolute;width:40px;height:24px;border-bottom:6px solid #ff003c;border-right:6px solid #ff003c;border-radius:0 0 22px 0;right:-18px;bottom:14px}
 @keyframes flicker{from{transform:translateY(0) scale(.9)}to{transform:translateY(-4px) scale(1.12)}}
 
+
+/* V39 polish: clean skin icons + creator safety */
+.skinAvatar{
+  position:relative;
+  width:92px;
+  height:92px;
+  border-radius:50%;
+  border:5px solid white;
+  box-shadow:0 7px 0 rgba(0,0,0,.35), inset 0 0 18px rgba(255,255,255,.18);
+  margin:8px auto;
+  overflow:hidden;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+.skinFace{
+  position:relative;
+  z-index:8;
+  width:42px;
+  height:42px;
+  border-radius:50%;
+  background:#ffe0bd;
+  border:3px solid rgba(0,0,0,.18);
+}
+.skinFace:before{
+  content:"";
+  position:absolute;
+  left:9px;
+  top:13px;
+  width:6px;
+  height:6px;
+  background:#111827;
+  border-radius:50%;
+  box-shadow:18px 0 0 #111827;
+}
+.skinFace:after{
+  content:"";
+  position:absolute;
+  left:12px;
+  top:27px;
+  width:17px;
+  height:7px;
+  border-bottom:3px solid #111827;
+  border-radius:0 0 20px 20px;
+}
+.skinCap{
+  position:absolute;
+  z-index:9;
+  top:18px;
+  width:46px;
+  height:16px;
+  background:#0ea5e9;
+  border-radius:18px 18px 5px 5px;
+}
+.skinCap:after{
+  content:"";
+  position:absolute;
+  right:-13px;
+  top:7px;
+  width:20px;
+  height:7px;
+  background:inherit;
+  border-radius:99px;
+}
+.skinArm{
+  position:absolute;
+  z-index:5;
+  width:58px;
+  height:15px;
+  border-radius:99px;
+  background:rgba(255,255,255,.78);
+  bottom:20px;
+  left:15px;
+  transform:rotate(-18deg);
+}
+.skinArm:after{
+  content:"";
+  position:absolute;
+  width:48px;
+  height:12px;
+  border-radius:99px;
+  background:rgba(255,255,255,.65);
+  left:21px;
+  top:-17px;
+  transform:rotate(42deg);
+}
+.skinAvatar.defaultVisual{background:#d79b34!important}
+.skinAvatar.redVisual{background:#ef4444!important}
+.skinAvatar.greenVisual{background:#22c55e!important}
+.skinAvatar.blueVisual{background:#0ea5e9!important}
+.skinAvatar.goldVisual{background:radial-gradient(circle,#fff7ad,#facc15,#b8860b)!important}
+.skinAvatar.rainbowVisual{background:linear-gradient(90deg,#ff3b30,#ff9500,#ffcc00,#34c759,#00c7ff,#5856d6,#af52de)!important}
+.skinAvatar.sharkVisual{background:#1789d5!important}
+.skinAvatar.robotVisual{background:linear-gradient(135deg,#dbeafe,#94a3b8,#e2e8f0)!important}
+.skinAvatar.duckVisual{background:#facc15!important}
+.skinAvatar.fireVisual{
+  background:radial-gradient(circle at 50% 38%,#ffe45e 0 18%,#ff8c00 19% 48%,#ff2400 49% 76%,#5a0900 100%)!important;
+}
+.skinAvatar.magmaVisual{
+  background:
+    radial-gradient(circle at 25% 25%,#ff8c00 0 9%,transparent 10%),
+    radial-gradient(circle at 70% 42%,#ff3b00 0 10%,transparent 11%),
+    radial-gradient(circle at 42% 72%,#ffd166 0 6%,transparent 7%),
+    #21120f!important;
+}
+.skinAvatar.lavaVisual{
+  background:
+    radial-gradient(circle at 50% 50%,#ffd166 0 10%,#ff6a00 11% 32%,transparent 33%),
+    linear-gradient(135deg,#170000 0 24%,#ff2400 25% 32%,#3a0000 33% 58%,#ff7b00 59% 66%,#160000 67% 100%)!important;
+}
+.skinAvatar.devilVisual{
+  background:linear-gradient(135deg,#26000b,#7b001c,#ff003c)!important;
+}
+.skinAvatar.devilVisual .skinFace{background:#ffb3b3}
+.skinAvatar.devilVisual .skinCap{background:#2b0010}
+.skinAvatar .cleanHorn{
+  position:absolute;
+  z-index:10;
+  top:2px;
+  width:0;
+  height:0;
+  border-left:10px solid transparent;
+  border-right:10px solid transparent;
+  border-bottom:25px solid #ff003c;
+  filter:drop-shadow(0 2px 0 #2b0010);
+}
+.skinAvatar .cleanHorn.left{left:17px;transform:rotate(-22deg)}
+.skinAvatar .cleanHorn.right{right:17px;transform:rotate(22deg)}
+.skinAvatar .cleanFlame{
+  position:absolute;
+  z-index:2;
+  bottom:-8px;
+  width:18px;
+  height:45px;
+  border-radius:50% 50% 45% 45%;
+  background:#ffe45e;
+  box-shadow:0 0 16px #ff6a00;
+  animation:flicker .6s infinite alternate;
+}
+.skinAvatar .cleanFlame:after{
+  content:"";
+  position:absolute;
+  inset:10px 5px 4px;
+  border-radius:50%;
+  background:#ff6a00;
+}
+.skinAvatar .cleanFlame.f1{left:16px}
+.skinAvatar .cleanFlame.f2{left:38px;animation-delay:.16s}
+.skinAvatar .cleanFlame.f3{right:16px;animation-delay:.32s}
+.skinAvatar .magmaCrackClean{
+  position:absolute;
+  z-index:2;
+  background:#ffcf33;
+  box-shadow:0 0 10px #ff6a00;
+  border-radius:99px;
+}
+.skinAvatar .magmaCrackClean.c1{width:42px;height:6px;left:10px;top:25px;transform:rotate(25deg)}
+.skinAvatar .magmaCrackClean.c2{width:36px;height:5px;right:10px;top:48px;transform:rotate(-30deg)}
+.skinAvatar .magmaCrackClean.c3{width:28px;height:5px;left:30px;bottom:17px;transform:rotate(-15deg)}
+.skinAvatar .lavaFlowClean{
+  position:absolute;
+  z-index:2;
+  width:13px;
+  height:88px;
+  background:linear-gradient(#ffe45e,#ff6a00,#ff0000);
+  top:-8px;
+  border-radius:99px;
+  box-shadow:0 0 12px #ff6a00;
+}
+.skinAvatar .lavaFlowClean.l1{left:18px;transform:rotate(20deg)}
+.skinAvatar .lavaFlowClean.l2{right:22px;transform:rotate(-18deg)}
+.skinAvatar .lavaFlowClean.l3{left:48px;top:8px;transform:rotate(8deg)}
+.skinAvatar .robotEye{position:absolute;z-index:11;width:8px;height:8px;border-radius:50%;background:#0ea5e9;top:39px;left:39px;box-shadow:15px 0 0 #0ea5e9}
+.skinAvatar .sharkFin{position:absolute;z-index:4;left:11px;top:22px;width:0;height:0;border-left:22px solid transparent;border-right:22px solid transparent;border-bottom:28px solid #0b5e9e;transform:rotate(-38deg)}
+.creatorGiftPanel.hiddenForGiftedCreator,
+.hiddenForGiftedCreator{
+  display:none!important;
+}
+.creatorWarning{
+  padding:12px;
+  margin:10px 0;
+  border:3px solid #ffcf33;
+  background:rgba(255,207,51,.15);
+  border-radius:14px;
+  font-weight:900;
+}
+
+
+.shopItemCard .lavaStream,
+.ownedSkinCard .lavaStream,
+.shopItemCard .flamePart,
+.ownedSkinCard .flamePart,
+.shopItemCard .magmaCrack,
+.ownedSkinCard .magmaCrack,
+.shopItemCard .devilHorn,
+.ownedSkinCard .devilHorn,
+.shopItemCard .devilTail,
+.ownedSkinCard .devilTail{display:none!important}
+
 </style>
 </head>
 <body oncontextmenu="return false;">
@@ -2714,6 +2913,158 @@ async function openFireCrateAnimated(){
 function openFireSeason(){
   openShopStore();
 }
+
+
+/* V39 clean skin previews + creator permission hardening. Login/register untouched. */
+function makeSkinAvatar(id){
+  const s=skinById(id);
+  const a=document.createElement("div");
+  a.className="skinAvatar";
+  const cls={
+    default:"defaultVisual", red:"redVisual", green:"greenVisual", blue:"blueVisual",
+    gold:"goldVisual", rainbow:"rainbowVisual", shark:"sharkVisual", robot:"robotVisual",
+    duck:"duckVisual", fire:"fireVisual", magma:"magmaVisual", lava:"lavaVisual", devil:"devilVisual"
+  }[id];
+  if(cls) a.classList.add(cls); else a.style.background=s.color;
+
+  if(id==="fire"){
+    ["cleanFlame f1","cleanFlame f2","cleanFlame f3"].forEach(c=>{const d=document.createElement("div");d.className=c;a.appendChild(d);});
+  }
+  if(id==="magma"){
+    ["magmaCrackClean c1","magmaCrackClean c2","magmaCrackClean c3"].forEach(c=>{const d=document.createElement("div");d.className=c;a.appendChild(d);});
+  }
+  if(id==="lava"){
+    ["lavaFlowClean l1","lavaFlowClean l2","lavaFlowClean l3"].forEach(c=>{const d=document.createElement("div");d.className=c;a.appendChild(d);});
+  }
+  if(id==="devil"){
+    ["cleanHorn left","cleanHorn right"].forEach(c=>{const d=document.createElement("div");d.className=c;a.appendChild(d);});
+  }
+  if(id==="shark"){const d=document.createElement("div");d.className="sharkFin";a.appendChild(d);}
+  if(id==="robot"){const d=document.createElement("div");d.className="robotEye";a.appendChild(d);}
+
+  const arm=document.createElement("div");arm.className="skinArm";a.appendChild(arm);
+  const cap=document.createElement("div");cap.className="skinCap";a.appendChild(cap);
+  if(id==="fire") cap.style.background="#ff6a00";
+  if(id==="magma") cap.style.background="#111827";
+  if(id==="lava") cap.style.background="#ff2400";
+  if(id==="devil") cap.style.background="#2b0010";
+  if(id==="rainbow") cap.style.background="linear-gradient(90deg,#ff3b30,#ffcc00,#34c759,#00c7ff,#5856d6)";
+  const face=document.createElement("div");face.className="skinFace";a.appendChild(face);
+  return a;
+}
+
+function shopCardForSkin(id){
+  const s=skinById(id);
+  const owned=ownedSkins.includes(id);
+  const card=document.createElement("div");
+  card.className="shopItemCard"+(owned?" soldOut":"");
+  const preview=document.createElement("div");
+  preview.className="shopSkinPreview";
+  preview.appendChild(makeSkinAvatar(id));
+  card.innerHTML=`<h2>${s.name}</h2><p>${s.desc||""}</p><div class="priceLine"><span class="smallCoinIcon">$</span> ${s.price}</div>`;
+  card.insertBefore(preview,card.children[1]);
+  if(owned){
+    const stamp=document.createElement("div");
+    stamp.className="soldStamp";
+    stamp.textContent="SOLD OUT";
+    card.appendChild(stamp);
+  }
+  const btn=document.createElement("button");
+  btn.textContent=owned?"SOLD OUT":(coins>=s.price?"BUY":"NOT ENOUGH");
+  btn.disabled=owned||coins<s.price;
+  btn.onclick=async ()=>{
+    if(owned||coins<s.price)return;
+    coins-=s.price;
+    if(coins<0)coins=0;
+    if(!ownedSkins.includes(id))ownedSkins.push(id);
+    equippedSkin=id;
+    await savePlayerData();
+    updateAllStats();
+    updateSkinDisplay();
+    renderShopStore();
+    showHint("Bought "+s.name+"!");
+  };
+  card.appendChild(btn);
+  return card;
+}
+
+function renderOwnedSkins(){
+  const grid=document.getElementById("ownedSkinGrid");
+  if(!grid)return;
+  grid.innerHTML="";
+  ownedSkins.forEach(id=>{
+    const s=skinById(id);
+    const card=document.createElement("div");
+    card.className="ownedSkinCard"+(equippedSkin===id?" equipped":"");
+    card.innerHTML=`<h2>${s.name}</h2><p>${equippedSkin===id?"Equipped":"Tap to equip"}</p>`;
+    card.insertBefore(makeSkinAvatar(id),card.children[1]);
+    card.onclick=async ()=>{
+      equippedSkin=id;
+      await savePlayerData();
+      updateSkinDisplay();
+      renderOwnedSkins();
+      updateAllStats();
+    };
+    grid.appendChild(card);
+  });
+  if(typeof syncFireTokenCounters==="function")syncFireTokenCounters();
+}
+
+function makeRollItem(id){
+  const s=skinById(id);
+  const item=document.createElement("div");
+  item.className="rollItem";
+  item.style.background="#073b72";
+  item.innerHTML=`<div></div><small>${s.name}</small>`;
+  item.firstElementChild.appendChild(makeSkinAvatar(id));
+  return item;
+}
+
+function isTrueCreator(){
+  const n=(playerName||accountId||"").toLowerCase();
+  return n==="creator" || n==="admin" || n==="trollingrace" || localStorage.getItem("tr_real_creator_"+accountId)==="1";
+}
+function isGiftedCreatorOnly(){
+  return !isTrueCreator() && (localStorage.getItem("tr_creator_"+accountId)==="1" || window.hasCreator===true || window.creatorGifted===true);
+}
+function hardenCreatorPanel(){
+  const creatorScreen=document.getElementById("creatorScreen") || document.querySelector('[id*="creator" i]');
+  if(!creatorScreen)return;
+  const real=isTrueCreator();
+  const gifted=isGiftedCreatorOnly();
+
+  const dangerousWords=["gift","coin","coins","add","remove","minus","creator"];
+  creatorScreen.querySelectorAll("input, textarea, select, button, .creatorGiftPanel, .giftPanel").forEach(el=>{
+    const txt=((el.innerText||"")+" "+(el.placeholder||"")+" "+(el.value||"")+" "+(el.className||"")).toLowerCase();
+    const dangerous=dangerousWords.some(w=>txt.includes(w));
+    if(gifted && dangerous){
+      el.classList.add("hiddenForGiftedCreator");
+      el.style.display="none";
+    }
+    if(real && (el.type==="number" || txt.includes("coin"))){
+      el.addEventListener("input",()=>{ if(Number(el.value)<0) el.value=0; });
+      el.addEventListener("change",()=>{ if(Number(el.value)<0) el.value=0; });
+    }
+  });
+
+  if(gifted && !creatorScreen.querySelector(".creatorWarning")){
+    const w=document.createElement("div");
+    w.className="creatorWarning";
+    w.textContent="Creator access is gifted on this account. Admin gift and coin tools are hidden.";
+    creatorScreen.prepend(w);
+  }
+}
+const __oldOpenCreatorV39 = window.openCreatorPanel || window.openCreator || null;
+if(typeof openCreatorPanel==="function"){
+  const old=openCreatorPanel;
+  openCreatorPanel=function(){ old(); setTimeout(hardenCreatorPanel,50); };
+}
+if(typeof openCreator==="function"){
+  const old2=openCreator;
+  openCreator=function(){ old2(); setTimeout(hardenCreatorPanel,50); };
+}
+document.addEventListener("click",()=>setTimeout(hardenCreatorPanel,80));
+setInterval(hardenCreatorPanel,1200);
 
 </script>
 
