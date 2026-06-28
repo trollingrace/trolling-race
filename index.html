@@ -733,202 +733,160 @@ button[onclick*="Trade"]:hover, button[onclick*="trade"]:hover, #tradeBtn:hover,
 #creatorModal.giftedCreatorCentered #creatorAccessBox,#creatorModal.giftedCreatorCentered #ownerSkinGrantBox{display:none!important;}
 
 
-/* V46: seasonal skin heads + devil horns + centered gifted creator rewards */
-.skin-fire::after,
-.skin-magma::after,
-.skin-lava::after,
-.skin-devil::after {
-  content:""!important;
+/* V48: direct seasonal heads, fixed top-right token stack, no fake side counter */
+.seasonHead{
   position:absolute!important;
-  right:-20px!important;
+  right:-23px!important;
   top:7px!important;
-  width:38px!important;
-  height:38px!important;
+  width:40px!important;
+  height:40px!important;
   border-radius:50%!important;
-  background:inherit!important;
-  border:3px solid rgba(0,0,0,.22)!important;
-  box-shadow:0 5px 0 rgba(0,0,0,.25), inset 0 0 8px rgba(255,255,255,.2)!important;
-  z-index:20!important;
+  border:4px solid rgba(0,0,0,.23)!important;
+  box-shadow:0 6px 0 rgba(0,0,0,.25), inset 0 0 10px rgba(255,255,255,.2)!important;
+  z-index:50!important;
+  display:block!important;
+  pointer-events:none!important;
 }
-
-.skin-fire::before,
-.skin-magma::before,
-.skin-lava::before,
-.skin-devil::before {
-  content:""!important;
+.seasonEyes{
   position:absolute!important;
-  right:-5px!important;
-  top:19px!important;
-  width:5px!important;
-  height:5px!important;
+  right:-7px!important;
+  top:21px!important;
+  width:6px!important;
+  height:6px!important;
   background:#111827!important;
   border-radius:50%!important;
-  box-shadow:12px 1px 0 #111827!important;
-  z-index:30!important;
-}
-
-.skin-devil .devilHorn {
+  box-shadow:13px 1px 0 #111827!important;
+  z-index:60!important;
   display:block!important;
+  pointer-events:none!important;
+}
+.seasonMouth{
   position:absolute!important;
-  top:-13px!important;
+  right:-5px!important;
+  top:34px!important;
+  width:18px!important;
+  height:7px!important;
+  border-bottom:3px solid #111827!important;
+  border-radius:0 0 16px 16px!important;
+  z-index:61!important;
+  display:block!important;
+  pointer-events:none!important;
+}
+.devilHornReal{
+  position:absolute!important;
+  top:-11px!important;
   width:0!important;
   height:0!important;
-  border-left:8px solid transparent!important;
-  border-right:8px solid transparent!important;
-  border-bottom:21px solid #ff003c!important;
-  z-index:35!important;
+  border-left:9px solid transparent!important;
+  border-right:9px solid transparent!important;
+  border-bottom:24px solid #ff003c!important;
+  z-index:70!important;
   filter:drop-shadow(0 2px 0 #3b0015)!important;
-}
-.skin-devil .devilHorn.left {
-  right:12px!important;
-  transform:rotate(-22deg)!important;
-}
-.skin-devil .devilHorn.right {
-  right:-12px!important;
-  transform:rotate(22deg)!important;
-}
-
-/* If the old renderer hid horns in cards, force devil horns visible only on devil */
-#skinScreen .miniSwimmer.skin-devil .devilHorn,
-#ownedSkinsScreen .miniSwimmer.skin-devil .devilHorn,
-#mainCharacter.skin-devil .devilHorn,
-.playerAvatar.skin-devil .devilHorn {
   display:block!important;
+  pointer-events:none!important;
 }
+.devilHornReal.left{right:11px!important;transform:rotate(-22deg)!important}
+.devilHornReal.right{right:-15px!important;transform:rotate(22deg)!important}
 
-/* Gifted creator layout: center the only visible reward box */
-#creatorModal.creatorGiftedCentered .creatorPanelGrid,
-#creatorModal.creatorGiftedCentered .creatorGrid,
-#creatorModal.creatorGiftedCentered [style*="grid-template-columns"] {
-  display:flex!important;
-  justify-content:center!important;
-  align-items:flex-start!important;
-  grid-template-columns:1fr!important;
+/* Small cards */
+#skinScreen .miniSwimmer .seasonHead,
+#ownedSkinsScreen .miniSwimmer .seasonHead,
+.shopSkinPreview .miniSwimmer .seasonHead{
+  right:-18px!important;
+  top:7px!important;
+  width:34px!important;
+  height:34px!important;
+  border-width:3px!important;
 }
-#creatorModal.creatorGiftedCentered #creatorRewardsBox,
-#creatorModal.creatorGiftedCentered .creatorRewardsBox {
-  margin-left:auto!important;
-  margin-right:auto!important;
-  max-width:560px!important;
-  width:min(560px, 92%)!important;
-  float:none!important;
+#skinScreen .miniSwimmer .seasonEyes,
+#ownedSkinsScreen .miniSwimmer .seasonEyes,
+.shopSkinPreview .miniSwimmer .seasonEyes{
+  right:-5px!important;
+  top:18px!important;
+  width:5px!important;
+  height:5px!important;
+  box-shadow:11px 1px 0 #111827!important;
 }
-#creatorModal.creatorGiftedCentered #creatorAccessBox,
-#creatorModal.creatorGiftedCentered #ownerSkinGrantBox {
-  display:none!important;
+#skinScreen .miniSwimmer .seasonMouth,
+#ownedSkinsScreen .miniSwimmer .seasonMouth,
+.shopSkinPreview .miniSwimmer .seasonMouth{
+  right:-4px!important;
+  top:29px!important;
+  width:16px!important;
+  height:6px!important;
+  border-bottom-width:2px!important;
 }
+#skinScreen .miniSwimmer .devilHornReal,
+#ownedSkinsScreen .miniSwimmer .devilHornReal,
+.shopSkinPreview .miniSwimmer .devilHornReal{
+  top:-10px!important;
+  border-left-width:7px!important;
+  border-right-width:7px!important;
+  border-bottom-width:19px!important;
+}
+#skinScreen .miniSwimmer .devilHornReal.left,
+#ownedSkinsScreen .miniSwimmer .devilHornReal.left,
+.shopSkinPreview .miniSwimmer .devilHornReal.left{right:10px!important}
+#skinScreen .miniSwimmer .devilHornReal.right,
+#ownedSkinsScreen .miniSwimmer .devilHornReal.right,
+.shopSkinPreview .miniSwimmer .devilHornReal.right{right:-11px!important}
 
-
-/* V47: real seasonal heads + devil horns + right-side helper counter */
+/* Remove failed pseudo heads from older versions */
 .skin-fire::before,.skin-fire::after,
 .skin-magma::before,.skin-magma::after,
 .skin-lava::before,.skin-lava::after,
-.skin-devil::before,.skin-devil::after {
-  content:none!important;
-}
+.skin-devil::before,.skin-devil::after{content:none!important}
 
-.seasonHead {
+/* Token counter under the existing top row */
+#topFireSubCounter{
   position:absolute!important;
-  right:-20px!important;
-  top:7px!important;
-  width:38px!important;
-  height:38px!important;
-  border-radius:50%!important;
-  border:3px solid rgba(0,0,0,.22)!important;
-  box-shadow:0 5px 0 rgba(0,0,0,.25), inset 0 0 8px rgba(255,255,255,.2)!important;
-  z-index:30!important;
-  display:block!important;
+  right:92px!important;
+  top:82px!important;
+  z-index:880!important;
+  padding:8px 17px!important;
+  border-radius:18px!important;
+  border:3px solid #ffd166!important;
+  background:linear-gradient(180deg,#ff8c00,#b83200)!important;
+  color:white!important;
+  font-size:24px!important;
+  font-weight:1000!important;
+  box-shadow:0 5px 0 rgba(0,0,0,.35)!important;
+  display:flex!important;
+  align-items:center!important;
+  gap:8px!important;
+  pointer-events:none!important;
 }
 
-.seasonEye {
-  position:absolute!important;
-  right:-5px!important;
-  top:19px!important;
-  width:5px!important;
-  height:5px!important;
-  background:#111827!important;
-  border-radius:50%!important;
-  box-shadow:12px 1px 0 #111827!important;
-  z-index:40!important;
-  display:block!important;
-}
+/* Remove the wrong side stack from old versions */
+#rightSideCounters{display:none!important}
 
-.devilHornReal {
-  position:absolute!important;
-  top:-10px!important;
-  width:0!important;
-  height:0!important;
-  border-left:8px solid transparent!important;
-  border-right:8px solid transparent!important;
-  border-bottom:22px solid #ff003c!important;
-  z-index:45!important;
-  filter:drop-shadow(0 2px 0 #3b0015)!important;
-  display:block!important;
+/* Trade cleanup */
+#tradeRefreshBtn,.tradeRefreshBtn,[onclick*="refreshTrade"],[onclick*="renderTradeOnline"]{
+  display:none!important;
 }
-.devilHornReal.left {
-  right:11px!important;
-  transform:rotate(-22deg)!important;
-}
-.devilHornReal.right {
-  right:-13px!important;
-  transform:rotate(22deg)!important;
-}
-
-/* Hide previous failed horn/head attempts so only V47 parts show. */
-.skin-devil .devilHorn:not(.devilHornReal),
-.skin-fire .devilHorn:not(.devilHornReal),
-.skin-magma .devilHorn:not(.devilHornReal),
-.skin-lava .devilHorn:not(.devilHornReal) {
+.tradeTopBack,.extraTopBack,#tradeScreen .topRightBack{
   display:none!important;
 }
 
-/* Right-side vertical helper counter */
-#rightSideCounters {
-  position:fixed!important;
-  right:18px!important;
-  top:122px!important;
-  z-index:900!important;
-  display:flex!important;
-  flex-direction:column!important;
-  gap:10px!important;
-  pointer-events:none!important;
-}
-#rightSideCounters .sideCounter {
-  min-width:86px!important;
-  padding:9px 13px!important;
-  border-radius:18px!important;
-  background:rgba(3,23,64,.78)!important;
-  border:3px solid rgba(95,202,255,.85)!important;
-  color:white!important;
-  font-size:22px!important;
-  font-weight:1000!important;
-  text-align:center!important;
-  box-shadow:0 5px 0 rgba(0,0,0,.35)!important;
-}
-#rightSideCounters .fireSideCounter {
-  background:linear-gradient(180deg,#ff8c00,#b83200)!important;
-  border-color:#ffd166!important;
-}
-
-/* Gifted creator: force the remaining rewards box to the center */
+/* Gifted creator: center reward box */
 #creatorModal.creatorGiftedCentered .creatorPanelGrid,
 #creatorModal.creatorGiftedCentered .creatorGrid,
-#creatorModal.creatorGiftedCentered [style*="grid-template-columns"] {
+#creatorModal.creatorGiftedCentered [style*="grid-template-columns"]{
   display:flex!important;
   justify-content:center!important;
   align-items:flex-start!important;
   grid-template-columns:1fr!important;
 }
 #creatorModal.creatorGiftedCentered #creatorRewardsBox,
-#creatorModal.creatorGiftedCentered .creatorRewardsBox {
+#creatorModal.creatorGiftedCentered .creatorRewardsBox{
   margin-left:auto!important;
   margin-right:auto!important;
   max-width:560px!important;
-  width:min(560px, 92%)!important;
+  width:min(560px,92%)!important;
   float:none!important;
 }
 #creatorModal.creatorGiftedCentered #creatorAccessBox,
-#creatorModal.creatorGiftedCentered #ownerSkinGrantBox {
+#creatorModal.creatorGiftedCentered #ownerSkinGrantBox{
   display:none!important;
 }
 
@@ -1895,7 +1853,7 @@ async function creatorGrantSkin(){
 
 function clearParts(el){
  el.className=el.className.replace(/\bskin-\S+/g,"").trim();
- el.querySelectorAll(".fin,.tail,.gill,.beak,.wing,.robotArm,.propeller,.robotStar,.sparkle,.flamePart,.magmaCrack,.lavaStream,.devilHorn,.devilTail,.seasonHead,.seasonEye,.devilHornReal").forEach(p=>p.remove());
+ el.querySelectorAll(".fin,.tail,.gill,.beak,.wing,.robotArm,.propeller,.robotStar,.sparkle,.flamePart,.magmaCrack,.lavaStream,.devilHorn,.devilTail,.seasonHead,.seasonEyes,.devilHornReal,.seasonMouth").forEach(p=>p.remove());
 }
 function addParts(el,id){
  clearParts(el);
@@ -1914,17 +1872,21 @@ function addParts(el,id){
    let d=document.createElement("div");d.className="sparkle";el.appendChild(d)
  }
 
- if(["fire","magma","lava","devil"].includes(id)){
+ if(id==="fire"||id==="magma"||id==="lava"||id==="devil"){
+   const s=skinById(id);
    const head=document.createElement("div");
    head.className="seasonHead";
-   const sk=skinById(id);
-   head.style.background=sk.color;
-   head.style.borderColor=sk.border;
+   head.style.background=s.color;
+   head.style.borderColor=s.border;
    el.appendChild(head);
 
-   const eye=document.createElement("div");
-   eye.className="seasonEye";
-   el.appendChild(eye);
+   const eyes=document.createElement("div");
+   eyes.className="seasonEyes";
+   el.appendChild(eyes);
+
+   const mouth=document.createElement("div");
+   mouth.className="seasonMouth";
+   el.appendChild(mouth);
 
    if(id==="devil"){
      ["left","right"].forEach(side=>{
@@ -3131,107 +3093,33 @@ function openFireSeason(){
 })();
 </script>
 
+<div id="topFireSubCounter">🔥 <span id="topFireSubValue">0</span></div>
 
-/* V46 targeted JS: add devil horns and center gifted creator panel */
+<script id="v48-targeted-js">
 (function(){
-  const oldAddParts = window.addParts;
-  if(typeof oldAddParts === "function" && !window.__v46AddPartsPatched){
-    window.__v46AddPartsPatched = true;
-    window.addParts = function(el,id){
-      oldAddParts(el,id);
-      if(id==="devil" && !el.querySelector(".devilHorn")){
-        ["left","right"].forEach(side=>{
-          const h=document.createElement("div");
-          h.className="devilHorn "+side;
-          el.appendChild(h);
-        });
-      }
-    };
-  }
-
-  function isGiftedCreatorV46(){
+  function syncTopFireSubCounter(){
     try{
-      const owner = typeof isOwner === "function" ? isOwner() : false;
-      return !owner && (
-        String(localStorage.getItem("tr_creator_"+accountId))==="1" ||
-        String(localStorage.getItem("creator_"+accountId))==="1"
-      );
-    }catch(e){return false;}
-  }
-
-  function centerGiftedCreatorV46(){
-    const modal=document.getElementById("creatorModal");
-    if(!modal)return;
-    if(isGiftedCreatorV46()){
-      modal.classList.add("creatorGiftedCentered");
-      const access=document.getElementById("creatorAccessBox");
-      const skin=document.getElementById("ownerSkinGrantBox");
-      const rewards=document.getElementById("creatorRewardsBox") || modal.querySelector(".creatorRewardsBox");
-      if(access)access.style.display="none";
-      if(skin)skin.style.display="none";
-      if(rewards){
-        rewards.style.marginLeft="auto";
-        rewards.style.marginRight="auto";
-        rewards.style.float="none";
-      }
-    }else{
-      modal.classList.remove("creatorGiftedCentered");
-    }
-  }
-
-  const oldOpenCreator = window.openCreatorPanel;
-  if(typeof oldOpenCreator==="function" && !window.__v46CreatorOpenPatched){
-    window.__v46CreatorOpenPatched = true;
-    window.openCreatorPanel=function(){
-      oldOpenCreator();
-      setTimeout(centerGiftedCreatorV46,80);
-      setTimeout(centerGiftedCreatorV46,350);
-    };
-  }
-
-  setInterval(centerGiftedCreatorV46,800);
-})();
-
-
-<div id="rightSideCounters">
-  <div class="sideCounter">💰 <span id="rightCoins">0</span></div>
-  <div class="sideCounter">🏆 <span id="rightTrophies">0</span></div>
-  <div class="sideCounter fireSideCounter">🔥 <span id="rightFireTokens">0</span></div>
-</div>
-
-
-<script id="v47-targeted-js">
-(function(){
-  function updateRightSideCounters(){
-    try{
-      const c=document.getElementById("rightCoins");
-      const t=document.getElementById("rightTrophies");
-      const f=document.getElementById("rightFireTokens");
-      if(c)c.textContent=typeof coins!=="undefined"?coins:0;
-      if(t)t.textContent=typeof trophies!=="undefined"?trophies:0;
-      if(f){
-        if(typeof loadFireTokens==="function")loadFireTokens();
-        f.textContent=typeof fireTokens!=="undefined"?fireTokens:0;
-      }
+      const el=document.getElementById("topFireSubValue");
+      if(!el)return;
+      if(typeof loadFireTokens==="function")loadFireTokens();
+      el.textContent=typeof fireTokens!=="undefined"?fireTokens:0;
     }catch(e){}
   }
-
-  const oldUpdateAllStats = window.updateAllStats;
-  if(typeof oldUpdateAllStats==="function" && !window.__v47StatsPatch){
-    window.__v47StatsPatch=true;
+  const oldUpdateAllStats=window.updateAllStats;
+  if(typeof oldUpdateAllStats==="function" && !window.__v48StatsPatch){
+    window.__v48StatsPatch=true;
     window.updateAllStats=function(){
       oldUpdateAllStats();
-      updateRightSideCounters();
+      syncTopFireSubCounter();
     };
   }
 
-  function centerGiftedCreatorV47(){
+  function centerGiftedCreator(){
     const modal=document.getElementById("creatorModal");
     if(!modal)return;
     let gifted=false;
     try{
-      const owner = typeof isOwner==="function" ? isOwner() : false;
-      gifted = !owner && (
+      gifted=(typeof isOwner==="function"?!isOwner():true) && (
         String(localStorage.getItem("tr_creator_"+accountId))==="1" ||
         String(localStorage.getItem("creator_"+accountId))==="1"
       );
@@ -3253,19 +3141,48 @@ function openFireSeason(){
     }
   }
 
+  function cleanupTradeButtons(){
+    try{
+      document.querySelectorAll("button").forEach(btn=>{
+        const txt=(btn.textContent||"").trim().toLowerCase();
+        const oc=(btn.getAttribute("onclick")||"").toLowerCase();
+        if(txt==="refresh" || txt==="↻" || oc.includes("refreshtrade") || oc.includes("rendertradeonline")){
+          btn.style.display="none";
+        }
+        if((txt==="←" || txt==="back") && btn.closest("#tradeScreen") && btn.getBoundingClientRect().top<120){
+          btn.style.display="none";
+        }
+      });
+    }catch(e){}
+  }
+
   const oldOpenCreator=window.openCreatorPanel;
-  if(typeof oldOpenCreator==="function" && !window.__v47CreatorPatch){
-    window.__v47CreatorPatch=true;
+  if(typeof oldOpenCreator==="function" && !window.__v48CreatorPatch){
+    window.__v48CreatorPatch=true;
     window.openCreatorPanel=function(){
       oldOpenCreator();
-      setTimeout(centerGiftedCreatorV47,80);
-      setTimeout(centerGiftedCreatorV47,350);
+      setTimeout(centerGiftedCreator,80);
+      setTimeout(centerGiftedCreator,350);
     };
   }
 
-  setInterval(updateRightSideCounters,500);
-  setInterval(centerGiftedCreatorV47,800);
-  setTimeout(updateRightSideCounters,200);
+  const oldShow=window.showScreen;
+  if(typeof oldShow==="function" && !window.__v48ShowPatch){
+    window.__v48ShowPatch=true;
+    window.showScreen=function(id){
+      oldShow(id);
+      setTimeout(()=>{
+        syncTopFireSubCounter();
+        centerGiftedCreator();
+        cleanupTradeButtons();
+      },100);
+    };
+  }
+
+  setInterval(syncTopFireSubCounter,500);
+  setInterval(centerGiftedCreator,800);
+  setInterval(cleanupTradeButtons,1000);
+  setTimeout(syncTopFireSubCounter,200);
 })();
 </script>
 
