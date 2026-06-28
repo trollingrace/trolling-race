@@ -818,6 +818,120 @@ button[onclick*="Trade"]:hover, button[onclick*="trade"]:hover, #tradeBtn:hover,
   display:none!important;
 }
 
+
+/* V47: real seasonal heads + devil horns + right-side helper counter */
+.skin-fire::before,.skin-fire::after,
+.skin-magma::before,.skin-magma::after,
+.skin-lava::before,.skin-lava::after,
+.skin-devil::before,.skin-devil::after {
+  content:none!important;
+}
+
+.seasonHead {
+  position:absolute!important;
+  right:-20px!important;
+  top:7px!important;
+  width:38px!important;
+  height:38px!important;
+  border-radius:50%!important;
+  border:3px solid rgba(0,0,0,.22)!important;
+  box-shadow:0 5px 0 rgba(0,0,0,.25), inset 0 0 8px rgba(255,255,255,.2)!important;
+  z-index:30!important;
+  display:block!important;
+}
+
+.seasonEye {
+  position:absolute!important;
+  right:-5px!important;
+  top:19px!important;
+  width:5px!important;
+  height:5px!important;
+  background:#111827!important;
+  border-radius:50%!important;
+  box-shadow:12px 1px 0 #111827!important;
+  z-index:40!important;
+  display:block!important;
+}
+
+.devilHornReal {
+  position:absolute!important;
+  top:-10px!important;
+  width:0!important;
+  height:0!important;
+  border-left:8px solid transparent!important;
+  border-right:8px solid transparent!important;
+  border-bottom:22px solid #ff003c!important;
+  z-index:45!important;
+  filter:drop-shadow(0 2px 0 #3b0015)!important;
+  display:block!important;
+}
+.devilHornReal.left {
+  right:11px!important;
+  transform:rotate(-22deg)!important;
+}
+.devilHornReal.right {
+  right:-13px!important;
+  transform:rotate(22deg)!important;
+}
+
+/* Hide previous failed horn/head attempts so only V47 parts show. */
+.skin-devil .devilHorn:not(.devilHornReal),
+.skin-fire .devilHorn:not(.devilHornReal),
+.skin-magma .devilHorn:not(.devilHornReal),
+.skin-lava .devilHorn:not(.devilHornReal) {
+  display:none!important;
+}
+
+/* Right-side vertical helper counter */
+#rightSideCounters {
+  position:fixed!important;
+  right:18px!important;
+  top:122px!important;
+  z-index:900!important;
+  display:flex!important;
+  flex-direction:column!important;
+  gap:10px!important;
+  pointer-events:none!important;
+}
+#rightSideCounters .sideCounter {
+  min-width:86px!important;
+  padding:9px 13px!important;
+  border-radius:18px!important;
+  background:rgba(3,23,64,.78)!important;
+  border:3px solid rgba(95,202,255,.85)!important;
+  color:white!important;
+  font-size:22px!important;
+  font-weight:1000!important;
+  text-align:center!important;
+  box-shadow:0 5px 0 rgba(0,0,0,.35)!important;
+}
+#rightSideCounters .fireSideCounter {
+  background:linear-gradient(180deg,#ff8c00,#b83200)!important;
+  border-color:#ffd166!important;
+}
+
+/* Gifted creator: force the remaining rewards box to the center */
+#creatorModal.creatorGiftedCentered .creatorPanelGrid,
+#creatorModal.creatorGiftedCentered .creatorGrid,
+#creatorModal.creatorGiftedCentered [style*="grid-template-columns"] {
+  display:flex!important;
+  justify-content:center!important;
+  align-items:flex-start!important;
+  grid-template-columns:1fr!important;
+}
+#creatorModal.creatorGiftedCentered #creatorRewardsBox,
+#creatorModal.creatorGiftedCentered .creatorRewardsBox {
+  margin-left:auto!important;
+  margin-right:auto!important;
+  max-width:560px!important;
+  width:min(560px, 92%)!important;
+  float:none!important;
+}
+#creatorModal.creatorGiftedCentered #creatorAccessBox,
+#creatorModal.creatorGiftedCentered #ownerSkinGrantBox {
+  display:none!important;
+}
+
 </style>
 </head>
 <body oncontextmenu="return false;">
@@ -1781,15 +1895,45 @@ async function creatorGrantSkin(){
 
 function clearParts(el){
  el.className=el.className.replace(/\bskin-\S+/g,"").trim();
- el.querySelectorAll(".fin,.tail,.gill,.beak,.wing,.robotArm,.propeller,.robotStar,.sparkle,.flamePart,.magmaCrack,.lavaStream,.devilHorn,.devilTail").forEach(p=>p.remove());
+ el.querySelectorAll(".fin,.tail,.gill,.beak,.wing,.robotArm,.propeller,.robotStar,.sparkle,.flamePart,.magmaCrack,.lavaStream,.devilHorn,.devilTail,.seasonHead,.seasonEye,.devilHornReal").forEach(p=>p.remove());
 }
 function addParts(el,id){
- clearParts(el);el.classList.add("skin-"+id);
- if(id==="shark"){["fin","tail","gill"].forEach(c=>{let d=document.createElement("div");d.className=c;el.appendChild(d)})}
- if(id==="duck"){["beak","wing"].forEach(c=>{let d=document.createElement("div");d.className=c;el.appendChild(d)})}
- if(id==="robot"){["robotArm left","robotArm right","propeller","robotStar"].forEach(c=>{let d=document.createElement("div");d.className=c;el.appendChild(d)})}
- if(id==="gold"){let d=document.createElement("div");d.className="sparkle";el.appendChild(d)}
- if(id==="devil"){["devilHorn left","devilHorn right"].forEach(c=>{let d=document.createElement("div");d.className=c;el.appendChild(d)})}
+ clearParts(el);
+ el.classList.add("skin-"+id);
+
+ if(id==="shark"){
+   ["fin","tail","gill"].forEach(c=>{let d=document.createElement("div");d.className=c;el.appendChild(d)})
+ }
+ if(id==="duck"){
+   ["beak","wing"].forEach(c=>{let d=document.createElement("div");d.className=c;el.appendChild(d)})
+ }
+ if(id==="robot"){
+   ["robotArm left","robotArm right","propeller","robotStar"].forEach(c=>{let d=document.createElement("div");d.className=c;el.appendChild(d)})
+ }
+ if(id==="gold"){
+   let d=document.createElement("div");d.className="sparkle";el.appendChild(d)
+ }
+
+ if(["fire","magma","lava","devil"].includes(id)){
+   const head=document.createElement("div");
+   head.className="seasonHead";
+   const sk=skinById(id);
+   head.style.background=sk.color;
+   head.style.borderColor=sk.border;
+   el.appendChild(head);
+
+   const eye=document.createElement("div");
+   eye.className="seasonEye";
+   el.appendChild(eye);
+
+   if(id==="devil"){
+     ["left","right"].forEach(side=>{
+       const horn=document.createElement("div");
+       horn.className="devilHornReal "+side;
+       el.appendChild(horn);
+     });
+   }
+ }
 }
 function updateSwimmerStyle(el,id){const s=skinById(id);el.style.background=s.color;el.style.borderColor=s.border;addParts(el,id)}
 
@@ -3047,6 +3191,83 @@ function openFireSeason(){
 
   setInterval(centerGiftedCreatorV46,800);
 })();
+
+
+<div id="rightSideCounters">
+  <div class="sideCounter">💰 <span id="rightCoins">0</span></div>
+  <div class="sideCounter">🏆 <span id="rightTrophies">0</span></div>
+  <div class="sideCounter fireSideCounter">🔥 <span id="rightFireTokens">0</span></div>
+</div>
+
+
+<script id="v47-targeted-js">
+(function(){
+  function updateRightSideCounters(){
+    try{
+      const c=document.getElementById("rightCoins");
+      const t=document.getElementById("rightTrophies");
+      const f=document.getElementById("rightFireTokens");
+      if(c)c.textContent=typeof coins!=="undefined"?coins:0;
+      if(t)t.textContent=typeof trophies!=="undefined"?trophies:0;
+      if(f){
+        if(typeof loadFireTokens==="function")loadFireTokens();
+        f.textContent=typeof fireTokens!=="undefined"?fireTokens:0;
+      }
+    }catch(e){}
+  }
+
+  const oldUpdateAllStats = window.updateAllStats;
+  if(typeof oldUpdateAllStats==="function" && !window.__v47StatsPatch){
+    window.__v47StatsPatch=true;
+    window.updateAllStats=function(){
+      oldUpdateAllStats();
+      updateRightSideCounters();
+    };
+  }
+
+  function centerGiftedCreatorV47(){
+    const modal=document.getElementById("creatorModal");
+    if(!modal)return;
+    let gifted=false;
+    try{
+      const owner = typeof isOwner==="function" ? isOwner() : false;
+      gifted = !owner && (
+        String(localStorage.getItem("tr_creator_"+accountId))==="1" ||
+        String(localStorage.getItem("creator_"+accountId))==="1"
+      );
+    }catch(e){}
+    if(gifted){
+      modal.classList.add("creatorGiftedCentered");
+      const access=document.getElementById("creatorAccessBox");
+      const skin=document.getElementById("ownerSkinGrantBox");
+      const rewards=document.getElementById("creatorRewardsBox") || modal.querySelector(".creatorRewardsBox");
+      if(access)access.style.display="none";
+      if(skin)skin.style.display="none";
+      if(rewards){
+        rewards.style.marginLeft="auto";
+        rewards.style.marginRight="auto";
+        rewards.style.float="none";
+      }
+    }else{
+      modal.classList.remove("creatorGiftedCentered");
+    }
+  }
+
+  const oldOpenCreator=window.openCreatorPanel;
+  if(typeof oldOpenCreator==="function" && !window.__v47CreatorPatch){
+    window.__v47CreatorPatch=true;
+    window.openCreatorPanel=function(){
+      oldOpenCreator();
+      setTimeout(centerGiftedCreatorV47,80);
+      setTimeout(centerGiftedCreatorV47,350);
+    };
+  }
+
+  setInterval(updateRightSideCounters,500);
+  setInterval(centerGiftedCreatorV47,800);
+  setTimeout(updateRightSideCounters,200);
+})();
+</script>
 
 </body>
 </html>
