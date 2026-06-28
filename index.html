@@ -733,137 +733,152 @@ button[onclick*="Trade"]:hover, button[onclick*="trade"]:hover, #tradeBtn:hover,
 #creatorModal.giftedCreatorCentered #creatorAccessBox,#creatorModal.giftedCreatorCentered #ownerSkinGrantBox{display:none!important;}
 
 
-/* V49: only two fixes — season countdown + real heads/horns */
-.realHead{
+
+/* V50: force real heads on Fire / Magma / Lava / Devil skins */
+.miniSwimmer.skin-fire,
+.miniSwimmer.skin-magma,
+.miniSwimmer.skin-lava,
+.miniSwimmer.skin-devil,
+.swimmer.skin-fire,
+.swimmer.skin-magma,
+.swimmer.skin-lava,
+.swimmer.skin-devil,
+.player.skin-fire,
+.player.skin-magma,
+.player.skin-lava,
+.player.skin-devil,
+#selectedSwimmer.skin-fire,
+#selectedSwimmer.skin-magma,
+#selectedSwimmer.skin-lava,
+#selectedSwimmer.skin-devil,
+#mainSwimmer.skin-fire,
+#mainSwimmer.skin-magma,
+#mainSwimmer.skin-lava,
+#mainSwimmer.skin-devil {
+  overflow:visible!important;
+  position:relative!important;
+}
+
+.v50SeasonHead {
   position:absolute!important;
-  right:-24px!important;
+  right:-23px!important;
   top:7px!important;
   width:42px!important;
   height:42px!important;
   border-radius:50%!important;
-  border:4px solid rgba(0,0,0,.22)!important;
-  box-shadow:0 6px 0 rgba(0,0,0,.25), inset 0 0 10px rgba(255,255,255,.18)!important;
-  z-index:80!important;
+  border:4px solid rgba(0,0,0,.23)!important;
+  box-shadow:0 6px 0 rgba(0,0,0,.28), inset 0 0 10px rgba(255,255,255,.2)!important;
+  z-index:9999!important;
   display:block!important;
   pointer-events:none!important;
 }
-.realEyes{
+
+.v50SeasonEyes {
   position:absolute!important;
-  right:-7px!important;
+  right:-6px!important;
   top:21px!important;
   width:6px!important;
   height:6px!important;
   border-radius:50%!important;
   background:#111827!important;
   box-shadow:13px 1px 0 #111827!important;
-  z-index:90!important;
+  z-index:10000!important;
   display:block!important;
   pointer-events:none!important;
 }
-.realMouth{
+
+.v50SeasonMouth {
   position:absolute!important;
-  right:-5px!important;
+  right:-4px!important;
   top:35px!important;
   width:18px!important;
   height:7px!important;
   border-bottom:3px solid #111827!important;
   border-radius:0 0 16px 16px!important;
-  z-index:91!important;
+  z-index:10001!important;
   display:block!important;
   pointer-events:none!important;
 }
-.realHorn{
+
+.v50DevilHorn {
   position:absolute!important;
-  top:-12px!important;
+  top:-13px!important;
   width:0!important;
   height:0!important;
   border-left:9px solid transparent!important;
   border-right:9px solid transparent!important;
   border-bottom:25px solid #ff003c!important;
-  z-index:100!important;
+  z-index:10002!important;
   filter:drop-shadow(0 2px 0 #3b0015)!important;
   display:block!important;
   pointer-events:none!important;
 }
-.realHorn.left{right:12px!important;transform:rotate(-22deg)!important}
-.realHorn.right{right:-16px!important;transform:rotate(22deg)!important}
+.v50DevilHorn.left {
+  right:13px!important;
+  transform:rotate(-23deg)!important;
+}
+.v50DevilHorn.right {
+  right:-17px!important;
+  transform:rotate(23deg)!important;
+}
 
-/* Small versions in shop / my skins */
-#skinScreen .miniSwimmer .realHead,
-#ownedSkinsScreen .miniSwimmer .realHead,
-.shopSkinPreview .miniSwimmer .realHead{
+/* Smaller cards: Shop and Your Skins */
+#skinScreen .miniSwimmer .v50SeasonHead,
+#ownedSkinsScreen .miniSwimmer .v50SeasonHead,
+.shopSkinPreview .miniSwimmer .v50SeasonHead {
   right:-18px!important;
   top:7px!important;
   width:34px!important;
   height:34px!important;
   border-width:3px!important;
 }
-#skinScreen .miniSwimmer .realEyes,
-#ownedSkinsScreen .miniSwimmer .realEyes,
-.shopSkinPreview .miniSwimmer .realEyes{
+#skinScreen .miniSwimmer .v50SeasonEyes,
+#ownedSkinsScreen .miniSwimmer .v50SeasonEyes,
+.shopSkinPreview .miniSwimmer .v50SeasonEyes {
   right:-5px!important;
   top:18px!important;
   width:5px!important;
   height:5px!important;
   box-shadow:11px 1px 0 #111827!important;
 }
-#skinScreen .miniSwimmer .realMouth,
-#ownedSkinsScreen .miniSwimmer .realMouth,
-.shopSkinPreview .miniSwimmer .realMouth{
+#skinScreen .miniSwimmer .v50SeasonMouth,
+#ownedSkinsScreen .miniSwimmer .v50SeasonMouth,
+.shopSkinPreview .miniSwimmer .v50SeasonMouth {
   right:-4px!important;
   top:29px!important;
   width:16px!important;
   height:6px!important;
   border-bottom-width:2px!important;
 }
-#skinScreen .miniSwimmer .realHorn,
-#ownedSkinsScreen .miniSwimmer .realHorn,
-.shopSkinPreview .miniSwimmer .realHorn{
+#skinScreen .miniSwimmer .v50DevilHorn,
+#ownedSkinsScreen .miniSwimmer .v50DevilHorn,
+.shopSkinPreview .miniSwimmer .v50DevilHorn {
   top:-10px!important;
   border-left-width:7px!important;
   border-right-width:7px!important;
   border-bottom-width:20px!important;
 }
-#skinScreen .miniSwimmer .realHorn.left,
-#ownedSkinsScreen .miniSwimmer .realHorn.left,
-.shopSkinPreview .miniSwimmer .realHorn.left{right:10px!important}
-#skinScreen .miniSwimmer .realHorn.right,
-#ownedSkinsScreen .miniSwimmer .realHorn.right,
-.shopSkinPreview .miniSwimmer .realHorn.right{right:-12px!important}
+#skinScreen .miniSwimmer .v50DevilHorn.left,
+#ownedSkinsScreen .miniSwimmer .v50DevilHorn.left,
+.shopSkinPreview .miniSwimmer .v50DevilHorn.left {
+  right:10px!important;
+}
+#skinScreen .miniSwimmer .v50DevilHorn.right,
+#ownedSkinsScreen .miniSwimmer .v50DevilHorn.right,
+.shopSkinPreview .miniSwimmer .v50DevilHorn.right {
+  right:-12px!important;
+}
 
-/* Make sure older failed pseudo heads do not appear */
+/* Hide older failed seasonal pseudo heads/horns */
 .skin-fire::before,.skin-fire::after,
 .skin-magma::before,.skin-magma::after,
 .skin-lava::before,.skin-lava::after,
-.skin-devil::before,.skin-devil::after{
+.skin-devil::before,.skin-devil::after {
   content:none!important;
 }
-
-/* Season countdown: under the existing top-right Fire Token pill */
-#fireSeasonCountdown{
-  position:absolute!important;
-  right:102px!important;
-  top:83px!important;
-  z-index:880!important;
-  padding:8px 15px!important;
-  border-radius:18px!important;
-  border:3px solid #ffd166!important;
-  background:linear-gradient(180deg,#ff8c00,#b83200)!important;
-  color:white!important;
-  font-size:20px!important;
-  line-height:1.05!important;
-  font-weight:1000!important;
-  box-shadow:0 5px 0 rgba(0,0,0,.35)!important;
-  text-align:center!important;
-  pointer-events:none!important;
-  min-width:142px!important;
-}
-#fireSeasonCountdown small{
-  display:block!important;
-  font-size:11px!important;
-  opacity:.9!important;
-  margin-bottom:2px!important;
-  letter-spacing:.5px!important;
+.realHead,.realEyes,.realMouth,.realHorn,
+.seasonHead,.seasonEyes,.seasonEye,.seasonMouth,.devilHornReal {
+  display:none!important;
 }
 
 </style>
@@ -3091,6 +3106,137 @@ function openFireSeason(){
   }
   updateFireSeasonCountdown();
   setInterval(updateFireSeasonCountdown,60*1000);
+})();
+</script>
+
+
+<script id="v50-force-season-heads-js">
+(function(){
+  const seasonIds = ["fire","magma","lava","devil"];
+
+  function skinColor(id){
+    try{
+      if(typeof skinById === "function"){
+        const s = skinById(id);
+        if(s && s.color) return {bg:s.color, border:s.border || "rgba(0,0,0,.23)"};
+      }
+    }catch(e){}
+    const fallback = {
+      fire:{bg:"radial-gradient(circle at 35% 35%,#ffe45e,#ff8c00,#ff2400)", border:"#ffe45e"},
+      magma:{bg:"radial-gradient(circle at 35% 35%,#ff8c00,#1b130f,#ff3b00)", border:"#ff8c00"},
+      lava:{bg:"linear-gradient(135deg,#2b0000,#ff2400,#ffd166,#4a0000,#ff6a00)", border:"#ff2d00"},
+      devil:{bg:"linear-gradient(135deg,#26000b,#7b001c,#ff003c)", border:"#ff003c"}
+    };
+    return fallback[id] || fallback.fire;
+  }
+
+  function removeWrongHeads(el){
+    el.querySelectorAll(".v50SeasonHead,.v50SeasonEyes,.v50SeasonMouth,.v50DevilHorn").forEach(x=>x.remove());
+  }
+
+  function getSeasonId(el){
+    for(const id of seasonIds){
+      if(el.classList.contains("skin-"+id)) return id;
+    }
+    return null;
+  }
+
+  function forceHead(el){
+    const id = getSeasonId(el);
+    if(!id){
+      removeWrongHeads(el);
+      return;
+    }
+
+    if(el.querySelector(".v50SeasonHead")) return;
+
+    const colors = skinColor(id);
+
+    const head = document.createElement("div");
+    head.className = "v50SeasonHead";
+    head.style.background = colors.bg;
+    head.style.borderColor = colors.border;
+    el.appendChild(head);
+
+    const eyes = document.createElement("div");
+    eyes.className = "v50SeasonEyes";
+    el.appendChild(eyes);
+
+    const mouth = document.createElement("div");
+    mouth.className = "v50SeasonMouth";
+    el.appendChild(mouth);
+
+    if(id === "devil"){
+      const h1 = document.createElement("div");
+      h1.className = "v50DevilHorn left";
+      el.appendChild(h1);
+
+      const h2 = document.createElement("div");
+      h2.className = "v50DevilHorn right";
+      el.appendChild(h2);
+    }
+  }
+
+  function scanAll(){
+    const selectors = [
+      ".miniSwimmer",
+      ".swimmer",
+      ".player",
+      "#selectedSwimmer",
+      "#mainSwimmer",
+      ".playerAvatar",
+      ".shopSkinPreview > div"
+    ];
+    document.querySelectorAll(selectors.join(",")).forEach(forceHead);
+  }
+
+  // Patch addParts too, so every newly drawn skin gets the head immediately.
+  const oldAddParts = window.addParts;
+  if(typeof oldAddParts === "function" && !window.__v50AddPartsPatch){
+    window.__v50AddPartsPatch = true;
+    window.addParts = function(el,id){
+      oldAddParts(el,id);
+      if(seasonIds.includes(id)){
+        setTimeout(()=>forceHead(el),0);
+      }
+    };
+  }
+
+  // Patch updateSkinDisplay and renderOwnedSkins if they exist.
+  const oldUpdateSkinDisplay = window.updateSkinDisplay;
+  if(typeof oldUpdateSkinDisplay === "function" && !window.__v50UpdateSkinPatch){
+    window.__v50UpdateSkinPatch = true;
+    window.updateSkinDisplay = function(){
+      oldUpdateSkinDisplay();
+      scanAll();
+      setTimeout(scanAll,50);
+    };
+  }
+
+  const oldRenderOwnedSkins = window.renderOwnedSkins;
+  if(typeof oldRenderOwnedSkins === "function" && !window.__v50RenderOwnedPatch){
+    window.__v50RenderOwnedPatch = true;
+    window.renderOwnedSkins = function(){
+      oldRenderOwnedSkins();
+      scanAll();
+      setTimeout(scanAll,50);
+    };
+  }
+
+  const oldRenderShopStore = window.renderShopStore;
+  if(typeof oldRenderShopStore === "function" && !window.__v50RenderShopPatch){
+    window.__v50RenderShopPatch = true;
+    window.renderShopStore = function(){
+      oldRenderShopStore();
+      scanAll();
+      setTimeout(scanAll,50);
+    };
+  }
+
+  scanAll();
+  setTimeout(scanAll,100);
+  setTimeout(scanAll,500);
+  setInterval(scanAll,700);
 })();
 </script>
 
