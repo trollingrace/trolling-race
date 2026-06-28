@@ -833,6 +833,136 @@ button[onclick*="Trade"]:hover, button[onclick*="trade"]:hover, #tradeBtn:hover,
   display:none!important;
 }
 
+
+/* V44: same swimmer preview everywhere + centered gifted creator */
+#skinScreen .miniSwimmer,
+#ownedSkinsScreen .miniSwimmer,
+#skinScreen .shopSkinPreview .miniSwimmer,
+#skinScreen .shopCarousel .miniSwimmer,
+#ownedSkinsScreen .ownedSkinCard .miniSwimmer {
+  width:92px!important;
+  height:48px!important;
+  border-radius:999px!important;
+  position:relative!important;
+  overflow:visible!important;
+  margin:20px auto!important;
+  transform:none!important;
+  box-shadow:0 7px 0 rgba(0,0,0,.28), inset 0 0 12px rgba(255,255,255,.2)!important;
+}
+
+#skinScreen .miniSwimmer::after,
+#ownedSkinsScreen .miniSwimmer::after,
+#skinScreen .shopSkinPreview .miniSwimmer::after,
+#skinScreen .shopCarousel .miniSwimmer::after,
+#ownedSkinsScreen .ownedSkinCard .miniSwimmer::after {
+  content:""!important;
+  position:absolute!important;
+  right:-18px!important;
+  top:7px!important;
+  width:36px!important;
+  height:36px!important;
+  border-radius:50%!important;
+  background:inherit!important;
+  border:3px solid rgba(0,0,0,.18)!important;
+  box-shadow:0 5px 0 rgba(0,0,0,.22), inset 0 0 8px rgba(255,255,255,.18)!important;
+  z-index:4!important;
+}
+
+#skinScreen .miniSwimmer::before,
+#ownedSkinsScreen .miniSwimmer::before,
+#skinScreen .shopSkinPreview .miniSwimmer::before,
+#skinScreen .shopCarousel .miniSwimmer::before,
+#ownedSkinsScreen .ownedSkinCard .miniSwimmer::before {
+  content:""!important;
+  position:absolute!important;
+  right:-4px!important;
+  top:18px!important;
+  width:5px!important;
+  height:5px!important;
+  background:#111827!important;
+  border-radius:50%!important;
+  box-shadow:11px 1px 0 #111827!important;
+  z-index:8!important;
+}
+
+/* seasonal skins keep the same body+head shape everywhere */
+#skinScreen .miniSwimmer.skin-fire,
+#ownedSkinsScreen .miniSwimmer.skin-fire,
+#skinScreen .shopCarousel .miniSwimmer.skin-fire {
+  background:radial-gradient(circle at 30% 35%,#ffe45e 0 18%,#ff8c00 32%,#ff2400 65%,#6b1200 100%)!important;
+  border-color:#ffe45e!important;
+}
+
+#skinScreen .miniSwimmer.skin-magma,
+#ownedSkinsScreen .miniSwimmer.skin-magma,
+#skinScreen .shopCarousel .miniSwimmer.skin-magma {
+  background:radial-gradient(circle at 30% 30%,#ff8c00 0 8%,#1b130f 9% 42%,#ff3b00 43% 48%,#100706 49% 100%)!important;
+  border-color:#ff8c00!important;
+}
+
+#skinScreen .miniSwimmer.skin-lava,
+#ownedSkinsScreen .miniSwimmer.skin-lava,
+#skinScreen .shopCarousel .miniSwimmer.skin-lava {
+  background:linear-gradient(135deg,#2b0000 0%,#ff2400 28%,#ffd166 36%,#4a0000 48%,#ff6a00 70%,#1b0000 100%)!important;
+  border-color:#ff2d00!important;
+}
+
+#skinScreen .miniSwimmer.skin-devil,
+#ownedSkinsScreen .miniSwimmer.skin-devil,
+#skinScreen .shopCarousel .miniSwimmer.skin-devil {
+  background:linear-gradient(135deg,#26000b,#7b001c,#ff003c)!important;
+  border-color:#ff003c!important;
+}
+
+/* devil horns in shop/skins */
+#skinScreen .miniSwimmer.skin-devil .devilHorn,
+#ownedSkinsScreen .miniSwimmer.skin-devil .devilHorn {
+  display:block!important;
+  position:absolute!important;
+  top:-13px!important;
+  width:0!important;
+  height:0!important;
+  border-left:8px solid transparent!important;
+  border-right:8px solid transparent!important;
+  border-bottom:20px solid #ff003c!important;
+  z-index:12!important;
+}
+#skinScreen .miniSwimmer.skin-devil .devilHorn.left,
+#ownedSkinsScreen .miniSwimmer.skin-devil .devilHorn.left {
+  right:12px!important;
+  transform:rotate(-20deg)!important;
+}
+#skinScreen .miniSwimmer.skin-devil .devilHorn.right,
+#ownedSkinsScreen .miniSwimmer.skin-devil .devilHorn.right {
+  right:-12px!important;
+  transform:rotate(20deg)!important;
+}
+
+/* hide old ugly extras except devil horns */
+#skinScreen .flamePart,#skinScreen .magmaCrack,#skinScreen .lavaStream,#skinScreen .devilTail,
+#ownedSkinsScreen .flamePart,#ownedSkinsScreen .magmaCrack,#ownedSkinsScreen .lavaStream,#ownedSkinsScreen .devilTail {
+  display:none!important;
+}
+
+/* gifted creator: remaining rewards box centered */
+#creatorModal.creatorGiftedCentered .creatorPanelGrid,
+#creatorModal.creatorGiftedCentered .creatorGrid,
+#creatorModal.creatorGiftedCentered [style*="grid-template-columns"] {
+  display:flex!important;
+  justify-content:center!important;
+  align-items:flex-start!important;
+}
+#creatorModal.creatorGiftedCentered #creatorRewardsBox,
+#creatorModal.creatorGiftedCentered .creatorRewardsBox {
+  margin-left:auto!important;
+  margin-right:auto!important;
+  max-width:520px!important;
+}
+#creatorModal.creatorGiftedCentered #creatorAccessBox,
+#creatorModal.creatorGiftedCentered #ownerSkinGrantBox {
+  display:none!important;
+}
+
 </style>
 </head>
 <body oncontextmenu="return false;">
@@ -993,7 +1123,7 @@ button[onclick*="Trade"]:hover, button[onclick*="trade"]:hover, #tradeBtn:hover,
   <div class="modalBox" style="width:760px;">
     <h1>CREATOR PANEL</h1>
     <p style="font-size:14px;">Local prototype panel. Owner can add/remove coins and trophies, give random Creator Panel access, and remove panel access by name/TR-ID. Gifted Creator Panels can only add coins/trophies.</p>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
+    <div class="creatorPanelGrid" style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
       <div id="creatorRewardsBox" class="creatorRewardsBox" style="background:white;border:3px solid #052844;border-radius:14px;padding:12px;">
         <h3>Add / Remove Rewards</h3>
         <input id="grantTarget" placeholder="Player name or TR-ID" style="font-size:18px;padding:8px;width:90%;"><br><br>
@@ -3026,6 +3156,125 @@ function openFireSeason(){
   }
 
   setInterval(fixCreatorLayoutV43,1000);
+})();
+
+
+/* V44: render shop/skins with the exact old miniSwimmer body used by main selected skin */
+(function(){
+  function previewSwimmer(id){
+    const s=skinById(id);
+    const el=document.createElement("div");
+    el.className="miniSwimmer";
+    el.style.background=s.color;
+    el.style.borderColor=s.border;
+    addParts(el,id);
+    if(id==="devil" && !el.querySelector(".devilHorn")){
+      ["left","right"].forEach(side=>{
+        const h=document.createElement("div");
+        h.className="devilHorn "+side;
+        el.appendChild(h);
+      });
+    }
+    return el;
+  }
+
+  window.shopCardForSkin=function(id){
+    const s=skinById(id);
+    const owned=ownedSkins.includes(id);
+    const card=document.createElement("div");
+    card.className="shopItemCard"+(owned?" soldOut":"");
+    const preview=document.createElement("div");
+    preview.className="shopSkinPreview";
+    preview.appendChild(previewSwimmer(id));
+    card.innerHTML=`<h2>${s.name}</h2><p>${s.desc||""}</p><div class="priceLine"><span class="smallCoinIcon">$</span> ${s.price}</div>`;
+    card.insertBefore(preview,card.children[1]);
+    if(owned){
+      const stamp=document.createElement("div");
+      stamp.className="soldStamp";
+      stamp.textContent="SOLD OUT";
+      card.appendChild(stamp);
+    }
+    const btn=document.createElement("button");
+    btn.textContent=owned?"SOLD OUT":(coins>=s.price?"BUY":"NOT ENOUGH");
+    btn.disabled=owned||coins<s.price;
+    btn.onclick=async()=>{
+      if(owned||coins<s.price)return;
+      coins-=s.price;
+      if(coins<0)coins=0;
+      if(!ownedSkins.includes(id))ownedSkins.push(id);
+      equippedSkin=id;
+      await savePlayerData();
+      updateAllStats();
+      updateSkinDisplay();
+      renderShopStore();
+      showHint("Bought "+s.name+"!");
+    };
+    card.appendChild(btn);
+    return card;
+  };
+
+  window.renderOwnedSkins=function(){
+    const grid=document.getElementById("ownedSkinGrid");
+    if(!grid)return;
+    grid.innerHTML="";
+    ownedSkins.forEach(id=>{
+      const s=skinById(id);
+      const card=document.createElement("div");
+      card.className="ownedSkinCard"+(equippedSkin===id?" equipped":"");
+      card.innerHTML=`<h2>${s.name}</h2><p>${equippedSkin===id?"Equipped":"Tap to equip"}</p>`;
+      card.insertBefore(previewSwimmer(id),card.children[1]);
+      card.onclick=async()=>{
+        equippedSkin=id;
+        await savePlayerData();
+        updateSkinDisplay();
+        renderOwnedSkins();
+        updateAllStats();
+      };
+      grid.appendChild(card);
+    });
+    if(typeof syncFireTokenCounters==="function")syncFireTokenCounters();
+  };
+
+  function fixCreatorCenter(){
+    const modal=document.getElementById("creatorModal");
+    if(!modal)return;
+    const gifted = (typeof isOwner==="function" && !isOwner()) && (String(localStorage.getItem("tr_creator_"+accountId))==="1" || String(localStorage.getItem("creator_"+accountId))==="1");
+    if(gifted){
+      modal.classList.add("creatorGiftedCentered");
+      const access=document.getElementById("creatorAccessBox");
+      const skin=document.getElementById("ownerSkinGrantBox");
+      if(access)access.style.display="none";
+      if(skin)skin.style.display="none";
+      const rewards=document.getElementById("creatorRewardsBox");
+      if(rewards){
+        rewards.style.marginLeft="auto";
+        rewards.style.marginRight="auto";
+      }
+    }else{
+      modal.classList.remove("creatorGiftedCentered");
+    }
+  }
+
+  const oldOpen=window.openCreatorPanel;
+  if(typeof oldOpen==="function"){
+    window.openCreatorPanel=function(){
+      oldOpen();
+      setTimeout(fixCreatorCenter,80);
+      setTimeout(fixCreatorCenter,350);
+    };
+  }
+  const oldShow=window.showScreen;
+  if(typeof oldShow==="function"){
+    window.showScreen=function(id){
+      oldShow(id);
+      setTimeout(()=>{
+        if(id==="ownedSkinsScreen")renderOwnedSkins();
+        if(id==="skinScreen" && typeof renderShopStore==="function")renderShopStore();
+        if(String(id).toLowerCase().includes("creator"))fixCreatorCenter();
+      },80);
+    };
+  }
+  setInterval(fixCreatorCenter,1000);
 })();
 
 </body>
