@@ -716,6 +716,123 @@ button[onclick*="Trade"]:hover, button[onclick*="trade"]:hover, #tradeBtn:hover,
   display:none!important;
 }
 
+
+/* V43: slimmer skin preview shapes + centered gifted creator rewards */
+#skinScreen .skinGrid .miniSwimmer,
+#skinScreen .shopCarousel .miniSwimmer,
+#ownedSkinsScreen .miniSwimmer,
+#skinScreen .shopSkinPreview .miniSwimmer,
+#ownedSkinsScreen .ownedSkinCard .miniSwimmer {
+  width:92px!important;
+  height:48px!important;
+  border-radius:999px!important;
+  position:relative!important;
+  overflow:visible!important;
+  transform:none!important;
+  margin:20px auto!important;
+  box-shadow:0 7px 0 rgba(0,0,0,.28), inset 0 0 12px rgba(255,255,255,.2)!important;
+}
+
+#skinScreen .skinGrid .miniSwimmer::after,
+#skinScreen .shopCarousel .miniSwimmer::after,
+#ownedSkinsScreen .miniSwimmer::after,
+#skinScreen .shopSkinPreview .miniSwimmer::after,
+#ownedSkinsScreen .ownedSkinCard .miniSwimmer::after {
+  content:""!important;
+  position:absolute!important;
+  right:-18px!important;
+  top:7px!important;
+  width:36px!important;
+  height:36px!important;
+  border-radius:50%!important;
+  background:inherit!important;
+  border:3px solid rgba(0,0,0,.18)!important;
+  box-shadow:0 5px 0 rgba(0,0,0,.22), inset 0 0 8px rgba(255,255,255,.18)!important;
+  z-index:4!important;
+}
+
+#skinScreen .skinGrid .miniSwimmer::before,
+#skinScreen .shopCarousel .miniSwimmer::before,
+#ownedSkinsScreen .miniSwimmer::before,
+#skinScreen .shopSkinPreview .miniSwimmer::before,
+#ownedSkinsScreen .ownedSkinCard .miniSwimmer::before {
+  content:""!important;
+  position:absolute!important;
+  right:-4px!important;
+  top:18px!important;
+  width:5px!important;
+  height:5px!important;
+  background:#111827!important;
+  border-radius:50%!important;
+  box-shadow:11px 1px 0 #111827!important;
+  z-index:8!important;
+}
+
+/* arms/legs in preview should be subtle, not huge */
+#skinScreen .skinGrid .miniSwimmer .fin,
+#ownedSkinsScreen .miniSwimmer .fin,
+#skinScreen .shopCarousel .miniSwimmer .fin {
+  transform:scale(.65)!important;
+}
+#skinScreen .skinGrid .miniSwimmer .tail,
+#ownedSkinsScreen .miniSwimmer .tail,
+#skinScreen .shopCarousel .miniSwimmer .tail {
+  transform:scale(.7)!important;
+}
+
+/* completely hide old fire/lava line extras in preview cards */
+#skinScreen .flamePart,#skinScreen .magmaCrack,#skinScreen .lavaStream,#skinScreen .devilHorn,#skinScreen .devilTail,
+#ownedSkinsScreen .flamePart,#ownedSkinsScreen .magmaCrack,#ownedSkinsScreen .lavaStream,#ownedSkinsScreen .devilHorn,#ownedSkinsScreen .devilTail {
+  display:none!important;
+}
+
+/* fire-season preview colours, still with head */
+#skinScreen .miniSwimmer.skin-fire,
+#ownedSkinsScreen .miniSwimmer.skin-fire,
+#skinScreen .shopCarousel .miniSwimmer.skin-fire {
+  background:radial-gradient(circle at 30% 35%,#ffe45e 0 18%,#ff8c00 32%,#ff2400 65%,#6b1200 100%)!important;
+  border-color:#ffe45e!important;
+}
+
+#skinScreen .miniSwimmer.skin-magma,
+#ownedSkinsScreen .miniSwimmer.skin-magma,
+#skinScreen .shopCarousel .miniSwimmer.skin-magma {
+  background:radial-gradient(circle at 30% 30%,#ff8c00 0 8%,#1b130f 9% 42%,#ff3b00 43% 48%,#100706 49% 100%)!important;
+  border-color:#ff8c00!important;
+}
+
+#skinScreen .miniSwimmer.skin-lava,
+#ownedSkinsScreen .miniSwimmer.skin-lava,
+#skinScreen .shopCarousel .miniSwimmer.skin-lava {
+  background:linear-gradient(135deg,#2b0000 0%,#ff2400 28%,#ffd166 36%,#4a0000 48%,#ff6a00 70%,#1b0000 100%)!important;
+  border-color:#ff2d00!important;
+}
+
+#skinScreen .miniSwimmer.skin-devil,
+#ownedSkinsScreen .miniSwimmer.skin-devil,
+#skinScreen .shopCarousel .miniSwimmer.skin-devil {
+  background:linear-gradient(135deg,#26000b,#7b001c,#ff003c)!important;
+  border-color:#ff003c!important;
+}
+
+/* Center only the remaining gifted-creator rewards box after Creator Access is hidden */
+.creatorGiftedCentered #creatorRewardsBox,
+.creatorGiftedCentered .creatorRewardsBox {
+  margin-left:auto!important;
+  margin-right:auto!important;
+  float:none!important;
+  display:block!important;
+}
+.creatorGiftedCentered .creatorGrid,
+.creatorGiftedCentered .creatorAdminGrid,
+.creatorGiftedCentered [style*="grid-template-columns"] {
+  grid-template-columns:1fr!important;
+  justify-items:center!important;
+}
+.creatorGiftedCentered #creatorAccessBox {
+  display:none!important;
+}
+
 </style>
 </head>
 <body oncontextmenu="return false;">
@@ -877,7 +994,7 @@ button[onclick*="Trade"]:hover, button[onclick*="trade"]:hover, #tradeBtn:hover,
     <h1>CREATOR PANEL</h1>
     <p style="font-size:14px;">Local prototype panel. Owner can add/remove coins and trophies, give random Creator Panel access, and remove panel access by name/TR-ID. Gifted Creator Panels can only add coins/trophies.</p>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
-      <div style="background:white;border:3px solid #052844;border-radius:14px;padding:12px;">
+      <div id="creatorRewardsBox" class="creatorRewardsBox" style="background:white;border:3px solid #052844;border-radius:14px;padding:12px;">
         <h3>Add / Remove Rewards</h3>
         <input id="grantTarget" placeholder="Player name or TR-ID" style="font-size:18px;padding:8px;width:90%;"><br><br>
         <input id="grantCoins" type="number" placeholder="Coins (+/-)" style="font-size:18px;padding:8px;width:42%;">
@@ -2858,6 +2975,58 @@ function openFireSeason(){
     <button onclick="showMainMenu()">BACK</button>
   </div>
 </div>
+
+
+/* V43: center gifted creator reward box and force clean preview redraw */
+(function(){
+  function giftedOnlyV43(){
+    try{
+      if(typeof isOwner==="function" && isOwner()) return false;
+      return String(localStorage.getItem("tr_creator_"+accountId))==="1" || String(localStorage.getItem("creator_"+accountId))==="1";
+    }catch(e){return false;}
+  }
+
+  function fixCreatorLayoutV43(){
+    const modal=document.getElementById("creatorModal") || document.getElementById("creatorScreen") || document.querySelector('[id*="creator" i]');
+    if(!modal)return;
+    if(giftedOnlyV43()){
+      modal.classList.add("creatorGiftedCentered");
+      const access=document.getElementById("creatorAccessBox");
+      if(access)access.style.display="none";
+      const rewards=document.getElementById("creatorRewardsBox") || modal.querySelector(".creatorRewardsBox");
+      if(rewards){
+        rewards.style.marginLeft="auto";
+        rewards.style.marginRight="auto";
+        rewards.style.float="none";
+      }
+    }else{
+      modal.classList.remove("creatorGiftedCentered");
+    }
+  }
+
+  const oldOpen = window.openCreatorPanel;
+  if(typeof oldOpen==="function"){
+    window.openCreatorPanel=function(){
+      oldOpen();
+      setTimeout(fixCreatorLayoutV43,80);
+      setTimeout(fixCreatorLayoutV43,400);
+    };
+  }
+
+  const oldShow = window.showScreen;
+  if(typeof oldShow==="function"){
+    window.showScreen=function(id){
+      oldShow(id);
+      setTimeout(()=>{
+        if(String(id).toLowerCase().includes("creator"))fixCreatorLayoutV43();
+        if(id==="ownedSkinsScreen" && typeof renderOwnedSkins==="function")renderOwnedSkins();
+        if(id==="skinScreen" && typeof renderShopStore==="function")renderShopStore();
+      },80);
+    };
+  }
+
+  setInterval(fixCreatorLayoutV43,1000);
+})();
 
 </body>
 </html>
