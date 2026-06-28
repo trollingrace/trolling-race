@@ -732,6 +732,92 @@ button[onclick*="Trade"]:hover, button[onclick*="trade"]:hover, #tradeBtn:hover,
 #creatorModal.giftedCreatorCentered #creatorRewardsBox{width:460px!important;max-width:460px!important;margin-left:auto!important;margin-right:auto!important;}
 #creatorModal.giftedCreatorCentered #creatorAccessBox,#creatorModal.giftedCreatorCentered #ownerSkinGrantBox{display:none!important;}
 
+
+/* V46: seasonal skin heads + devil horns + centered gifted creator rewards */
+.skin-fire::after,
+.skin-magma::after,
+.skin-lava::after,
+.skin-devil::after {
+  content:""!important;
+  position:absolute!important;
+  right:-20px!important;
+  top:7px!important;
+  width:38px!important;
+  height:38px!important;
+  border-radius:50%!important;
+  background:inherit!important;
+  border:3px solid rgba(0,0,0,.22)!important;
+  box-shadow:0 5px 0 rgba(0,0,0,.25), inset 0 0 8px rgba(255,255,255,.2)!important;
+  z-index:20!important;
+}
+
+.skin-fire::before,
+.skin-magma::before,
+.skin-lava::before,
+.skin-devil::before {
+  content:""!important;
+  position:absolute!important;
+  right:-5px!important;
+  top:19px!important;
+  width:5px!important;
+  height:5px!important;
+  background:#111827!important;
+  border-radius:50%!important;
+  box-shadow:12px 1px 0 #111827!important;
+  z-index:30!important;
+}
+
+.skin-devil .devilHorn {
+  display:block!important;
+  position:absolute!important;
+  top:-13px!important;
+  width:0!important;
+  height:0!important;
+  border-left:8px solid transparent!important;
+  border-right:8px solid transparent!important;
+  border-bottom:21px solid #ff003c!important;
+  z-index:35!important;
+  filter:drop-shadow(0 2px 0 #3b0015)!important;
+}
+.skin-devil .devilHorn.left {
+  right:12px!important;
+  transform:rotate(-22deg)!important;
+}
+.skin-devil .devilHorn.right {
+  right:-12px!important;
+  transform:rotate(22deg)!important;
+}
+
+/* If the old renderer hid horns in cards, force devil horns visible only on devil */
+#skinScreen .miniSwimmer.skin-devil .devilHorn,
+#ownedSkinsScreen .miniSwimmer.skin-devil .devilHorn,
+#mainCharacter.skin-devil .devilHorn,
+.playerAvatar.skin-devil .devilHorn {
+  display:block!important;
+}
+
+/* Gifted creator layout: center the only visible reward box */
+#creatorModal.creatorGiftedCentered .creatorPanelGrid,
+#creatorModal.creatorGiftedCentered .creatorGrid,
+#creatorModal.creatorGiftedCentered [style*="grid-template-columns"] {
+  display:flex!important;
+  justify-content:center!important;
+  align-items:flex-start!important;
+  grid-template-columns:1fr!important;
+}
+#creatorModal.creatorGiftedCentered #creatorRewardsBox,
+#creatorModal.creatorGiftedCentered .creatorRewardsBox {
+  margin-left:auto!important;
+  margin-right:auto!important;
+  max-width:560px!important;
+  width:min(560px, 92%)!important;
+  float:none!important;
+}
+#creatorModal.creatorGiftedCentered #creatorAccessBox,
+#creatorModal.creatorGiftedCentered #ownerSkinGrantBox {
+  display:none!important;
+}
+
 </style>
 </head>
 <body oncontextmenu="return false;">
@@ -2900,6 +2986,67 @@ function openFireSeason(){
  setInterval(fixCreatorCenterV45,800);
 })();
 </script>
+
+
+/* V46 targeted JS: add devil horns and center gifted creator panel */
+(function(){
+  const oldAddParts = window.addParts;
+  if(typeof oldAddParts === "function" && !window.__v46AddPartsPatched){
+    window.__v46AddPartsPatched = true;
+    window.addParts = function(el,id){
+      oldAddParts(el,id);
+      if(id==="devil" && !el.querySelector(".devilHorn")){
+        ["left","right"].forEach(side=>{
+          const h=document.createElement("div");
+          h.className="devilHorn "+side;
+          el.appendChild(h);
+        });
+      }
+    };
+  }
+
+  function isGiftedCreatorV46(){
+    try{
+      const owner = typeof isOwner === "function" ? isOwner() : false;
+      return !owner && (
+        String(localStorage.getItem("tr_creator_"+accountId))==="1" ||
+        String(localStorage.getItem("creator_"+accountId))==="1"
+      );
+    }catch(e){return false;}
+  }
+
+  function centerGiftedCreatorV46(){
+    const modal=document.getElementById("creatorModal");
+    if(!modal)return;
+    if(isGiftedCreatorV46()){
+      modal.classList.add("creatorGiftedCentered");
+      const access=document.getElementById("creatorAccessBox");
+      const skin=document.getElementById("ownerSkinGrantBox");
+      const rewards=document.getElementById("creatorRewardsBox") || modal.querySelector(".creatorRewardsBox");
+      if(access)access.style.display="none";
+      if(skin)skin.style.display="none";
+      if(rewards){
+        rewards.style.marginLeft="auto";
+        rewards.style.marginRight="auto";
+        rewards.style.float="none";
+      }
+    }else{
+      modal.classList.remove("creatorGiftedCentered");
+    }
+  }
+
+  const oldOpenCreator = window.openCreatorPanel;
+  if(typeof oldOpenCreator==="function" && !window.__v46CreatorOpenPatched){
+    window.__v46CreatorOpenPatched = true;
+    window.openCreatorPanel=function(){
+      oldOpenCreator();
+      setTimeout(centerGiftedCreatorV46,80);
+      setTimeout(centerGiftedCreatorV46,350);
+    };
+  }
+
+  setInterval(centerGiftedCreatorV46,800);
+})();
 
 </body>
 </html>
